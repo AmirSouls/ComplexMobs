@@ -1,0 +1,6 @@
+name: LothricKnights
+author: GarnerGang
+version: 0.1
+main: lothricKnights.Main.LothricKnights
+description: Stuff
+api-version: 1.13
