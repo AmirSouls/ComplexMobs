@@ -20,7 +20,7 @@ public class EnemyDMG {
 				//Dmg entity
 				LivingEntity livingEntity = (LivingEntity) entity;
 				//TODO: Implement armor formula so this isnt too op
-				livingEntity.damage(3);
+				livingEntity.damage(15);
 				livingEntity.setVelocity(main.getLocation().getDirection().multiply(0.4).setY(0.2));
 			}
 		}
