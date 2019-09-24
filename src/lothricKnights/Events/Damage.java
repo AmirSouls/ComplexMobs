@@ -25,7 +25,7 @@ public class Damage implements Listener {
 				if (LothricKnights.partHost.containsKey(event.getEntity())) {
 					if (LothricKnights.shieldUp.containsKey(LothricKnights.partHost.get(event.getEntity()))) {
 						ArmorStand main = LothricKnights.partHost.get(event.getEntity());
-						if (LothricKnights.shieldUp.get(main)) {
+						if (LothricKnights.shieldUp.get(main) && !LothricKnights.isAttacking.get(main)) {
 							//Shield up
 							if (!LothricKnights.blocked.containsKey(main) && event.getFinalDamage() > 3.5) {
 								LothricKnights.blocked.put(main, Instant.now());
@@ -44,14 +44,14 @@ public class Damage implements Listener {
 						//Shield down
 						else {		
 							//Initialize health
-							float maxHealth = 10000;
+							float maxHealth = 100;
 							if (!LothricKnights.mobHealth.containsKey(main)) {
 								LothricKnights.mobHealth.put(main, (float) maxHealth);
 							}
 							
 							//Initialize poise
 							float poiseModifier = 0;
-							float maxPoise = 9 * (1 + poiseModifier);
+							float maxPoise = 14 * (1 + poiseModifier);
 							if (!LothricKnights.mobPoise.containsKey(main)) {
 								LothricKnights.mobPoise.put(main, (float) maxPoise);
 							}
@@ -60,23 +60,46 @@ public class Damage implements Listener {
 							float health = LothricKnights.mobHealth.get(main);
 							
 							//Get current poise and immediatly apply dmg to see if their stance was broken
-							float poise = LothricKnights.mobPoise.get(main);
-							if (event.getFinalDamage() > 3.5 && !LothricKnights.hyperArmor.get(main)) {
-								
-								poise = (float) (poise - event.getFinalDamage());
-							}
-							
-							if (event.getFinalDamage() > health) {
+							float poise = LothricKnights.mobPoise.get(main);		
+							if (event.getFinalDamage() > health && event.getFinalDamage() > 3.5) {
 								//Dead
 								LothricKnights.mobHealth.put(main, (float) 0.0);
+								
+								main.remove();
+								for (ArmorStand part : LothricKnights.partList.get(main)) {
+									part.remove();
+								}
 							}
 							else {
-								//Damaged
+								if (event.getFinalDamage() > 3.5) {
+									//Deal dmg
+									LothricKnights.mobHealth.put(main, (float) (health - event.getFinalDamage()));
+									
+									//Particles
+									main.getWorld().spawnParticle(Particle.BLOCK_DUST, main.getLocation().add(0,2,0), 100, 0.1, 0.3, 0.1, 0, Material.REDSTONE_WIRE.createBlockData());
+									
+									//Hurt sound
+									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
+											"playsound minecraft:lothricknight.hurt master @a " +
+											main.getLocation().getX() + 
+											" " +
+											main.getLocation().getY() +
+											" " + main.getLocation().getZ() + " 0.5 1"
+											);
+									
+									//Lower poise
+									if (!LothricKnights.hyperArmor.get(main)) {
+										poise = (float) (poise - event.getFinalDamage());
+									}
+								}
+								
+								//Stagger
 								if (!LothricKnights.stunned.containsKey(main) && poise <= 0 && poise > -30 && event.getFinalDamage() > 3.5 && !LothricKnights.hyperArmor.get(main)) {
 									LothricKnights.stunned.put(main, Instant.now());
 									LothricKnights.isAttacking.put(main, false);
 									LothricKnights.hyperArmor.put(main, false);
 									ResetTimers.resetTimers(main);
+									LothricKnights.changeTimer.put(main, Instant.now().minusMillis(10000));
 									
 									//Higher poise
 									LothricKnights.mobPoise.put(main, (float) maxPoise);
@@ -90,20 +113,6 @@ public class Damage implements Listener {
 									LothricKnights.mobPoise.put(main, poise);
 								}
 								
-								//Deal dmg
-								LothricKnights.mobHealth.put(main, (float) (health - event.getFinalDamage()));
-								
-								//Particles
-								main.getWorld().spawnParticle(Particle.BLOCK_DUST, main.getLocation().add(0,2,0), 100, 0.1, 0.3, 0.1, 0, Material.REDSTONE_WIRE.createBlockData());
-								
-								//Hurt sound
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-										"playsound minecraft:lothricknight.hurt master @a " +
-										main.getLocation().getX() + 
-										" " +
-										main.getLocation().getY() +
-										" " + main.getLocation().getZ() + " 0.5 1"
-										);
 							}
 							event.setDamage(0);
 						}

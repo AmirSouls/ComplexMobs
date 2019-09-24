@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -19,6 +18,7 @@ import org.bukkit.util.Vector;
 import lothricKnights.Main.LothricKnights;
 import lothricKnights.Methods.OffsetTimers;
 import lothricKnights.Methods.ResetTimers;
+import lothricKnights.Methods.PassiveAction;
 
 public class AI {
 	
@@ -53,7 +53,7 @@ public class AI {
 		//Refill poise
 		if (LothricKnights.mobPoise.containsKey(main)) {
 			float poise = LothricKnights.mobPoise.get(main);
-			float maxPoise = 9;
+			float maxPoise = 14;
 			float lowPoiseModifier = 0;
 			if (poise < maxPoise / 3) lowPoiseModifier = (float) 0.15;
 			poise = (float) (poise + .2 - lowPoiseModifier);
@@ -140,7 +140,7 @@ public class AI {
 								double distance3D = target.getLocation().distance(main.getLocation());
 								
 								//They are within 6 metes, Close range attack
-								if (distance3D < 5 && distance3D > 2 && !outOfStamina) {
+								if (distance3D < 5 && distance3D > 2 && LothricKnights.stamina.get(main) > 34) {
 									//Stamina chance modifier sqrd
 									double staminaModifier = LothricKnights.stamina.get(main) / 100;
 									staminaModifier = staminaModifier * staminaModifier;
@@ -149,7 +149,7 @@ public class AI {
 										LothricKnights.isAttacking.put(main, true);
 										Collection<String> actions = new ArrayList<>();
 										//actions.add("RightSlashShield"); 
-										actions.add("LeftSlashShield"); 
+										actions.add("LeftSlash"); 
 										//actions.add("Stance"); 
 										//actions.add("OverheadSlash"); 
 										if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSideShield") || LothricKnights.passiveAction.get(main).contentEquals("WalkingForwardShield")) {
@@ -160,15 +160,15 @@ public class AI {
 										
 										//Direction means where the slash is going to not from
 										
-										if (action.contentEquals("RightSlashShield")) {
-											LothricKnights.activeAction.put(main, "RightSlashShield");
+										if (action.contentEquals("RightSlash")) {
+											LothricKnights.activeAction.put(main, action);
 											LothricKnights.changeTimer.put(main, Instant.now());
 											
 											//Reset animation timers
 											ResetTimers.resetTimers(main);
 										}
-										else if (action.contentEquals("LeftSlashShield")) {
-											LothricKnights.activeAction.put(main, "LeftSlashShield");
+										else if (action.contentEquals("LeftSlash")) {
+											LothricKnights.activeAction.put(main, action);
 											LothricKnights.changeTimer.put(main, Instant.now());
 											LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 35);
 											LothricKnights.staminaUse.put(main, Instant.now());
@@ -177,7 +177,7 @@ public class AI {
 											ResetTimers.resetTimers(main);
 										}
 										else if (action.contentEquals("ShieldBash")) {
-											LothricKnights.activeAction.put(main, "ShieldBash");
+											LothricKnights.activeAction.put(main, action);
 											LothricKnights.changeTimer.put(main, Instant.now());
 											
 											//Reset animation timers
@@ -188,6 +188,8 @@ public class AI {
 											if (Math.random() > 0.6) {
 												LothricKnights.activeAction.put(main, "Stance");
 												LothricKnights.changeTimer.put(main, Instant.now());
+												LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 100);
+												LothricKnights.staminaUse.put(main, Instant.now());
 												
 												//Reset animation timers
 												ResetTimers.resetTimers(main);
@@ -206,13 +208,15 @@ public class AI {
 									}
 								}
 								//They keeping their distance at more than 6 meters, Mid range attack
-								else if (distance3D < 10 && false && !outOfStamina) {
+								else if (distance3D > 6 && distance3D < 15 && !outOfStamina) {
 									//Only 10% chance of this happening every second
-									if (Math.random() < 0.005) {
+									if (Math.random() < 0.01) {
 										//Stance and stab
 										LothricKnights.isAttacking.put(main, true);
 										LothricKnights.activeAction.put(main, "Stance");
 										LothricKnights.changeTimer.put(main, Instant.now());
+										LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 100);
+										LothricKnights.staminaUse.put(main, Instant.now());
 										
 										//Reset animation timers
 										ResetTimers.resetTimers(main);
@@ -232,91 +236,16 @@ public class AI {
 							if (LothricKnights.passiveAction.containsKey(main)) {
 								LivingEntity target = LothricKnights.mobTarget.get(main);
 								double distance3D = target.getLocation().distance(main.getLocation());
+								
+								//Action selection
 								Collection<String> actions = new ArrayList<>();
-								if (distance3D < 10) actions.add("WalkingSideShield"); 
-								if (distance3D > 6 && distance3D < 10) actions.add("WalkingSide"); 
-								if (distance3D > 10) actions.add("WalkingForward");
-								if (distance3D > 6 && distance3D < 15) actions.add("WalkingForwardShield");
+								if (distance3D < 12) actions.add("WalkingSide"); 
+								if (distance3D > 6) actions.add("WalkingForward");
 								if (!actions.isEmpty()) Collections.shuffle((List<?>) actions);
 								
-								//Standing still
-								if (LothricKnights.passiveAction.get(main) == "Standing") {
-									//shield down boolean
-									LothricKnights.shieldUp.put(main, false);
-									
-									Standing.standing(main);
-									
-									//check change timer
-									if (Instant.now().isAfter(LothricKnights.changeTimer.get(main).plusMillis(2000))) {
-										LothricKnights.passiveAction.put(main, (String) actions.toArray()[0]);
-										LothricKnights.changeTimer.put(main, Instant.now().plusMillis((long) (Math.random() * 5000)));
-										
-										//Reset animation timers
-										ResetTimers.resetTimers(main, -1000);
-									}
-								}
-								//Walking forward
-								else if (LothricKnights.passiveAction.get(main).contentEquals("WalkingForward")) {
-									//shield down boolean
-									LothricKnights.shieldUp.put(main, false);
-									
-									//check change timer
-									if (Instant.now().isAfter(LothricKnights.changeTimer.get(main).plusMillis(5000))) {
-										LothricKnights.passiveAction.put(main, (String) actions.toArray()[0]);
-										LothricKnights.changeTimer.put(main, Instant.now().plusMillis((long) (Math.random() * 5000)));
-										
-										//Reset animation timers
-										ResetTimers.resetTimers(main, -1000);
-									}
-									WalkingForward.animate(main, true);
-								}
-								//Walking forward with shield
-								else if (LothricKnights.passiveAction.get(main).contentEquals("WalkingForwardShield")) {
-									//shield up boolean
-									LothricKnights.shieldUp.put(main, true);
-									
-									//check change timer
-									if (Instant.now().isAfter(LothricKnights.changeTimer.get(main).plusMillis(5000))) {
-										LothricKnights.passiveAction.put(main, (String) actions.toArray()[0]);
-										LothricKnights.changeTimer.put(main, Instant.now().plusMillis((long) (Math.random() * 5000)));
-										
-										//Reset animation timers
-										ResetTimers.resetTimers(main, -1000);
-									}
-									WalkingForwardShield.animate(main, true);
-								}
-								//Walking sideways
-								else if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSide")) {
-									//shield down boolean
-									LothricKnights.shieldUp.put(main, false);
-									
-									//check change timer
-									if (Instant.now().isAfter(LothricKnights.changeTimer.get(main).plusMillis(5000))) {
-										LothricKnights.passiveAction.put(main, (String) actions.toArray()[0]);
-										LothricKnights.changeTimer.put(main, Instant.now().plusMillis((long) (Math.random() * 5000)));
-										
-										//Reset animation timers
-										ResetTimers.resetTimers(main, -1000);
-									}
-									WalkingSide.animate(main, true);
-								}
-								//Walking sideways with shield
-								else if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSideShield")) {
-									//shield up boolean
-									LothricKnights.shieldUp.put(main, true);
-									
-									//check change timer
-
-									if (Instant.now().isAfter(LothricKnights.changeTimer.get(main).plusMillis(5000))) {
-										LothricKnights.passiveAction.put(main, (String) actions.toArray()[0]);
-										LothricKnights.changeTimer.put(main, Instant.now().plusMillis((long) (Math.random() * 5000)));
-										
-										//Reset animation timers
-										ResetTimers.resetTimers(main, -1000);
-									}
-									WalkingSideShield.animate(main, true);
-								}
-							}
+								//Action select and Execution
+								PassiveAction.select(main, (String) actions.toArray()[0], distance3D);
+							}	
 						}
 					}
 				}
@@ -324,11 +253,14 @@ public class AI {
 			else {
 				//Knight is attacking! Lets direct it to its animation and mechanics:
 				if (LothricKnights.activeAction.containsKey(main)) {
-					if (LothricKnights.shieldUp.containsKey(main)) {
-						LothricKnights.shieldUp.put(main, false);
+					if (LothricKnights.activeAction.get(main) == "LeftSlash") {
+						LeftSlash.animate(main);
 					}
-					if (LothricKnights.activeAction.get(main) == "LeftSlashShield") {
-						LeftSlashShield.animate(main);
+					else if (LothricKnights.activeAction.get(main) == "Stance") {
+						Stance.animate(main);
+					}
+					else if (LothricKnights.activeAction.get(main) == "StanceThrust") {
+						StanceThrust.animate(main);
 					}
 				}
 			}
