@@ -210,7 +210,7 @@ public class AI {
 								//They keeping their distance at more than 6 meters, Mid range attack
 								else if (distance3D > 6 && distance3D < 15 && !outOfStamina) {
 									//Only 10% chance of this happening every second
-									if (Math.random() < 0.01) {
+									if (Math.random() < 0.0075) {
 										//Stance and stab
 										LothricKnights.isAttacking.put(main, true);
 										LothricKnights.activeAction.put(main, "Stance");
@@ -239,8 +239,9 @@ public class AI {
 								
 								//Action selection
 								Collection<String> actions = new ArrayList<>();
-								if (distance3D < 12) actions.add("WalkingSide"); 
-								if (distance3D > 6) actions.add("WalkingForward");
+								if (distance3D < 10) actions.add("WalkingSide"); 
+								if (distance3D > 6 && distance3D < 12) actions.add("WalkingForward");
+								if (distance3D > 6) actions.add("Running");
 								if (!actions.isEmpty()) Collections.shuffle((List<?>) actions);
 								
 								//Action select and Execution

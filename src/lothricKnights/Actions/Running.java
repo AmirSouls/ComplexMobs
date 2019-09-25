@@ -14,13 +14,14 @@ import lothricKnights.Main.LothricKnights;
 import lothricKnights.Methods.Animate;
 import lothricKnights.Methods.OutOfBounds;
 import lothricKnights.Methods.PartPositioning;
+import lothricKnights.Methods.ResetTimers;
 import lothricKnights.SpecialAnimations.HeadZeroAnimation;
 import lothricKnights.SpecialAnimations.PelvisZeroAnimation;
 
 
-public class WalkingForward {
+public class Running {
 	
-	public static void animate(ArmorStand main, boolean shieldUp) {
+	public static void animate(ArmorStand main) {
 		try {
 			if (!LothricKnights.changeTimer.containsKey(main)) {
 				LothricKnights.changeTimer.put(main, Instant.now());
@@ -122,7 +123,10 @@ public class WalkingForward {
 
 				vector.setY(0);
 				if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis))) {
-					main.teleport(newDirection.add(vector.multiply(0.1)));
+					main.teleport(newDirection.add(vector.multiply(0.27)));
+				}
+				if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis).plusMillis(605))) {
+					ResetTimers.resetTimers(main);
 				}
 			}
 			
@@ -131,35 +135,59 @@ public class WalkingForward {
 				pelvisPosition = new Vector(0,0.5,0);
 				
 				//Set position based on current time
+				
+				double deltaTime = LothricKnights.animationTimer.get(pelvis).toEpochMilli() - Instant.now().toEpochMilli();
+				double heightModif = -.05;
+				
+				//Down
+				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(105))) {
+					pelvisPosition = new Vector(0, .5 - (heightModif * (deltaTime / 100)), 0);
+				}
 				//Up
-				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(300))) {
-					pelvisPosition = pelvisPosition.add(new Vector(0,.04,0));	
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(205))) {
+					deltaTime += 100;
+					pelvisPosition = new Vector(0, .5 + (heightModif * (deltaTime / 100)), 0);
 				}
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(355))) {		
-				}
-				//Step sound
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(405))) {		
+				//Sound
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(255))) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.walk master @a " +
+							"playsound minecraft:lothricknight.run master @a " +
 							main.getLocation().getX() + 
 							" " +
 							main.getLocation().getY() +
-							" " + main.getLocation().getZ() + " 0.5 1"
+							" " + main.getLocation().getZ() + " 1 1"
 							);
 				}
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(500))) {		
+				//Pause
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(305))) {
 				}
 				//Down
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(805))) {
-					pelvisPosition = pelvisPosition.add(new Vector(0,-.04,0));	
+				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(405))) {
+					deltaTime += 300;
+					pelvisPosition = new Vector(0, .5 - (heightModif * (deltaTime / 100)), 0);
 				}
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(1000))) {	
+				//Down
+				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(505))) {
+					deltaTime += 400;
+					pelvisPosition = new Vector(0, .5 + (heightModif * (deltaTime / 100)), 0);
+				}
+				//Sound
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(555))) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
+							"playsound minecraft:lothricknight.run master @a " +
+							main.getLocation().getX() + 
+							" " +
+							main.getLocation().getY() +
+							" " + main.getLocation().getZ() + " 1 1"
+							);
+				}
+				//Pause
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(605))) {
 				}
 				//Reset
-				else if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis).plusMillis(1000))) {
-					LothricKnights.animationTimer.put(pelvis, Instant.now());
-					pelvisPosition = new Vector(0,0.5,0);
-				}
+				
+					
+			
 				
 				pelvisPosition.rotateAroundY(-yaw);
 				pelvis.teleport(main.getLocation().add(pelvisPosition));
@@ -171,7 +199,10 @@ public class WalkingForward {
 			
 			//Chest, head and cape
 			chestPosition = PartPositioning.position(chest, pelvisPosition, pelvis.getHeadPose(), new Vector(0,-.16,0.01), main.getLocation(), yaw);
-			OutOfBounds.combined(chest, chest.getHeadPose(), 10, 10, 10, 15, 15, 10, 0, 0, 10);
+			//Right
+			Animate.fromTo(chest, 30, -5, 0, 30, 5, 0, 0, 205);
+			//Left
+			Animate.fromTo(chest, 30, 5, 0, 30, -5, 0, 305, 505);
 			
 			PartPositioning.position(head, chestPosition, chest.getHeadPose(), new Vector(0,0.8,0), main.getLocation(), yaw);
 			HeadZeroAnimation.animate(head, main);
@@ -179,119 +210,93 @@ public class WalkingForward {
 			PartPositioning.position(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), main.getLocation(), yaw);
 			OutOfBounds.combined(cape, cape.getHeadPose(), 15, 15, 10, 0, 0, 10, 0, 0, 10);
 	
-			//Arms, shield up or down boolean.
-			if (shieldUp) {
-				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
-				OutOfBounds.combined(leftElbow, leftElbow.getHeadPose(), 15, 15, 5, 0, 0, 5, -10, -10, 5);
-				
-				rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightElbow, rightElbow.getHeadPose(), 10, 10, 5, 0, 0, 5, 45, 45, 5);
-				
-				leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftArm, leftArm.getHeadPose(), -60, -60, 5, 0, 0, 5, 40, 40, 5);
-				
-				rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightArm, rightArm.getHeadPose(), 0, 0, 5, 0, 0, 5, 40, 40, 5);
-				
-				leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftHand, leftHand.getHeadPose(), 180, 180, 10, 100, 100, 10, 0, 0, 10);
-				
-				rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightHand, rightHand.getHeadPose(), 0, 0, 10);
-				
-				PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
-				OutOfBounds.combined(sword, sword.getHeadPose(), 0, 0, 10);
-				
-				PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), main.getLocation(), yaw);
-				OutOfBounds.combined(shield, shield.getHeadPose(), 180, 180, 40, 100, 100, 40, 0, 0, 40);
-			}
-			else {
-				//Arms
-				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
-				OutOfBounds.combined(leftElbow, leftElbow.getHeadPose(), 0, 0, 5, 0, 0, 5, -20, -20, 5);
-				
-				rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightElbow, rightElbow.getHeadPose(), 30, 30, 5, 0, 0, 5, 30, 30, 5);
-				
-				leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftArm, leftArm.getHeadPose(), 0, 0, 5, 0, 0, 5, 10, 10, 5);
-				
-				rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightArm, rightArm.getHeadPose(), 20, 20, 5, 0, 0, 5, 40, 40, 5);
-				
-				leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftHand, leftHand.getHeadPose(), -10, -10, 10, 10, 10, 10, 5, 5, 10);
-				
-				rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
-				OutOfBounds.combined(rightHand, rightHand.getHeadPose(), 20, 20, 5, 0, 0, 5, 40, 40, 5);
-				
-				PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
-				OutOfBounds.combined(sword, sword.getHeadPose(), 40, 40, 10, 20, 20, 10, 20, 20, 10);
-				
-				PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), main.getLocation(), yaw);
-				OutOfBounds.combined(shield, shield.getHeadPose(), -15, -15, 20, 10, 10, 20, 10, 10, 20);
-			}
+			//Arms
+			leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(leftElbow, 40, 0, -30, 10, 0, -10, 0, 205);
+			//Pause
+			//Left
+			Animate.fromTo(leftElbow, 10, 0, -10, 40, 0, -30, 305, 505);
+			//Pause
+			
+			rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(rightElbow, 30, 0, 30, 55, 0, 45, 0, 205);
+			//Left
+			Animate.fromTo(rightElbow, 55, 0, 45, 30, 0, 30, 305, 505);
+			
+			leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(leftArm, 0, 0, -10, -30, 30, 0, 0, 205);
+			//Left
+			Animate.fromTo(leftArm, -30, 30, 0, 0, 0, -10, 305, 505);
+			
+			rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(rightArm, 0, 0, 10, 55, 0, 45, 0, 205);
+			//Left
+			Animate.fromTo(rightArm, 55, 0, 45, 0, 0, 10, 305, 505);
+			
+			leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(leftHand, 0, 0, -10, -30, 30, 0, 0, 205);
+			//Left
+			Animate.fromTo(leftHand, -30, 30, 0, 0, 0, -10, 305, 505);
+			
+			rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(rightHand, 0, 0, 0, 45, 0, 45, 0, 205);
+			//Left
+			Animate.fromTo(rightHand, 45, 0, 45, 0, 0, 0, 305, 505);
+			
+			PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(sword, 50, 0, 35, 70, 0, 45, 0, 205);
+			//Left
+			Animate.fromTo(sword, 70, 0, 45, 50, 0, 35, 305, 505);
+			
+			PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), main.getLocation(), yaw);
+			//Right
+			Animate.fromTo(shield, 0, 30, -5, -25, 65, 0, 0, 205);
+			//Left
+			Animate.fromTo(shield, -25, 65, 0, 0, 30, -5, 305, 505);
 			
 			//Legs
 			leftThighPosition = PartPositioning.position(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(leftThigh, -15,0,0, 30,0,0, 0, 605);
-			//Pause
+			Animate.fromTo(leftThigh, -60, 0, 0, 45, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(leftThigh, 30, 0, 0, -15, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(leftThigh, 1600);
+			Animate.fromTo(leftThigh, 45, 0, 0, -60, 0, 0, 305, 505);
 			
 			rightThighPosition = PartPositioning.position(rightThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(-0.17,-.42,.04), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(rightThigh, 30, 0, 0, -15,0,0, 0, 605);
-			//Pause
+			Animate.fromTo(rightThigh, 45, 0, 0, -60, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(rightThigh, -15,0,0, 30, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(rightThigh, 1600);
+			Animate.fromTo(rightThigh, -60, 0, 0, 45, 0, 0, 305, 505);
 			
 			leftCalfPosition = PartPositioning.position(leftCalf, leftThighPosition, leftThigh.getHeadPose(), new Vector(0,-0.6,0), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(leftCalf, -15, 0, 0, 60, 0, 0, 0, 605);
-			//Pause
+			Animate.fromTo(leftCalf, -10, 0, 0, 100, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(leftCalf, 60, 0, 0, -15, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(leftCalf, 1600);
+			Animate.fromTo(leftCalf, 100, 0, 0, -10, 0, 0, 305, 505);
 			
 			rightCalfPosition = PartPositioning.position(rightCalf, rightThighPosition, rightThigh.getHeadPose(), new Vector(0,-0.6,0), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(rightCalf, 60, 0, 0, -15, 0, 0, 0, 605);
-			//Pause
+			Animate.fromTo(rightCalf, 100, 0, 0, -10, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(rightCalf, -15, 0, 0, 60, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(rightCalf, 1600);
+			Animate.fromTo(rightCalf, -10, 0, 0, 100, 0, 0, 305, 505);
 			
 			PartPositioning.position(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(leftFoot, -15, 0, 0, 60, 0, 0, 0, 605);
-			//Pause
+			Animate.fromTo(leftFoot, 0, 0, 0, 50, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(leftFoot, 60, 0, 0, -15, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(leftFoot, 1600);
+			Animate.fromTo(leftFoot, 50, 0, 0, 0, 0, 0, 305, 505);
 
 			PartPositioning.position(rightFoot, rightCalfPosition, rightCalf.getHeadPose(), new Vector(0,-0.585,-0.035), main.getLocation(), yaw);
 			//Right
-			Animate.fromTo(rightFoot, 60, 0, 0, -15, 0, 0, 0, 605);
-			//Pause
+			Animate.fromTo(rightFoot, 50, 0, 0, 0, 0, 0, 0, 205);
 			//Left
-			Animate.fromTo(rightFoot, -15, 0, 0, 60, 0, 0, 800, 1405);
-			//Pause
-			//Reset
-			Animate.reset(rightFoot, 1600);
+			Animate.fromTo(rightFoot, 0, 0, 0, 50, 0, 0, 305, 505);
 			
 		} catch (NullPointerException event) {}
 	}

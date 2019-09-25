@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.bukkit.entity.ArmorStand;
 
+import lothricKnights.Actions.Running;
 import lothricKnights.Actions.Standing;
 import lothricKnights.Actions.WalkingForward;
 import lothricKnights.Actions.WalkingSide;
@@ -34,5 +35,6 @@ public class PassiveAction {
 		if (LothricKnights.passiveAction.get(main).contentEquals("WalkingForward")) WalkingForward.animate(main, shieldUp);
 		if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSide")) WalkingSide.animate(main, shieldUp);
 		if (LothricKnights.passiveAction.get(main).contentEquals("Standing")) Standing.standing(main);
+		if (LothricKnights.passiveAction.get(main).contentEquals("Running")) Running.animate(main);
 	}
 }

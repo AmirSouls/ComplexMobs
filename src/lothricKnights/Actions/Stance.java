@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
@@ -78,9 +79,7 @@ public class Stance {
 			Vector rightElbowPosition = new Vector(0,0,0);
 			Vector leftArmPosition = new Vector(0,0,0);
 			Vector rightArmPosition = new Vector(0,0,0);
-			Vector leftHandPosition = new Vector(0,0,0);
 			Vector rightHandPosition = new Vector(0,0,0);
-			Vector swordPosition = new Vector(0,0,0);
 			
 			for (ArmorStand part : LothricKnights.partList.get(main)) {
 				if (LothricKnights.partId.containsKey(part)) {
@@ -121,6 +120,15 @@ public class Stance {
 
 				main.teleport(newDirection.add(vector.multiply(0)));
 			
+				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(55))) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
+							"playsound minecraft:lothricknight.walk master @a " +
+							main.getLocation().getX() + 
+							" " +
+							main.getLocation().getY() +
+							" " + main.getLocation().getZ() + " 1 1"
+							);
+				}
 				if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis).plusMillis(600))) {
 					if (distance3D > 6) {
 						//Thrust attack!
@@ -180,13 +188,13 @@ public class Stance {
 			rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
 			Animate.fromTo(rightArm, 0, 0, 0, -40, 0, 45, 0, 305);
 			
-			leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
+			PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
 			Animate.fromTo(leftHand, 0, 0, 0, 120, -40, 0, 0, 305);
 			
 			rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
 			Animate.fromTo(rightHand, 0, 0, 0, 0, 0, 45, 0, 305);
 			
-			swordPosition = PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
+			PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
 			Animate.fromTo(sword, 0, 0, 0, 7, -15, 60, 0, 305);
 			
 			//Legs

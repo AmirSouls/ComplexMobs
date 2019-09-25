@@ -81,9 +81,7 @@ public class WalkingSide {
 			Vector leftArmPosition = new Vector(0,0,0);
 			Vector rightArmPosition = new Vector(0,0,0);
 			Vector leftHandPosition = new Vector(0,0,0);
-			Vector rightHandPosition = new Vector(0,0,0);
-			Vector swordPosition = new Vector(0,0,0);
-			
+			Vector rightHandPosition = new Vector(0,0,0);			
 			
 			for (ArmorStand part : LothricKnights.partList.get(main)) {
 				if (LothricKnights.partId.containsKey(part)) {
@@ -153,28 +151,28 @@ public class WalkingSide {
 			//Arms
 			if (shieldUp) {
 				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
-				OutOfBounds.combined(leftElbow, leftElbow.getHeadPose(), 15, 15, 5, 0, 0, 5, -10, -10, 5);
+				OutOfBounds.combined(leftElbow, leftElbow.getHeadPose(), 15, 15, 100, 0, 0, 100, -10, -10, 100);
 				
 				rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), main.getLocation(), yaw);
 				OutOfBounds.combined(rightElbow, rightElbow.getHeadPose(), 10, 10, 5, 0, 0, 5, 45, 45, 5);
 				
 				leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftArm, leftArm.getHeadPose(), -60, -60, 5, 0, 0, 5, 40, 40, 5);
+				OutOfBounds.combined(leftArm, leftArm.getHeadPose(), -60, -60, 100, 0, 0, 100, 40, 40, 100);
 				
 				rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
 				OutOfBounds.combined(rightArm, rightArm.getHeadPose(), 0, 0, 5, 0, 0, 5, 40, 40, 5);
 				
 				leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
-				OutOfBounds.combined(leftHand, leftHand.getHeadPose(), 180, 180, 10, 100, 100, 10, 0, 0, 10);
+				OutOfBounds.combined(leftHand, leftHand.getHeadPose(), 180, 180, 100, 100, 100, 100, 0, 0, 100);
 				
 				rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
 				OutOfBounds.combined(rightHand, rightHand.getHeadPose(), 0, 0, 10);
 				
-				swordPosition = PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
+				PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
 				OutOfBounds.combined(sword, sword.getHeadPose(), 0, 0, 10);
 				
 				PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), main.getLocation(), yaw);
-				OutOfBounds.combined(shield, shield.getHeadPose(), 180, 180, 40, 100, 100, 40, 0, 0, 40);
+				OutOfBounds.combined(shield, shield.getHeadPose(), 180, 180, 100, 100, 100, 40, 0, 0, 100);
 			}
 			else {
 				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
