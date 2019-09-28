@@ -7,16 +7,13 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import lothricKnights.Main.LothricKnights;
-import lothricKnights.Methods.OutOfBounds;
+import lothricKnights.Methods.Animate;
+import lothricKnights.Methods.GoBtwn;
+import lothricKnights.Methods.PartPositioning;
 import lothricKnights.SpecialAnimations.PelvisZeroAnimation;
-import lothricKnights.Stagger.Shield;
-import lothricKnights.Stagger.Sword;
-import lothricKnights.Stagger.*;
-
 
 public class Stagger {
 	
@@ -70,40 +67,16 @@ public class Stagger {
 			//Intialize positions and offsets
 			Vector pelvisPosition = new Vector(0,0,0);
 			Vector chestPosition = new Vector(0,0,0);
-			Vector chestOffset = new Vector(0,0,0);
-			Vector headPosition = new Vector(0,0,0);
-			Vector swordOffset = new Vector(0,0,0);
-			Vector swordPosition = new Vector(0,0,0);
-			Vector shieldOffset = new Vector(0,0,0);
-			Vector shieldPosition = new Vector(0,0,0);
-			Vector leftFootPosition = new Vector(0,0,0);
-			Vector leftFootOffset = new Vector(0,0,0);
-			Vector rightFootPosition = new Vector(0,0,0);
-			Vector rightFootOffset = new Vector(0,0,0);
 			Vector leftCalfPosition = new Vector(0,0,0);
-			Vector leftCalfOffset = new Vector(0,0,0);
 			Vector rightCalfPosition = new Vector(0,0,0);
-			Vector rightCalfOffset = new Vector(0,0,0);
 			Vector leftThighPosition = new Vector(0,0,0);
-			Vector leftThighOffset = new Vector(0,0,0);
 			Vector rightThighPosition = new Vector(0,0,0);
-			Vector rightThighOffset = new Vector(0,0,0);
 			Vector leftElbowPosition = new Vector(0,0,0);
-			Vector leftElbowOffset = new Vector(0,0,0);
 			Vector rightElbowPosition = new Vector(0,0,0);
-			Vector rightElbowOffset = new Vector(0,0,0);
 			Vector leftArmPosition = new Vector(0,0,0);
-			Vector leftArmOffset = new Vector(0,0,0);
 			Vector rightArmPosition = new Vector(0,0,0);
-			Vector rightArmOffset = new Vector(0,0,0);
 			Vector leftHandPosition = new Vector(0,0,0);
-			Vector leftHandOffset = new Vector(0,0,0);
 			Vector rightHandPosition = new Vector(0,0,0);
-			Vector rightHandOffset = new Vector(0,0,0);
-			Vector capePosition = new Vector(0,0,0);	
-			Vector capeOffset = new Vector(0,0,0);	
-			Vector headOffset = new Vector(0,0,0);
-			
 			
 			for (ArmorStand part : LothricKnights.partList.get(main)) {
 				if (LothricKnights.partId.containsKey(part)) {
@@ -145,360 +118,64 @@ public class Stagger {
 					main.teleport(newDirection.add(vector.multiply(-0.05)));
 				}
 			}
+				{
+					pelvisPosition.rotateAroundY(-yaw);
+					pelvis.teleport(main.getLocation().add(pelvisPosition));
+					PelvisZeroAnimation.animate(pelvis, 10);
+				}
+				
+				//Chest, head and cape
+				chestPosition = PartPositioning.position(chest, pelvisPosition, pelvis.getHeadPose(), new Vector(0,-.16,0.01), main.getLocation(), yaw);
+				Animate.fromTo(chest, 0, 0, 0, 20, 20, 0, 0, 305);
+				
+				PartPositioning.position(head, chestPosition, chest.getHeadPose(), new Vector(0,0.8,0), main.getLocation(), yaw);
+				Animate.fromTo(head, 0, 0, 0, 0, 80, 20, 0, 305);
+				
+				PartPositioning.position(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), main.getLocation(), yaw);
+				Animate.fromTo(cape, 0, 0, 0, 95, -75, 0, 0, 305);
+				
+				//Arms
+				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);
+				Animate.fromTo(leftElbow, 0, 0, 0, 60, 0, -40, 0, 305);
+				
+				rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), main.getLocation(), yaw);
+				Animate.fromTo(rightElbow, 0, 0, 0, 0, 80, 20, 0, 305);
+				
+				leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), main.getLocation(), yaw);
+				Animate.fromTo(leftArm, 0, 0, 0, 40, 0, -40, 0, 305);
+				
+				rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), main.getLocation(), yaw);
+				Animate.fromTo(rightArm, 0, 0, 0, 0, 0, 0, 0, 305);
+				
+				leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
+				Animate.fromTo(leftHand, 0, 0, 0, 40, 0, -40, 0, 305);
+				
+				rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), main.getLocation(), yaw);
+				GoBtwn.combined(rightHand, rightHand.getHeadPose(), 0, 0, 30.0);
+				
+				PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), main.getLocation(), yaw);
 			
-			if (pelvis != null) {
-				//Default to this
-				pelvisPosition = new Vector(0,0.4,0);
+				PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), main.getLocation(), yaw);
 				
-				pelvisPosition.rotateAroundY(-yaw);
-				pelvis.teleport(main.getLocation().add(pelvisPosition));
+				//Legs
+				leftThighPosition = PartPositioning.position(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), main.getLocation(), yaw);
+				Animate.fromTo(leftThigh, 0, 0, 0, -40, 5, -5, 0, 305);
 				
-				//Animation
-				//Special pelvis animation
-				PelvisZeroAnimation.animate(pelvis, 10);
-			}
+				rightThighPosition = PartPositioning.position(rightThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(-0.17,-.42,.04), main.getLocation(), yaw);
+				Animate.fromTo(rightThigh, 0, 0, 0, -15, 20, 0, 0, 305);
+				
+				leftCalfPosition = PartPositioning.position(leftCalf, leftThighPosition, leftThigh.getHeadPose(), new Vector(0,-0.6,0), main.getLocation(), yaw);
+				Animate.fromTo(leftCalf, 0, 0, 0, 5, 5, -10, 0, 305);
+				
+				rightCalfPosition = PartPositioning.position(rightCalf, rightThighPosition, rightThigh.getHeadPose(), new Vector(0,-0.6,0), main.getLocation(), yaw);
+				Animate.fromTo(rightCalf, 0, 0, 0, 45, 20, 20, 0, 305);
+				
+				PartPositioning.position(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), main.getLocation(), yaw);
+				Animate.fromTo(leftFoot, 0, 0, 0, 45, 20, 20, 0, 305);
 			
-			if (chest != null) {
-				chestPosition = new Vector(pelvisPosition.getX(),pelvisPosition.getY(),pelvisPosition.getZ());
-				final EulerAngle angle = pelvis.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				chestOffset = new Vector(0,-.16,0.01);
-				chestOffset.rotateAroundX(angleX);
-				chestOffset.rotateAroundY(-angleY);
-				chestOffset.rotateAroundZ(-angleZ);	
-				chestPosition.add(chestOffset);
-				chestPosition.rotateAroundY(-yaw);
-				chestPosition.add(new Vector(0,0,0));
-				chest.teleport(main.getLocation().add(chestPosition));
+				PartPositioning.position(rightFoot, rightCalfPosition, rightCalf.getHeadPose(), new Vector(0,-0.585,-0.035), main.getLocation(), yaw);
+				Animate.fromTo(rightFoot, 0, 0, 0, 0, -25, 0, 0, 305);
 				
-				//Animation
-				//Combined angle of 0,0,0
-				Chest.animate(chest);
-			}
-			
-			if (head != null) {
-				headPosition = new Vector(chestPosition.getX(),chestPosition.getY(),chestPosition.getZ());
-				final EulerAngle angle = chest.getHeadPose();
-				headOffset = new Vector(0,0.8,0);
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				headOffset.rotateAroundX(angleX);
-				headOffset.rotateAroundY(-angleY);
-				headOffset.rotateAroundZ(-angleZ);	
-				headOffset.rotateAroundY(-yaw);
-				headPosition.add(headOffset);
-				
-				head.teleport(main.getLocation().add(headPosition));
-				//Special head animation
-				Head.animate(head);
-			}	
-	
-			if (leftThigh != null) {
-				leftThighPosition = new Vector(pelvisPosition.getX(),pelvisPosition.getY(),pelvisPosition.getZ());
-				final EulerAngle angle = pelvis.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftThighOffset = new Vector(0.17,-.42,.04);
-				leftThighOffset.rotateAroundX(angleX);
-				leftThighOffset.rotateAroundY(-angleY);
-				leftThighOffset.rotateAroundZ(-angleZ);
-				leftThighOffset.rotateAroundY(-yaw);
-				leftThighPosition.add(leftThighOffset.multiply(1));
-				
-				leftThigh.teleport(main.getLocation().add(leftThighPosition));
-				
-				//Animation
-				//Special left calf animation
-				LeftThigh.animate(leftThigh);
-			}
-			
-			if (rightThigh != null) {
-				rightThighPosition = new Vector(pelvisPosition.getX(),pelvisPosition.getY(),pelvisPosition.getZ());
-				final EulerAngle angle = pelvis.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightThighOffset = new Vector(-0.17,-.42,.04);
-				rightThighOffset.rotateAroundX(angleX);
-				rightThighOffset.rotateAroundY(-angleY);
-				rightThighOffset.rotateAroundZ(-angleZ);
-				rightThighOffset.rotateAroundY(-yaw);
-				rightThighPosition.add(rightThighOffset.multiply(1));
-				
-				rightThigh.teleport(main.getLocation().add(rightThighPosition));
-				
-				//Animation
-				//Special right calf animation
-				RightThigh.animate(rightThigh);
-			}
-			
-			if (leftCalf != null) {
-				leftCalfPosition = new Vector(leftThighPosition.getX(),leftThighPosition.getY(),leftThighPosition.getZ());
-				final EulerAngle angle = leftThigh.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftCalfOffset = new Vector(0,-0.6,0);
-				leftCalfOffset.rotateAroundX(angleX);
-				leftCalfOffset.rotateAroundY(-angleY);
-				leftCalfOffset.rotateAroundZ(-angleZ);
-				leftCalfOffset.rotateAroundY(-yaw);
-				leftCalfPosition.add(leftCalfOffset.multiply(1));
-				
-				leftCalf.teleport(main.getLocation().add(leftCalfPosition));
-				
-				//Animation
-				//Special left calf animation
-				LeftCalf.animate(leftCalf);
-			}
-			
-			if (rightCalf != null) {
-				rightCalfPosition = new Vector(rightThighPosition.getX(),rightThighPosition.getY(),rightThighPosition.getZ());
-				final EulerAngle angle = rightThigh.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightCalfOffset = new Vector(0,-0.6,0);
-				rightCalfOffset.rotateAroundX(angleX);
-				rightCalfOffset.rotateAroundY(-angleY);
-				rightCalfOffset.rotateAroundZ(-angleZ);
-				rightCalfOffset.rotateAroundY(-yaw);
-				rightCalfPosition.add(rightCalfOffset.multiply(1));
-				
-				rightCalf.teleport(main.getLocation().add(rightCalfPosition));
-				
-				//Animation
-				//Special right calf animation
-				RightCalf.animate(rightCalf);
-			}
-			
-			if (leftFoot != null) {
-				leftFootPosition = new Vector(leftCalfPosition.getX(),leftCalfPosition.getY(),leftCalfPosition.getZ());
-				final EulerAngle angle = leftCalf.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftFootOffset = new Vector(0,-0.585,-0.035);
-				leftFootOffset.rotateAroundX(angleX);
-				leftFootOffset.rotateAroundY(-angleY);
-				leftFootOffset.rotateAroundZ(-angleZ);
-				leftFootOffset.rotateAroundY(-yaw);
-				leftFootPosition.add(leftFootOffset.multiply(1));
-				
-				leftFoot.teleport(main.getLocation().add(leftFootPosition));
-				
-				//Animation
-				//Special left foot animation
-				LeftFoot.animate(leftFoot);
-			}
-			
-			if (rightFoot != null) {
-				rightFootPosition = new Vector(rightCalfPosition.getX(),rightCalfPosition.getY(),rightCalfPosition.getZ());
-				final EulerAngle angle = rightCalf.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightFootOffset = new Vector(0,-0.585,-0.035);
-				rightFootOffset.rotateAroundX(angleX);
-				rightFootOffset.rotateAroundY(-angleY);
-				rightFootOffset.rotateAroundZ(-angleZ);
-				rightFootOffset.rotateAroundY(-yaw);
-				rightFootPosition.add(rightFootOffset.multiply(1));
-				
-				rightFoot.teleport(main.getLocation().add(rightFootPosition));
-				
-				//Animation
-				//Special right foot animation
-				RightFoot.animate(rightFoot, rightCalf);
-			}
-			
-			
-			if (leftElbow != null) {
-				leftElbowPosition = new Vector(chestPosition.getX(),chestPosition.getY(),chestPosition.getZ());
-				final EulerAngle angle = chest.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftElbowOffset = new Vector(0.34,0.8,-.03);
-				leftElbowOffset.rotateAroundX(angleX);
-				leftElbowOffset.rotateAroundY(-angleY);
-				leftElbowOffset.rotateAroundZ(-angleZ);
-				leftElbowOffset.rotateAroundY(-yaw);
-				
-				leftElbowPosition.add(leftElbowOffset.multiply(1));
-				
-				leftElbow.teleport(main.getLocation().add(leftElbowPosition));
-				
-				//Animation
-				//Special left elbow animation
-				LeftElbow.animate(leftElbow, main);
-			}
-			
-			if (rightElbow != null) {
-				rightElbowPosition = new Vector(chestPosition.getX(),chestPosition.getY(),chestPosition.getZ());
-				final EulerAngle angle = chest.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightElbowOffset = new Vector(-0.34,0.9,0);
-				rightElbowOffset.rotateAroundX(angleX);
-				rightElbowOffset.rotateAroundY(-angleY);
-				rightElbowOffset.rotateAroundZ(-angleZ);
-				rightElbowOffset.rotateAroundY(-yaw);
-				rightElbowPosition.add(rightElbowOffset.multiply(1));
-				
-				rightElbow.teleport(main.getLocation().add(rightElbowPosition));
-				
-				///Animation
-				//Special right elbow animation
-				RightElbow.animate(rightElbow);
-			}
-			
-			if (leftArm != null) {
-				leftArmPosition = new Vector(leftElbowPosition.getX(),leftElbowPosition.getY(),leftElbowPosition.getZ());
-				final EulerAngle angle = leftElbow.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftArmOffset = new Vector(0.05,-0.51,0);
-				leftArmOffset.rotateAroundX(angleX);
-				leftArmOffset.rotateAroundY(-angleY);
-				leftArmOffset.rotateAroundZ(-angleZ);
-				leftArmOffset.rotateAroundY(-yaw);
-				leftArmPosition.add(leftArmOffset.multiply(1));
-				
-				leftArm.teleport(main.getLocation().add(leftArmPosition));
-				
-				//Animation
-				//Special left arm animation
-				LeftArm.animate(leftArm);
-			}
-			
-			if (rightArm != null) {
-				rightArmPosition = new Vector(rightElbowPosition.getX(),rightElbowPosition.getY(),rightElbowPosition.getZ());
-				final EulerAngle angle = rightElbow.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightArmOffset = new Vector(-0.05,-0.51,0);
-				rightArmOffset.rotateAroundX(angleX);
-				rightArmOffset.rotateAroundY(-angleY);
-				rightArmOffset.rotateAroundZ(-angleZ);
-				rightArmOffset.rotateAroundY(-yaw);
-				rightArmPosition.add(rightArmOffset.multiply(1));
-				
-				rightArm.teleport(main.getLocation().add(rightArmPosition));
-				
-				//Animation
-				//Special right arm animation
-				RightArm.animate(rightArm);
-			}
-			
-			if (leftHand != null) {
-				leftHandPosition = new Vector(leftArmPosition.getX(),leftArmPosition.getY(),leftArmPosition.getZ());
-				final EulerAngle angle = leftArm.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				leftHandOffset = new Vector(0,-.4,0);
-				leftHandOffset.rotateAroundX(angleX);
-				leftHandOffset.rotateAroundY(-angleY);
-				leftHandOffset.rotateAroundZ(-angleZ);
-				leftHandOffset.rotateAroundY(-yaw);
-				leftHandPosition.add(leftHandOffset.multiply(1));
-				
-				leftHand.teleport(main.getLocation().add(leftHandPosition));
-				
-				//Animation
-				//Left hand animation
-				LeftHand.animate(leftHand);
-			}
-			
-			if (rightHand != null) {
-				rightHandPosition = new Vector(rightArmPosition.getX(),rightArmPosition.getY(),rightArmPosition.getZ());
-				final EulerAngle angle = rightArm.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				rightHandOffset = new Vector(0,-.4,0);
-				rightHandOffset.rotateAroundX(angleX);
-				rightHandOffset.rotateAroundY(-angleY);
-				rightHandOffset.rotateAroundZ(-angleZ);
-				rightHandOffset.rotateAroundY(-yaw);
-				rightHandPosition.add(rightHandOffset.multiply(1));
-				
-				rightHand.teleport(main.getLocation().add(rightHandPosition));
-				
-				//Animation
-				//Combined angle of 20,0,40
-				OutOfBounds.combined(rightHand, rightHand.getHeadPose(), 0, 0, 30, 0, 0, 30, 0, 0, 30);
-			}
-			
-			if (sword != null) {
-				swordPosition = new Vector(rightHandPosition.getX(),rightHandPosition.getY(),rightHandPosition.getZ());
-				final EulerAngle angle = rightHand.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				swordOffset = new Vector(0.05,-.3,0);
-				swordOffset.rotateAroundX(angleX);
-				swordOffset.rotateAroundY(-angleY);
-				swordOffset.rotateAroundZ(-angleZ);
-				swordOffset.rotateAroundY(-yaw);
-				swordPosition.add(swordOffset.multiply(1));
-				
-				sword.teleport(main.getLocation().add(swordPosition));
-				
-				//Animation
-				//Special sword animation
-				Sword.animate(sword);
-			}
-			
-			if (shield != null) {
-				shieldPosition = new Vector(leftHandPosition.getX(),leftHandPosition.getY(),leftHandPosition.getZ());
-				final EulerAngle angle = leftHand.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				shieldOffset = new Vector(0,-0.5,0);
-				shieldOffset.rotateAroundX(angleX);
-				shieldOffset.rotateAroundY(-angleY);
-				shieldOffset.rotateAroundZ(-angleZ);
-				shieldOffset.rotateAroundY(-yaw);
-				shieldPosition.add(shieldOffset.multiply(1));
-				
-				shield.teleport(main.getLocation().add(shieldPosition));
-				
-				//Animation
-				//Special shield animation
-				Shield.animate(shield);
-			}
-			
-			if (cape != null) {
-				capePosition = new Vector(chestPosition.getX(),chestPosition.getY(),chestPosition.getZ());
-				final EulerAngle angle = chest.getHeadPose();
-				final double angleX = angle.getX();
-				final double angleY = angle.getY();
-				final double angleZ = angle.getZ();
-				capeOffset = new Vector(0,0.9,-0.2);
-				capeOffset.rotateAroundX(angleX);
-				capeOffset.rotateAroundY(-angleY);
-				capeOffset.rotateAroundZ(-angleZ);
-				capeOffset.rotateAroundY(-yaw);
-				capePosition.add(capeOffset.multiply(1));
-				
-				//Animation
-				//Special cape animation
-				cape.teleport(main.getLocation().add(capePosition));
-				
-				Cape.animate(cape);
-			}
-			
-			
 		} catch (NullPointerException event) {}
 	}
 }

@@ -6,7 +6,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.EulerAngle;
 
 import lothricKnights.Main.LothricKnights;
-import lothricKnights.Methods.OutOfBounds;
+import lothricKnights.Methods.GoBtwn;
 import lothricKnights.SpecialAnimations.CombinedAnimation;
 
 public class Chest {
@@ -18,7 +18,7 @@ public class Chest {
 			EulerAngle combAngle = part.getHeadPose();
 			
 			//Out of bounds combined
-			OutOfBounds.combined(part, combAngle, -5, 0, 9, -5, 0, 9, -5, 0, 9);
+			GoBtwn.combined(part, combAngle, -5, 0, -5, 0, -5, 0, 9.0);
 			
 			boolean debug = false;
 			if (debug) {

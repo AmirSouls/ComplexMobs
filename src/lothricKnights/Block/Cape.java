@@ -6,7 +6,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.EulerAngle;
 
 import lothricKnights.Main.LothricKnights;
-import lothricKnights.Methods.OutOfBounds;
+import lothricKnights.Methods.GoBtwn;
 import lothricKnights.SpecialAnimations.CombinedAnimation;
 
 public class Cape {
@@ -31,7 +31,7 @@ public class Cape {
 						CombinedAnimation.animate(part, combAngle, ((int) (Math.random() * 2) + 3),  ((int) (Math.random() * 10 - 5)), 0);
 					}
 					else if (Instant.now().isBefore(LothricKnights.animationTimer.get(part).plusMillis(610))) {
-						OutOfBounds.combined(part, combAngle, 10, 0, 3);
+						GoBtwn.combined(part, combAngle, 10, 0, 3);
 					}
 				}
 			}

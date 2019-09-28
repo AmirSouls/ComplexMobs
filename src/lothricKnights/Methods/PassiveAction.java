@@ -34,7 +34,7 @@ public class PassiveAction {
 		//Animate part with current passive action
 		if (LothricKnights.passiveAction.get(main).contentEquals("WalkingForward")) WalkingForward.animate(main, shieldUp);
 		if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSide")) WalkingSide.animate(main, shieldUp);
-		if (LothricKnights.passiveAction.get(main).contentEquals("Standing")) Standing.standing(main);
+		if (LothricKnights.passiveAction.get(main).contentEquals("Standing")) Standing.standing(main, shieldUp);
 		if (LothricKnights.passiveAction.get(main).contentEquals("Running")) Running.animate(main);
 	}
 }

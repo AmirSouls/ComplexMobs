@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
 
 import lothricKnights.Main.LothricKnights;
 import lothricKnights.Methods.Animate;
-import lothricKnights.Methods.OutOfBounds;
+import lothricKnights.Methods.GoBtwn;
 import lothricKnights.Methods.PartPositioning;
 import lothricKnights.Methods.ResetTimers;
 import lothricKnights.SpecialAnimations.HeadZeroAnimation;
@@ -123,7 +123,7 @@ public class Running {
 
 				vector.setY(0);
 				if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis))) {
-					main.teleport(newDirection.add(vector.multiply(0.27)));
+					main.teleport(newDirection.add(vector.multiply(0.28)));
 				}
 				if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis).plusMillis(605))) {
 					ResetTimers.resetTimers(main);
@@ -186,9 +186,6 @@ public class Running {
 				}
 				//Reset
 				
-					
-			
-				
 				pelvisPosition.rotateAroundY(-yaw);
 				pelvis.teleport(main.getLocation().add(pelvisPosition));
 				
@@ -208,7 +205,7 @@ public class Running {
 			HeadZeroAnimation.animate(head, main);
 			
 			PartPositioning.position(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), main.getLocation(), yaw);
-			OutOfBounds.combined(cape, cape.getHeadPose(), 15, 15, 10, 0, 0, 10, 0, 0, 10);
+			GoBtwn.combined(cape, cape.getHeadPose(), 15, 15, 0, 0, 0, 0, 10);
 	
 			//Arms
 			leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), main.getLocation(), yaw);

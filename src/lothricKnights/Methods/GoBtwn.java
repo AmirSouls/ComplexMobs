@@ -3,10 +3,10 @@ package lothricKnights.Methods;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.EulerAngle;
 
-public class OutOfBounds {
+public class GoBtwn {
 	
 	//Set constraints for all 3 combined angles of a part
-	public static boolean combined(ArmorStand part, EulerAngle combinedAngle, double lowLimX, double upLimX, double spdX, double lowLimY, double upLimY, double spdY, double lowLimZ, double upLimZ, double spdZ) {
+	public static boolean combined(ArmorStand part, EulerAngle combinedAngle, double lowLimX, double upLimX, double lowLimY, double upLimY, double lowLimZ, double upLimZ, double spd) {
 		boolean outOfBounds = false;
 		double rd = 57.3957;
 		
@@ -17,13 +17,11 @@ public class OutOfBounds {
 		upLimX = upLimX / rd;
 		upLimY = upLimY / rd;
 		upLimZ = upLimZ / rd;
-		spdX = spdX / rd;
-		spdY = spdY / rd;
-		spdZ = spdZ / rd;
+		spd = spd / rd;
 		
 		//X
 		if (combinedAngle.getX() > upLimX) {
-			if (combinedAngle.getX() < upLimX + spdX) {
+			if (combinedAngle.getX() < upLimX + spd) {
 				combinedAngle = new EulerAngle(
 						upLimX ,
 						combinedAngle.getY(),
@@ -34,7 +32,7 @@ public class OutOfBounds {
 			}
 			else {
 				combinedAngle = new EulerAngle(
-						combinedAngle.getX() - spdX ,
+						combinedAngle.getX() - spd ,
 						combinedAngle.getY(),
 						combinedAngle.getZ()
 						);
@@ -43,7 +41,7 @@ public class OutOfBounds {
 			}
 		}
 		else if (combinedAngle.getX() < lowLimX ) {
-			if (combinedAngle.getX() > (lowLimX - spdX) ) {
+			if (combinedAngle.getX() > (lowLimX - spd) ) {
 				combinedAngle = new EulerAngle(
 						lowLimX ,
 						combinedAngle.getY(),
@@ -54,7 +52,7 @@ public class OutOfBounds {
 			}
 			else {
 				combinedAngle = new EulerAngle(
-						combinedAngle.getX() + spdX ,
+						combinedAngle.getX() + spd ,
 						combinedAngle.getY(),
 						combinedAngle.getZ()
 						);
@@ -64,7 +62,7 @@ public class OutOfBounds {
 		}
 		//Y
 		if (combinedAngle.getY() > upLimY ) {
-			if (combinedAngle.getY() < (upLimY + spdY) ) {
+			if (combinedAngle.getY() < (upLimY + spd) ) {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
@@ -79,7 +77,7 @@ public class OutOfBounds {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
-						combinedAngle.getY() - spdY 
+						combinedAngle.getY() - spd 
 						,
 						combinedAngle.getZ()
 						);
@@ -88,7 +86,7 @@ public class OutOfBounds {
 			}
 		}
 		else if (combinedAngle.getY() < lowLimY ) {
-			if (combinedAngle.getY() > (lowLimY - spdY) ) {
+			if (combinedAngle.getY() > (lowLimY - spd) ) {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
@@ -103,7 +101,7 @@ public class OutOfBounds {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
-						combinedAngle.getY() + spdY 
+						combinedAngle.getY() + spd 
 						,
 						combinedAngle.getZ()
 						);
@@ -113,7 +111,7 @@ public class OutOfBounds {
 		}
 		//Z
 		if (combinedAngle.getZ() > upLimZ ) {
-			if (combinedAngle.getZ() < (upLimZ + spdZ) ) {
+			if (combinedAngle.getZ() < (upLimZ + spd) ) {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
@@ -130,14 +128,14 @@ public class OutOfBounds {
 						,
 						combinedAngle.getY()
 						,
-						combinedAngle.getZ() - spdZ 
+						combinedAngle.getZ() - spd 
 						);
 				part.setHeadPose(combinedAngle);
 				outOfBounds = true;
 			}
 		}
 		else if (combinedAngle.getZ() < lowLimZ ) {
-			if (combinedAngle.getZ() > (lowLimZ - spdZ) ) {
+			if (combinedAngle.getZ() > (lowLimZ - spd) ) {
 				combinedAngle = new EulerAngle(
 						combinedAngle.getX()
 						,
@@ -154,7 +152,7 @@ public class OutOfBounds {
 						,
 						combinedAngle.getY()
 						,
-						combinedAngle.getZ() + spdZ 
+						combinedAngle.getZ() + spd 
 						);
 				part.setHeadPose(combinedAngle);
 				outOfBounds = true;
@@ -165,6 +163,6 @@ public class OutOfBounds {
 	
 	//Simple 1 for all 3 method for combined
 	public static boolean combined(ArmorStand part, EulerAngle combinedAngle, double lowLim, double upLim, double spd) {
-		return combined(part, combinedAngle, lowLim, upLim, spd, lowLim, upLim, spd, lowLim, upLim, spd);
+		return combined(part, combinedAngle, lowLim, upLim, lowLim, upLim, lowLim, upLim, spd);
 	}
 }

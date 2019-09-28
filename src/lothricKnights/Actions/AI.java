@@ -150,11 +150,9 @@ public class AI {
 										Collection<String> actions = new ArrayList<>();
 										//actions.add("RightSlashShield"); 
 										actions.add("LeftSlash"); 
+										if (Math.random() > 0.6) actions.add("RightSlash");
 										//actions.add("Stance"); 
 										//actions.add("OverheadSlash"); 
-										if (LothricKnights.passiveAction.get(main).contentEquals("WalkingSideShield") || LothricKnights.passiveAction.get(main).contentEquals("WalkingForwardShield")) {
-											//actions.add("ShieldBash"); 
-										}
 										if (!actions.isEmpty()) Collections.shuffle((List<?>) actions);
 										String action = (String) actions.toArray()[0];
 										
@@ -184,16 +182,13 @@ public class AI {
 											ResetTimers.resetTimers(main);
 										}
 										else if (action.contentEquals("Stance")) {
-											//Make this attack not happen 60% of the time
-											if (Math.random() > 0.6) {
-												LothricKnights.activeAction.put(main, "Stance");
-												LothricKnights.changeTimer.put(main, Instant.now());
-												LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 100);
-												LothricKnights.staminaUse.put(main, Instant.now());
-												
-												//Reset animation timers
-												ResetTimers.resetTimers(main);
-											}
+											LothricKnights.activeAction.put(main, "Stance");
+											LothricKnights.changeTimer.put(main, Instant.now());
+											LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 100);
+											LothricKnights.staminaUse.put(main, Instant.now());
+											
+											//Reset animation timers
+											ResetTimers.resetTimers(main);
 										}
 										else if (action.contentEquals("OverheadSlash")) {
 											//Make this attack not happen 60% of the time
@@ -239,6 +234,7 @@ public class AI {
 								
 								//Action selection
 								Collection<String> actions = new ArrayList<>();
+								//actions.add("Standing");
 								if (distance3D < 10) actions.add("WalkingSide"); 
 								if (distance3D > 6 && distance3D < 12) actions.add("WalkingForward");
 								if (distance3D > 6) actions.add("Running");
@@ -256,6 +252,9 @@ public class AI {
 				if (LothricKnights.activeAction.containsKey(main)) {
 					if (LothricKnights.activeAction.get(main) == "LeftSlash") {
 						LeftSlash.animate(main);
+					}
+					else if (LothricKnights.activeAction.get(main) == "RightSlash") {
+						RightSlash.animate(main);
 					}
 					else if (LothricKnights.activeAction.get(main) == "Stance") {
 						Stance.animate(main);

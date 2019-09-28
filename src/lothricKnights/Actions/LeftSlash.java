@@ -116,26 +116,33 @@ public class LeftSlash {
 			{
 				LivingEntity target = LothricKnights.mobTarget.get(main);
 				
-				double distance = target.getLocation().distance(main.getLocation());
+				double distance3D = target.getLocation().distance(main.getLocation());
 				Location difference = target.getLocation().subtract(main.getLocation());
-				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
+				Vector vector = difference.toVector().divide(new Vector(distance3D,distance3D,distance3D));
 
 				Location newDirection = main.getLocation().setDirection(vector);
 
 				vector.setY(0);
-				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(350))) {
-					main.teleport(newDirection.add(vector.multiply(0.15 * distance)));
+				if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(355))) {
+					main.teleport(newDirection.add(vector.multiply(0.15 * distance3D)));
 				}
-				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(600))) {
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(605))) {
 					Vector direction = main.getLocation().getDirection();
 					direction.setY(0);
 					main.teleport(main.getLocation().add(direction.multiply(0)));
 				}
-				else if (Instant.now().isAfter(LothricKnights.animationTimer.get(pelvis).plusMillis(1000))) {
-					ResetTimers.resetTimers(main);
-					LothricKnights.isAttacking.put(main, false);
+				else if (Instant.now().isBefore(LothricKnights.animationTimer.get(pelvis).plusMillis(655))) {
+					if (distance3D < 4 && LothricKnights.stamina.get(main) > 0 && Math.random() < .7) {
+						ResetTimers.resetTimers(main);
+						LothricKnights.activeAction.put(main, "RightSlash");
+						LothricKnights.stamina.put(main, LothricKnights.stamina.get(main) - 35);
+						LothricKnights.staminaUse.put(main, Instant.now());
+					}
+					else {
+						ResetTimers.resetTimers(main);
+						LothricKnights.isAttacking.put(main, false);
+					}
 				}
-				
 			}
 			
 			if (pelvis != null) {
@@ -284,7 +291,7 @@ public class LeftSlash {
 			
 				//Sword hilt offset from sword stand
 				Vector swordHilt = new Vector(swordPosition.getX(), swordPosition.getY() + 1.5, swordPosition.getZ());
-				main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(swordHilt), 0);
+				//main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(swordHilt), 0);
 				
 				//Sword tip offset from sword hilt
 				Vector swordTip = new Vector(0,0,2);
@@ -313,13 +320,13 @@ public class LeftSlash {
 							inbSwordHB.add(opposPt.clone().multiply(b * 0.1));	
 							
 							//Effects and dmg
-							main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(inbSwordHB), 0);
+							//main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(inbSwordHB), 0);
 							EnemyDMG.normal(main, inbSwordHB, 9, .4, .2);
 						}
 					}
 					
 					//Effects and dmg
-					main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(swordHB), 0);
+					//main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(swordHB), 0);
 					EnemyDMG.normal(main, swordHB, 9, .4, .2);
 				}
 				
