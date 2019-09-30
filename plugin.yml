@@ -1,6 +1,6 @@
-name: LothricKnights
-author: GarnerGang
-version: 0.1
-main: lothricKnights.Main.LothricKnights
+name: ComplexMobs
+author: AmirSaysTakbir
+version: 0.5
+main: complexMobs.Main.ComplexMobs
 description: Stuff
 api-version: 1.13
