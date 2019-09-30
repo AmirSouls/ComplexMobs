@@ -90,7 +90,7 @@ public class WalkingSide {
 			
 			//Direction handling
 			{
-				DirectionAndMovement.normal(knight, .08, -90);
+				DirectionAndMovement.normal(knight, .06, -90);
 			}
 			
 			

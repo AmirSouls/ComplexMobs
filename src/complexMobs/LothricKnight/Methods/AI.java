@@ -34,7 +34,7 @@ public class AI {
 				double distance = entity.getLocation().distance(knight.main.getLocation());
 				Location difference = entity.getLocation().subtract(knight.main.getLocation());
 				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
-				vector.multiply(.1);
+				vector.multiply(.05);
 				entity.setVelocity(entity.getVelocity().add(vector.setY(0)));
 				
 				if (ComplexMobs.isMain.containsKey(entity)) {

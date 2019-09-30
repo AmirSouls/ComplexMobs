@@ -89,7 +89,7 @@ public class Running {
 			}
 			
 			//Direction handling
-			DirectionAndMovement.normal(knight, .28, 0);
+			DirectionAndMovement.normal(knight, .12, 0);
 			
 			if (pelvis != null) {
 				//Default to this
