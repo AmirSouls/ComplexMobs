@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import complexMobs.LothricKnight.DsItem;
+import complexMobs.LothricKnight.Events.ArenaManager;
 import complexMobs.LothricKnight.Events.Damage;
 import complexMobs.LothricKnight.Events.LKSSFixer;
 import complexMobs.LothricKnight.Events.Spawning;
@@ -35,19 +37,9 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(new Damage(), this);
 		getServer().getPluginManager().registerEvents(new Spawning(), this);
 		getServer().getPluginManager().registerEvents(new LKSSFixer(), this);
+		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
 		tasks();
 		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nStarting Lothric Knights\n\n");
-		
-		
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			//Set Gamemode
-			if (player.getGameMode().equals(GameMode.SPECTATOR)) {
-				player.setGameMode(GameMode.SURVIVAL);
-			}
-			
-			//Remove invul if has it
-			player.setInvulnerable(false);
-		}
 	}
 	
 	//Stop tasks
@@ -78,7 +70,10 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 						for (Item item : player.getWorld().getEntitiesByClass(Item.class)) {
 							if (dsItem.containsKey(item)) DsItem.particles(item);
 						}
-						for (ArmorStand armorStand : player.getWorld().getEntitiesByClass(ArmorStand.class)) {
+					}
+					for (World world : Bukkit.getWorlds()) {
+						for (ArmorStand armorStand : world.getEntitiesByClass(ArmorStand.class)) {
+							ArenaManager.checkEmpty(world);
 							if (isMain.containsKey(armorStand)) {
 								if (partMob.containsKey(armorStand)) {
 									AI.process((LothricKnight) partMob.get(armorStand));

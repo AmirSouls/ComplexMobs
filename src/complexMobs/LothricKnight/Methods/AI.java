@@ -94,6 +94,9 @@ public class AI {
 			if (!knight.isAttacking) {
 				//Why isn't it?
 				if (knight.target == null) {
+					//Standing idle animation
+					Standing.animate(knight, false);
+					
 					LivingEntity target = null;
 					double targetDistance = 100000000;
 					for (LivingEntity livingEntity : knight.main.getWorld().getEntitiesByClass(LivingEntity.class)) {
@@ -105,9 +108,6 @@ public class AI {
 					if (target != null) {
 						knight.target = target;
 					}
-					
-					//Standing idle animation
-					Standing.animate(knight, false);
 				}
 				else {
 					//Has alive target or its dead target
@@ -122,6 +122,11 @@ public class AI {
 							Player player = (Player) knight.target;
 							if (GameMode.SPECTATOR == player.getGameMode()) {
 								//Target went into spectator mode, stop targetting them.
+								knight.target = null;
+								targetRemoved = true;
+							}
+							if (!player.isOnline()) {
+								//Target left game, stop targetting.
 								knight.target = null;
 								targetRemoved = true;
 							}
