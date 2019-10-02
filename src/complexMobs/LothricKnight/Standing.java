@@ -2,11 +2,10 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import complexMobs.LothricKnight.Methods.DirectionAndMovement;
 import complexMobs.LothricKnight.Methods.GoTo;
 import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
@@ -86,15 +85,10 @@ public class Standing {
 			}
 			
 			//Direction handling
-			{
-				LivingEntity target = knight.target;
-				
-				double distance = target.getLocation().distance(knight.main.getLocation());
-				Location difference = target.getLocation().subtract(knight.main.getLocation());
-				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
-				vector.setY(0);
-				Location newDirection = knight.main.getLocation().setDirection(vector);
-				knight.main.teleport(newDirection.add(newDirection.getDirection().multiply(0)));
+			if (knight.target == null) {
+			}
+			else {
+				DirectionAndMovement.normal(knight, 0, 0, true);
 			}
 			
 			

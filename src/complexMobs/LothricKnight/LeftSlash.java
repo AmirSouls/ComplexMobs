@@ -219,7 +219,7 @@ public class LeftSlash {
 					knight.main.getLocation().getX() + 
 					" " +
 					knight.main.getLocation().getY() +
-					" " + knight.main.getLocation().getZ() + " 0.5 1"
+					" " + knight.main.getLocation().getZ() + " 2 1"
 					);
 				//Grunt sound
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
@@ -227,7 +227,7 @@ public class LeftSlash {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 				//Step sound
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
@@ -235,7 +235,7 @@ public class LeftSlash {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 			}
 			

@@ -103,7 +103,7 @@ public class Stance {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
+							" " + knight.main.getLocation().getZ() + " 3 1"
 							);
 				}
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(600))) {

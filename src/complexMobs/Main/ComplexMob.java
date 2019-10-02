@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -20,6 +21,7 @@ public class ComplexMob {
 	//Maps
 	public Map<ArmorStand, ArmorStand> partHost = new HashMap<>();
 	public Map<ArmorStand, String> partId = new HashMap<>();
+	public Map<Item, Boolean> dsItem = new HashMap<>();
 	
 	//Doubles
 	public final double maxPoise;
@@ -34,14 +36,14 @@ public class ComplexMob {
 	//String
 	public String passiveAction;
 	public String activeAction;
+	public String killer;
 	
 	//Collections
 	public Collection<ArmorStand> parts;
-	public Collection<Vector> attackArcPts;
+	public Collection<Vector> attackAreaPts;
 	
 	//Timers
 	public Instant staggerTimer;
-	public Instant deathTimer;
 	public Map<ArmorStand, Instant> animationTimer = new HashMap<>();
 	public Instant stageTimer;
 	public Instant changeTimer;
@@ -51,11 +53,9 @@ public class ComplexMob {
 	public Location direction;
 	
 	//Booleans
-	public boolean isAttacking;
-	public boolean hyperArmor;
-	
-	//Attack area pts
-	public Collection<Vector> attackAreaPts;
+	public boolean isAttacking = false;
+	public boolean hyperArmor = false;
+	public boolean dead = false;
 	
 	//part IDs
 	public Collection<String> partIds;

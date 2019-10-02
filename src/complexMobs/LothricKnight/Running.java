@@ -89,7 +89,7 @@ public class Running {
 			}
 			
 			//Direction handling
-			DirectionAndMovement.normal(knight, .12, 0);
+			DirectionAndMovement.normal(knight, .28, 0);
 			
 			if (pelvis != null) {
 				//Default to this
@@ -116,7 +116,7 @@ public class Running {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
+							" " + knight.main.getLocation().getZ() + " 3 1"
 							);
 				}
 				//Pause
@@ -139,7 +139,7 @@ public class Running {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
+							" " + knight.main.getLocation().getZ() + " 3 1"
 							);
 				}
 				//Pause

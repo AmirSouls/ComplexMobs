@@ -114,7 +114,7 @@ public class RightSlash {
 				//Set position based on current time
 				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(305))) {
 				}
-				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(505))) {
+				else {
 					pelvisPosition = new Vector(0, .29 + (.0001 * (knight.animationTimer.get(pelvis).toEpochMilli() - Instant.now().toEpochMilli())), 0);
 				}
 				pelvisPosition.rotateAroundY(-yaw);
@@ -230,7 +230,7 @@ public class RightSlash {
 					knight.main.getLocation().getX() + 
 					" " +
 					knight.main.getLocation().getY() +
-					" " + knight.main.getLocation().getZ() + " 0.5 1"
+					" " + knight.main.getLocation().getZ() + " 3 1"
 					);
 				//Grunt sound
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
@@ -238,7 +238,7 @@ public class RightSlash {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 				//Step sound
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
@@ -246,7 +246,7 @@ public class RightSlash {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 			}
 			

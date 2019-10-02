@@ -3,9 +3,7 @@ package complexMobs.LothricKnight;
 import java.time.Instant;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import complexMobs.LothricKnight.Methods.DirectionAndMovement;
@@ -214,7 +212,7 @@ public class WalkingSide {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 			}
 			//Step sound
@@ -224,7 +222,7 @@ public class WalkingSide {
 						knight.main.getLocation().getX() + 
 						" " +
 						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 0.5 1"
+						" " + knight.main.getLocation().getZ() + " 2 1"
 						);
 			}
 			

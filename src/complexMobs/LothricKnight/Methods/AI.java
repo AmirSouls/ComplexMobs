@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -16,12 +15,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import complexMobs.LothricKnight.Block;
+import complexMobs.LothricKnight.Death;
 import complexMobs.LothricKnight.LeftSlash;
 import complexMobs.LothricKnight.RightSlash;
 import complexMobs.LothricKnight.Stagger;
 import complexMobs.LothricKnight.Stance;
 import complexMobs.LothricKnight.StanceThrust;
-import complexMobs.Main.ComplexMob;
+import complexMobs.LothricKnight.Standing;
 import complexMobs.Main.ComplexMobs;
 import complexMobs.Mobs.LothricKnight;
 
@@ -61,16 +61,15 @@ public class AI {
 		knight.poise = (knight.poise + .2 - lowPoiseModifier);
 		if (knight.poise > knight.maxPoise) knight.poise = knight.poise - .8;
 		
-		//See if the knight blocked an attack or got stunned, or is dead.
+		//See if the knight blocked an attack or got staggered, or is dead.
 		boolean outOfStamina = false;
 		boolean blocked = false;
 		boolean staggered = false;
-		boolean dead = false;
 		if (knight.stamina <= 0) outOfStamina = true;
 		if (knight.blockTimer != null) blocked = true;
 		if (knight.staggerTimer != null) staggered = true;
-		if (knight.deathTimer != null) dead = true;
-		if (dead) {
+		if (knight.dead) {
+			Death.animate(knight);
 		}
 		else if (blocked) {
 			if (Instant.now().isBefore(knight.blockTimer.plusMillis(605))) {
@@ -98,7 +97,7 @@ public class AI {
 					LivingEntity target = null;
 					double targetDistance = 100000000;
 					for (LivingEntity livingEntity : knight.main.getWorld().getEntitiesByClass(LivingEntity.class)) {
-						if (livingEntity.getType() != EntityType.ARMOR_STAND && targetDistance > livingEntity.getLocation().distance(knight.main.getLocation())) {
+						if (livingEntity.getType() != EntityType.ARMOR_STAND && targetDistance > livingEntity.getLocation().distance(knight.main.getLocation()) && livingEntity.getLocation().distance(knight.main.getLocation()) < 10) {
 							targetDistance = livingEntity.getLocation().distance(knight.main.getLocation());
 							target = livingEntity;
 						}
@@ -106,6 +105,9 @@ public class AI {
 					if (target != null) {
 						knight.target = target;
 					}
+					
+					//Standing idle animation
+					Standing.animate(knight, false);
 				}
 				else {
 					//Has alive target or its dead target
@@ -124,9 +126,8 @@ public class AI {
 								targetRemoved = true;
 							}
 						}
-						if (!targetRemoved && !dead && !blocked && !staggered) {
+						if (!targetRemoved && !knight.dead && !blocked && !staggered) {
 							//Target it alive, knight just isn't attacking right now
-							
 							if (knight.passiveAction != null) {
 								LivingEntity target = knight.target;
 								double distance3D = target.getLocation().distance(knight.main.getLocation());
@@ -157,7 +158,6 @@ public class AI {
 								
 								//Action selection
 								Collection<String> actions = new ArrayList<>();
-								//actions.add("Standing");
 								if (distance3D < 10) actions.add("WalkingSide"); 
 								if (distance3D > 6 && distance3D < 12) actions.add("WalkingForward");
 								if (distance3D > 6) actions.add("Running");
@@ -165,6 +165,7 @@ public class AI {
 								
 								//Action select and Execution
 								PassiveAction.select(knight, (String) actions.toArray()[0], distance3D);
+								
 							}	
 						}
 					}

@@ -1,5 +1,6 @@
 package complexMobs.Main;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +10,15 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import complexMobs.LothricKnight.DsItem;
 import complexMobs.LothricKnight.Events.Damage;
+import complexMobs.LothricKnight.Events.LKSSFixer;
 import complexMobs.LothricKnight.Events.Spawning;
 import complexMobs.LothricKnight.Methods.AI;
 import complexMobs.Mobs.LothricKnight;
@@ -23,12 +27,14 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 
 	public static Map<ArmorStand, ComplexMob> partMob = new HashMap<>();
 	public static Map<ArmorStand, Boolean> isMain = new HashMap<>();
+	public static Map<Item, Instant> dsItem = new HashMap<>();
 	
 	//Start tasks
 	//
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new Damage(), this);
 		getServer().getPluginManager().registerEvents(new Spawning(), this);
+		getServer().getPluginManager().registerEvents(new LKSSFixer(), this);
 		tasks();
 		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nStarting Lothric Knights\n\n");
 		
@@ -55,7 +61,7 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 			
 			for (Entity entity : player.getWorld().getEntities()) {
 				if (entity.getType() == EntityType.ARMOR_STAND) {
-					if (entity.getScoreboardTags().contains("lothricknight")) {
+					if (entity.getScoreboardTags().contains("complexMobPart")) {
 						entity.remove();
 					}
 				}
@@ -69,6 +75,9 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 			public void run() {
 				try {
 					for (Player player : Bukkit.getOnlinePlayers()) {
+						for (Item item : player.getWorld().getEntitiesByClass(Item.class)) {
+							if (dsItem.containsKey(item)) DsItem.particles(item);
+						}
 						for (ArmorStand armorStand : player.getWorld().getEntitiesByClass(ArmorStand.class)) {
 							if (isMain.containsKey(armorStand)) {
 								if (partMob.containsKey(armorStand)) {

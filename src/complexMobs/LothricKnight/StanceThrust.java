@@ -3,7 +3,6 @@ package complexMobs.LothricKnight;
 import java.time.Instant;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -113,7 +112,7 @@ public class StanceThrust {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
+							" " + knight.main.getLocation().getZ() + " 3 1"
 							);
 					//Stance attack sound fx
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
@@ -121,7 +120,7 @@ public class StanceThrust {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
+							" " + knight.main.getLocation().getZ() + " 3 1"
 							);
 				}
 			}

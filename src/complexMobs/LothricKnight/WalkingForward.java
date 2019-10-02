@@ -109,7 +109,7 @@ public class WalkingForward {
 							knight.main.getLocation().getX() + 
 							" " +
 							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 0.5 1"
+							" " + knight.main.getLocation().getZ() + " 2 1"
 							);
 				}
 				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(500))) {		

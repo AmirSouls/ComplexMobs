@@ -12,15 +12,13 @@ public class PassiveAction {
 	public static void select(LothricKnight knight, String newPassiveAction, double distance3D) {
 		//Shield down boolean
 		knight.shieldUp = true;
-		boolean shieldUp = true;
 		
 		final Instant changeTimer = knight.changeTimer;
 		//check change timer
 		if (Instant.now().isAfter(changeTimer.plusMillis(3000))) {
 			//Shield Boolean
-			shieldUp = true;
-			if (distance3D > 6 && Math.random() > .5) shieldUp = false;
-			knight.shieldUp = shieldUp;
+			knight.shieldUp = true;
+			if (distance3D > 6 && Math.random() > .5) knight.shieldUp = false;
 			
 			//Put passive action and change timer
 			knight.passiveAction = newPassiveAction;
@@ -31,9 +29,12 @@ public class PassiveAction {
 		}
 		
 		//Animate part with current passive action
-		if (knight.passiveAction.contentEquals("WalkingForward")) WalkingForward.animate(knight, shieldUp);
-		if (knight.passiveAction.contentEquals("WalkingSide")) WalkingSide.animate(knight, shieldUp);
-		if (knight.passiveAction.contentEquals("Standing")) Standing.animate(knight, shieldUp);
-		if (knight.passiveAction.contentEquals("Running")) Running.animate(knight);
+		if (knight.passiveAction.contentEquals("WalkingForward")) WalkingForward.animate(knight, knight.shieldUp);
+		if (knight.passiveAction.contentEquals("WalkingSide")) WalkingSide.animate(knight, knight.shieldUp);
+		if (knight.passiveAction.contentEquals("Standing")) Standing.animate(knight, knight.shieldUp);
+		if (knight.passiveAction.contentEquals("Running")) {
+			knight.shieldUp = false;
+			Running.animate(knight);
+	    }
 	}
 }

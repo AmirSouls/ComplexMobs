@@ -14,6 +14,7 @@ import complexMobs.Main.ComplexMobs;
 public class SpawnPart {
 	public static Collection<ArmorStand> normal(ArmorStand main, Entity entity, Material item, int itemDmg, String partId, ComplexMob mob, Collection<ArmorStand> partCollection) {
 		ArmorStand part = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
+		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
 		part.setVisible(false);
 		part.setGravity(false);
@@ -31,6 +32,7 @@ public class SpawnPart {
 	}
 	
 	public static Collection<ArmorStand> main(Entity entity, ArmorStand part, Collection<ArmorStand> partCollection) {
+		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
 		part.setVisible(false);
 		part.setGravity(false);

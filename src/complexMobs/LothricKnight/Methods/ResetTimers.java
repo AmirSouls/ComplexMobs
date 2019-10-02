@@ -14,6 +14,7 @@ public class ResetTimers {
 		armorStandIds.add("pelvis");
 		armorStandIds.add("chest");
 		armorStandIds.add("head");
+		armorStandIds.add("cape");
 		armorStandIds.add("sword");
 		armorStandIds.add("shield");
 		armorStandIds.add("leftFoot");
@@ -41,6 +42,7 @@ public class ResetTimers {
 		armorStandIds.add("pelvis");
 		armorStandIds.add("chest");
 		armorStandIds.add("head");
+		armorStandIds.add("cape");
 		armorStandIds.add("sword");
 		armorStandIds.add("shield");
 		armorStandIds.add("leftFoot");
