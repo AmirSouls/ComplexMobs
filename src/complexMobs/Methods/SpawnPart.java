@@ -2,9 +2,9 @@ package complexMobs.Methods;
 
 import java.util.Collection;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,8 +12,8 @@ import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
 
 public class SpawnPart {
-	public static Collection<ArmorStand> normal(ArmorStand main, Entity entity, Material item, int itemDmg, String partId, ComplexMob mob, Collection<ArmorStand> partCollection) {
-		ArmorStand part = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation(), EntityType.ARMOR_STAND);
+	public static Collection<ArmorStand> normal(ArmorStand main, Location location, Material item, int itemDmg, String partId, ComplexMob mob, Collection<ArmorStand> partCollection) {
+		ArmorStand part = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
 		part.setVisible(false);
@@ -31,7 +31,7 @@ public class SpawnPart {
 		return partCollection;
 	}
 	
-	public static Collection<ArmorStand> main(Entity entity, ArmorStand part, Collection<ArmorStand> partCollection) {
+	public static Collection<ArmorStand> main(ArmorStand part, Collection<ArmorStand> partCollection) {
 		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
 		part.setVisible(false);

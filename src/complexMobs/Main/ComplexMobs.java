@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -17,11 +16,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import complexMobs.Commands.KillCustomMobs;
+import complexMobs.Commands.SpawnCustomMob;
 import complexMobs.LothricKnight.DsItem;
 import complexMobs.LothricKnight.Events.ArenaManager;
 import complexMobs.LothricKnight.Events.Damage;
 import complexMobs.LothricKnight.Events.LKSSFixer;
-import complexMobs.LothricKnight.Events.Spawning;
 import complexMobs.LothricKnight.Methods.AI;
 import complexMobs.Mobs.LothricKnight;
 
@@ -34,12 +34,14 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 	//Start tasks
 	//
 	public void onEnable() {
+		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nStarting Lothric Knights\n\n");
+		
 		getServer().getPluginManager().registerEvents(new Damage(), this);
-		getServer().getPluginManager().registerEvents(new Spawning(), this);
 		getServer().getPluginManager().registerEvents(new LKSSFixer(), this);
 		getServer().getPluginManager().registerEvents(new ArenaManager(), this);
+		this.getCommand("spawncustommob").setExecutor(new SpawnCustomMob());
+		this.getCommand("killcustommobs").setExecutor(new KillCustomMobs());
 		tasks();
-		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nStarting Lothric Knights\n\n");
 	}
 	
 	//Stop tasks

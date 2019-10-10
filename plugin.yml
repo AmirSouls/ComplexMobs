@@ -1,6 +1,13 @@
 name: ComplexMobs
 author: AmirSaysTakbir
-version: 0.5
+version: 0.6
 main: complexMobs.Main.ComplexMobs
-description: Stuff
+description: Plugin that allows for the creation and use of complex mobs.
 api-version: 1.13
+commands:
+    spawncustommob:
+        description: Admin command manually spawning complex mobs
+        usage: /spawncustommob <Complex Mob ID>
+    killcustommobs:
+        description: Admin command for manually removing all complex mobs
+        usage: /killcustommobs
