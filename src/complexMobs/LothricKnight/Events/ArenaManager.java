@@ -16,6 +16,8 @@ import complexMobs.Main.ComplexMobs;
 
 public class ArenaManager implements Listener {
 	
+	//This is just for testing on the server test server world.
+	
 	//Tasks
 	public static void checkEmpty(World world) {
 		if (world.getPlayers().isEmpty()) {
@@ -43,7 +45,5 @@ public class ArenaManager implements Listener {
 		armor[1] = new ItemStack(Material.CHAINMAIL_LEGGINGS);
 		armor[0] = new ItemStack(Material.IRON_BOOTS);
 		player.getEquipment().setArmorContents(armor);
-		
-		//player.getWorld().spawnEntity(new Location(player.getWorld(), 0, 101, 0), EntityType.ZOMBIE);
 	}
 }
