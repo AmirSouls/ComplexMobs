@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -22,6 +23,7 @@ public class ComplexMob {
 	public Map<ArmorStand, ArmorStand> partHost = new HashMap<>();
 	public Map<ArmorStand, String> partId = new HashMap<>();
 	public Map<Item, Boolean> dsItem = new HashMap<>();
+	public Map<Entity, Instant> entityAttackMobCooldown = new HashMap<>();
 	
 	//Doubles
 	public final double maxPoise;

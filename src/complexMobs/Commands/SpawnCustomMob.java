@@ -32,7 +32,7 @@ public class SpawnCustomMob implements CommandExecutor {
 						location = player.getLocation();
 					}
 					else {
-						location = new Location(Bukkit.getWorlds().get(0), 0, 101, 0);
+						location = new Location(Bukkit.getWorlds().get(0), 0, 99, 0);
 					}
 					Spawning.spawn(location);
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Spawned " + ChatColor.LIGHT_PURPLE + args[0]);

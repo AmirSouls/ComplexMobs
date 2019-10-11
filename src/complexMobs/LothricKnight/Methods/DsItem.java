@@ -1,4 +1,4 @@
-package complexMobs.LothricKnight;
+package complexMobs.LothricKnight.Methods;
 
 import java.time.Instant;
 

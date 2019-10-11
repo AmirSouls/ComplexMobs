@@ -18,11 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import complexMobs.Commands.KillCustomMobs;
 import complexMobs.Commands.SpawnCustomMob;
-import complexMobs.LothricKnight.DsItem;
 import complexMobs.LothricKnight.Events.ArenaManager;
 import complexMobs.LothricKnight.Events.Damage;
 import complexMobs.LothricKnight.Events.LKSSFixer;
 import complexMobs.LothricKnight.Methods.AI;
+import complexMobs.LothricKnight.Methods.DsItem;
 import complexMobs.Mobs.LothricKnight;
 
 public class ComplexMobs extends JavaPlugin implements Listener {

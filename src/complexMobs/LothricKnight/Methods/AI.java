@@ -75,7 +75,7 @@ public class AI {
 			if (Instant.now().isBefore(knight.blockTimer.plusMillis(605))) {
 				Block.animate(knight);
 			}
-			if (Instant.now().isAfter(knight.blockTimer.plusMillis(605))) {
+			else if (Instant.now().isAfter(knight.blockTimer.plusMillis(605))) {
 				OffsetTimers.offset(knight, -600);
 				knight.blockTimer = null;
 			}

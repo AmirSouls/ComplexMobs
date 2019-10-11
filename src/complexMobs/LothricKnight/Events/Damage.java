@@ -21,12 +21,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import complexMobs.LothricKnight.Methods.ResetTimers;
+import complexMobs.LothricKnight.Methods.ShieldArc;
 import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
 import complexMobs.Mobs.LothricKnight;
 
 public class Damage implements Listener {
-	//Knight Dmg
+	//Mob receiving damage
 	//
 	@EventHandler
 	public void knightHurt(EntityDamageByEntityEvent event) {
@@ -34,12 +35,22 @@ public class Damage implements Listener {
 			if (event.getEntity().getType() == EntityType.ARMOR_STAND) {
 				if (ComplexMobs.partMob.containsKey(event.getEntity())) {
 					ComplexMob mob = ComplexMobs.partMob.get(event.getEntity());
-					if (!mob.dead) {
+					//See if hurt timer is over for attacker
+					if (mob.entityAttackMobCooldown.containsKey(event.getDamager())) {
+						if (Instant.now().isAfter(mob.entityAttackMobCooldown.get(event.getDamager()).plusMillis(500))) mob.entityAttackMobCooldown.remove(event.getDamager());
+					}
+					
+					//Check if mob is dead, or if the attacker currently has a cooldown on hitting the mob
+					if (!mob.dead && !mob.entityAttackMobCooldown.containsKey(event.getDamager())) {
+						//Set hurt cooldown for attacking entity
+						mob.entityAttackMobCooldown.put(event.getDamager(), Instant.now());
+						
+						//Default to no shield
 						boolean noShield = true;
 						
 						if (mob instanceof LothricKnight) {
 							LothricKnight knight = (LothricKnight) mob;
-							if (knight.shieldUp && !knight.isAttacking) {
+							if (knight.shieldUp && !knight.isAttacking && ShieldArc.didBlock(knight.main.getLocation().getYaw(), event.getDamager().getLocation().getYaw(), 200)) {
 								noShield = false;
 								//Shield up
 								if (knight.blockTimer == null) {
@@ -85,6 +96,7 @@ public class Damage implements Listener {
 								ItemStack straightSword = new ItemStack(Material.DIAMOND_HOE, 1);
 								ItemMeta straightSwordMeta = straightSword.getItemMeta();
 								straightSwordMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+								straightSwordMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 								straightSwordMeta.setDisplayName(ChatColor.RESET + "Lothric Knight Straight Sword");
 								straightSwordMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier("W", 8, Operation.ADD_NUMBER));
 								straightSwordMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier("K", 10000, Operation.ADD_NUMBER));
