@@ -2,7 +2,6 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
@@ -12,6 +11,8 @@ import complexMobs.LothricKnight.Methods.GoBtwn;
 import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
 import complexMobs.LothricKnight.SpecialAnimations.PelvisZeroAnimation;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class WalkingSide {
@@ -207,23 +208,19 @@ public class WalkingSide {
 			
 			//Step sound
 			if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(755)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(805))) {		
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-						"playsound minecraft:lothricknight.walk master @a " +
-						knight.main.getLocation().getX() + 
-						" " +
-						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 2 1"
-						);
+				if (ToggleSound.isOn(knight, "lothricknight.walk")) PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
+			}
+			//Re-enable sound
+			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(805)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(1655))) {	
+				ToggleSound.on(knight, "lothricknight.walk");
 			}
 			//Step sound
 			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(1655)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(1705))) {		
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-						"playsound minecraft:lothricknight.walk master @a " +
-						knight.main.getLocation().getX() + 
-						" " +
-						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 2 1"
-						);
+				if (ToggleSound.isOn(knight, "lothricknight.walk")) PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
+			}
+			//Re-enable sound
+			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(1705))) {	
+				ToggleSound.on(knight, "lothricknight.walk");
 			}
 			
 			PartPositioning.position(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);

@@ -16,7 +16,7 @@ import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 
-public class WalkingForward {
+public class WalkingBackward {
 	
 	public static void animate(LothricKnight knight, boolean shieldUp) {
 		try {
@@ -89,7 +89,7 @@ public class WalkingForward {
 			}
 			
 			//Direction handling
-			DirectionAndMovement.normal(knight, .1, 0);
+			DirectionAndMovement.normal(knight, -.1, 0);
 			
 			
 			if (pelvis != null) {

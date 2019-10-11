@@ -7,6 +7,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +34,32 @@ public class ArenaManager implements Listener {
 				}
 			}
 		}
-	}
+		
+		//Also, make creatures target knights
+		boolean mobsTargetKnight = true;
+		if (mobsTargetKnight) {
+			for (Creature creature : world.getEntitiesByClass(Creature.class)) {
+				LivingEntity target = null;
+				double targetDistance = 1000000;
+				
+				for (ArmorStand armorStand : world.getEntitiesByClass(ArmorStand.class)) {
+					if (ComplexMobs.isMain.containsKey(armorStand)) {
+						if (!ComplexMobs.partMob.get(armorStand).dead) {
+							if (armorStand.getLocation().distance(creature.getLocation()) < targetDistance);
+							targetDistance = armorStand.getLocation().distance(creature.getLocation());
+							target = armorStand;
+						}
+					}
+				}
+				if (target != null) creature.setTarget(target);
+				if (ComplexMobs.isMain.containsKey(creature.getTarget())) {
+					if (ComplexMobs.partMob.get(creature.getTarget()).dead) {
+						creature.setTarget(null);
+					}
+				}
+			}
+		}
+	} 
 	
 	//Events
 	@EventHandler

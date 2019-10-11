@@ -92,13 +92,12 @@ public class Standing {
 			}
 			
 			
-			if (pelvis != null) {
-				pelvisPosition = new Vector(0,0.4,0);
-				pelvisPosition.rotateAroundY(-yaw);
-				pelvis.teleport(knight.main.getLocation().add(pelvisPosition));
+			pelvisPosition = new Vector(0,0.4,0);
+			pelvisPosition.rotateAroundY(-yaw);
+			pelvis.teleport(knight.main.getLocation().add(pelvisPosition));
 				
-				PelvisZeroAnimation.animate(pelvis, 10);
-			}
+			PelvisZeroAnimation.animate(pelvis, 10);
+			
 			
 			chestPosition = PartPositioning.position(chest, pelvisPosition, pelvis.getHeadPose(), new Vector(0,-.16,0.01), knight.main.getLocation(), yaw);
 			GoTo.animate(chest, chest.getHeadPose(), 0, 0, 0);

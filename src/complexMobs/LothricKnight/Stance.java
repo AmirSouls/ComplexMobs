@@ -2,7 +2,6 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
@@ -11,6 +10,8 @@ import org.bukkit.util.Vector;
 import complexMobs.LothricKnight.Methods.FromTo;
 import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.Methods.ResetTimers;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class Stance {
@@ -98,13 +99,11 @@ public class Stance {
 				knight.main.teleport(newDirection.add(vector.multiply(0)));
 			
 				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.walk master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+					//Stop sound
+					if (ToggleSound.isOn(knight, "lothricknight.walk")) {
+						PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 3, 1, 1);
+						ToggleSound.off(knight, "lothricknight.walk");
+					}
 				}
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(600))) {
 					if (distance3D > 6) {

@@ -2,13 +2,14 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
 import complexMobs.LothricKnight.Methods.DirectionAndMovement;
 import complexMobs.LothricKnight.Methods.FromTo;
 import complexMobs.LothricKnight.Methods.PartPositioning;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class Death {
@@ -114,32 +115,17 @@ public class Death {
 				FromTo.animate(pelvis, 50, 0, 0, 90, 0, 0, 3005, 3905);
 				
 				//Sounds
-				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.death master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55)) && ToggleSound.isOn(knight, "lothricknight.death")) {
+					PlaySound.normal("lothricknight.death", knight.main.getLocation(), 3, 1, 1);
+					ToggleSound.off(knight, "lothricknight.death");
 				}
-				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(2700)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(2751))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.deathknee master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(2700)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(2755)) && ToggleSound.isOn(knight, "lothricknight.deathknee")) {
+					PlaySound.normal("lothricknight.deathknee", knight.main.getLocation(), 3, 1, 1);
+					ToggleSound.off(knight, "lothricknight.deathknee");
 				}
-				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(3900)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(3955))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.deathland master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(3900)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(3955)) && ToggleSound.isOn(knight, "lothricknight.deathland")) {
+					PlaySound.normal("lothricknight.deathland", knight.main.getLocation(), 3, 1, 1);
+					ToggleSound.off(knight, "lothricknight.deathland");
 				}
 			}
 			

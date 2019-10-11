@@ -9,8 +9,8 @@ import complexMobs.Main.ComplexMob;
 
 public class LothricKnight extends ComplexMob {
 
-	public LothricKnight(ArmorStand inpMain, Collection<ArmorStand> inpParts) {
-		super(inpMain, 100, 14, inpParts);
+	public LothricKnight(ArmorStand inpMain, Collection<ArmorStand> inpParts, Collection<String> inpSounds) {
+		super(inpMain, 100, 14, inpParts, inpSounds);
 	}
 	
 	//Blocking

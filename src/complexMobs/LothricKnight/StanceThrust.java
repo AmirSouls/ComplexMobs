@@ -12,6 +12,8 @@ import complexMobs.LothricKnight.Methods.FromTo;
 import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.Methods.DamageArea;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class StanceThrust {
@@ -102,26 +104,25 @@ public class StanceThrust {
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(1600))) {
 					ResetTimers.resetOffset(knight, -55);
 					knight.isAttacking = false;
+					
+					//Re-enable all sounds
+					ToggleSound.enableAllSounds(knight);
 				}
 				
-				//Sound fx
+				//Sounds
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(0)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55))) {
+					
 					//Grunt sound
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.grunt master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+					if (ToggleSound.isOn(knight, "lothricknight.grunt")) {
+						PlaySound.normal("lothricknight.grunt", knight.main.getLocation(), 3, 1, 1);
+						ToggleSound.off(knight, "lothricknight.grunt");
+					}
+					
 					//Stance attack sound fx
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.stanceattack master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+					if (ToggleSound.isOn(knight, "lothricknight.stanceattack")) {
+						PlaySound.normal("lothricknight.stanceattack", knight.main.getLocation(), 3, 1, 1);
+						ToggleSound.off(knight, "lothricknight.stanceattack");
+					}
 				}
 			}
 			

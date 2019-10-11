@@ -2,7 +2,6 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -13,6 +12,8 @@ import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
 import complexMobs.Methods.DamageArea;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class LeftSlash {
@@ -100,10 +101,16 @@ public class LeftSlash {
 						knight.stamina = knight.stamina - 35;
 						knight.staminaUseTimer = Instant.now();
 						knight.attackAreaPts = null;
+						
+						//Re-enable all sounds
+						ToggleSound.enableAllSounds(knight);
 					}
 					else {
 						ResetTimers.reset(knight);
 						knight.isAttacking = false;
+						
+						//Re-enable all sounds
+						ToggleSound.enableAllSounds(knight);
 					}
 				}
 			}
@@ -185,7 +192,7 @@ public class LeftSlash {
 			PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), knight.main.getLocation(), yaw);
 			FromTo.animate(shield, 10, 50, 0, 10, 50, 0, 0, 1000);
 			
-			//Legs: Finished :)
+			//Legs
 			leftThighPosition = PartPositioning.position(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), knight.main.getLocation(), yaw);
 			FromTo.animate(leftThigh, 0, 0, 0, 30, -45, -30, 0, 155);
 			FromTo.animate(leftThigh, 30, -45, -30, 50, -45, -50, 150, 355);
@@ -213,34 +220,27 @@ public class LeftSlash {
 			
 			//Sounds
 			if (Instant.now().isAfter(knight.animationTimer.get(sword).plusMillis(500)) && Instant.now().isBefore(knight.animationTimer.get(sword).plusMillis(555))) {
-				//Slash sound
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-					"playsound minecraft:lothricknight.slash master @a " +
-					knight.main.getLocation().getX() + 
-					" " +
-					knight.main.getLocation().getY() +
-					" " + knight.main.getLocation().getZ() + " 2 1"
-					);
-				//Grunt sound
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-						"playsound minecraft:lothricknight.grunt master @a " +
-						knight.main.getLocation().getX() + 
-						" " +
-						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 2 1"
-						);
-				//Step sound
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-						"playsound minecraft:lothricknight.walk master @a " +
-						knight.main.getLocation().getX() + 
-						" " +
-						knight.main.getLocation().getY() +
-						" " + knight.main.getLocation().getZ() + " 2 1"
-						);
+				if (ToggleSound.isOn(knight, "lothricknight.slash")) {
+					//Slash sound
+					PlaySound.normal("lothricknight.slash", knight.main.getLocation(), 2, 1, 1);
+					ToggleSound.off(knight, "lothricknight.slash");
+				}
+				
+				if (ToggleSound.isOn(knight, "lothricknight.grunt")) {
+					//Grunt sound
+					PlaySound.normal("lothricknight.grunt", knight.main.getLocation(), 2, 1, 1);
+					ToggleSound.off(knight, "lothricknight.grunt");
+				}
+				
+				if (ToggleSound.isOn(knight, "lothricknight.walk")) {
+					//Step sound
+					PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
+					ToggleSound.off(knight, "lothricknight.walk");
+				}
 			}
 			
 			//Attack frames: Appears as 9 in 60fps, but is really 3 in game tick speed.
-			DamageArea.process(knight, sword, 2, knight.animationTimer.get(sword), 500, 655, swordPosition, yaw, true, 9, .4, .2);
+			DamageArea.process(knight, sword, 2, knight.animationTimer.get(sword), 500, 655, swordPosition, yaw, true, 14, .7, .2);
 			
 		} catch (NullPointerException event) {}
 	}

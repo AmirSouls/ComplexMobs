@@ -1,6 +1,5 @@
 package complexMobs.LothricKnight.Methods;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
+import complexMobs.Methods.PlaySound;
 import complexMobs.Mobs.LothricKnight;
 
 public class EnemyDMG {
@@ -37,13 +37,7 @@ public class EnemyDMG {
 					knight.main.getWorld().spawnParticle(Particle.BLOCK_DUST, knight.main.getLocation().add(swordHB), 200, 0, 0, 0, 1, Material.REDSTONE_WIRE.createBlockData());
 					
 					//Sound fx
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.playerhurt master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 1 1"
-							);
+					PlaySound.normal("lothricknight.playerhurt", knight.main.getLocation(), 2, 1, 1);
 					
 					livingEntity.damage(damage);
 					livingEntity.setVelocity(knight.main.getLocation().getDirection().multiply(knockHorz).setY(knockVert));

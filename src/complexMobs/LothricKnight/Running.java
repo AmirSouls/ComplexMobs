@@ -2,7 +2,6 @@ package complexMobs.LothricKnight;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
@@ -13,6 +12,8 @@ import complexMobs.LothricKnight.Methods.PartPositioning;
 import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
 import complexMobs.LothricKnight.SpecialAnimations.PelvisZeroAnimation;
+import complexMobs.Methods.PlaySound;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 
@@ -111,39 +112,29 @@ public class Running {
 				}
 				//Sound
 				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(255))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.run master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+					if (ToggleSound.isOn(knight, "lothricknight.run")) PlaySound.normal("lothricknight.run", knight.main.getLocation(), 3, 1, 1);
 				}
-				//Pause
+				//Pause and re-enable sounds
 				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(305))) {
+					ToggleSound.on(knight, "lothricknight.run");
 				}
 				//Down
-				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(405))) {
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(405))) {
 					deltaTime += 300;
 					pelvisPosition = new Vector(0, .5 - (heightModif * (deltaTime / 100)), 0);
 				}
 				//Down
-				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(505))) {
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(505))) {
 					deltaTime += 400;
 					pelvisPosition = new Vector(0, .5 + (heightModif * (deltaTime / 100)), 0);
 				}
 				//Sound
 				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(555))) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-							"playsound minecraft:lothricknight.run master @a " +
-							knight.main.getLocation().getX() + 
-							" " +
-							knight.main.getLocation().getY() +
-							" " + knight.main.getLocation().getZ() + " 3 1"
-							);
+					if (ToggleSound.isOn(knight, "lothricknight.run")) PlaySound.normal("lothricknight.run", knight.main.getLocation(), 3, 1, 1);
 				}
-				//Pause
+				//Pause and re-enable sounds
 				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(605))) {
+					ToggleSound.on(knight, "lothricknight.run");
 				}
 				//Reset
 				else if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(605))) {

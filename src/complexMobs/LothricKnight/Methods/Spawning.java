@@ -21,8 +21,23 @@ public class Spawning {
 		Collection<ArmorStand> partCollection = new ArrayList<>();
 		partCollection = SpawnPart.main(main, partCollection);
 		
+		//Sound list
+		Collection<String> soundList = new ArrayList<>();
+		soundList.add("lothricknight.shieldhit");
+		soundList.add("lothricknight.stanceattack");
+		soundList.add("lothricknight.deathland");
+		soundList.add("lothricknight.deathknee");
+		soundList.add("lothricknight.death");
+		soundList.add("lothricknight.run");
+		soundList.add("lothricknight.walk");
+		soundList.add("lothricknight.slash");
+		soundList.add("lothricknight.grunt");
+		soundList.add("lothricknight.shieldbash");
+		soundList.add("lothricknight.playerhurt");
+		soundList.add("lothricknight.slam");
+		
 		//Create LothricKnight Variable
-		LothricKnight knight = new LothricKnight(main, partCollection);
+		LothricKnight knight = new LothricKnight(main, partCollection, soundList);
 		
 		//Main variables
 		knight.partHost.put(main, main);

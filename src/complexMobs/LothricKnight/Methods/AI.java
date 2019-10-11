@@ -1,10 +1,6 @@
 package complexMobs.LothricKnight.Methods;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -38,7 +34,7 @@ public class AI {
 				entity.setVelocity(entity.getVelocity().add(vector.setY(0)));
 				
 				if (ComplexMobs.isMain.containsKey(entity)) {
-					entity.teleport(entity.getLocation().add(vector.setY(0)));
+					entity.teleport(entity.getLocation().add(vector.multiply(5).setY(0)));
 				}
 			}
 		} catch (IllegalArgumentException e) {}
@@ -56,11 +52,18 @@ public class AI {
 		}	
 		
 		//Refill poise
+		
+		//Low poise modifier
 		double lowPoiseModifier = 0;
 		if (knight.poise < knight.maxPoise / 3) lowPoiseModifier = 0.15;
-		knight.poise = (knight.poise + .2 - lowPoiseModifier);
-		if (knight.poise > knight.maxPoise) knight.poise = knight.poise - .8;
 		
+		//If less than max, increase, if max or slightly more, set to max, if more enough, decrease
+		if (knight.poise < knight.maxPoise) knight.poise = (knight.poise + .2 - lowPoiseModifier);
+		if (knight.poise >= knight.maxPoise && knight.poise < knight.maxPoise + 1);
+		else if (knight.poise > knight.maxPoise + 1) knight.poise = knight.poise - .8;
+		
+		
+		//Action logic
 		//See if the knight blocked an attack or got staggered, or is dead.
 		boolean outOfStamina = false;
 		boolean blocked = false;
@@ -100,7 +103,7 @@ public class AI {
 					LivingEntity target = null;
 					double targetDistance = 100000000;
 					for (LivingEntity livingEntity : knight.main.getWorld().getEntitiesByClass(LivingEntity.class)) {
-						if (livingEntity.getType() != EntityType.ARMOR_STAND && targetDistance > livingEntity.getLocation().distance(knight.main.getLocation()) && livingEntity.getLocation().distance(knight.main.getLocation()) < 10) {
+						if (livingEntity.getType() != EntityType.ARMOR_STAND && targetDistance > livingEntity.getLocation().distance(knight.main.getLocation()) && livingEntity.getLocation().distance(knight.main.getLocation()) < 30) {
 							targetDistance = livingEntity.getLocation().distance(knight.main.getLocation());
 							target = livingEntity;
 						}
@@ -121,7 +124,7 @@ public class AI {
 						if (knight.target.getType() == EntityType.PLAYER) {
 							Player player = (Player) knight.target;
 							if (GameMode.SPECTATOR == player.getGameMode()) {
-								//Target went into spectator mode, stop targetting them.
+								//Target went into spectator mode, stop targeting them.
 								knight.target = null;
 								targetRemoved = true;
 							}
@@ -161,15 +164,10 @@ public class AI {
 								LivingEntity target = knight.target;
 								double distance3D = target.getLocation().distance(knight.main.getLocation());
 								
-								//Action selection
-								Collection<String> actions = new ArrayList<>();
-								if (distance3D < 10) actions.add("WalkingSide"); 
-								if (distance3D > 6 && distance3D < 12) actions.add("WalkingForward");
-								if (distance3D > 6) actions.add("Running");
-								if (!actions.isEmpty()) Collections.shuffle((List<?>) actions);
+								
 								
 								//Action select and Execution
-								PassiveAction.select(knight, (String) actions.toArray()[0], distance3D);
+								PassiveAction.select(knight, distance3D);
 								
 							}	
 						}

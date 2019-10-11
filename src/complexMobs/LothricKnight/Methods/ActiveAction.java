@@ -6,10 +6,29 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.entity.ArmorStand;
+
+import complexMobs.Main.ComplexMob;
+import complexMobs.Main.ComplexMobs;
+import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class ActiveAction {
 	public static void select(LothricKnight knight, double distance3D) {
+		
+		//Hold for ally
+		for (ArmorStand armorStand : knight.main.getWorld().getEntitiesByClass(ArmorStand.class)) {
+			if (ComplexMobs.isMain.containsKey(armorStand)) {
+				double distance = armorStand.getLocation().distance(knight.main.getLocation());
+				if (distance < 5) {
+					ComplexMob mob = ComplexMobs.partMob.get(armorStand);
+					if (mob.isAttacking) {
+						return;
+					}
+				}
+			}
+		}
+		
 		//Default to 35 stamina use
 		double staminaUseAmount = 35;
 		
@@ -43,6 +62,9 @@ public class ActiveAction {
 			
 			//Reset animation timers
 			ResetTimers.reset(knight);
+			
+			//Re-enable all sounds
+			ToggleSound.enableAllSounds(knight);
 		}
 	}
 }

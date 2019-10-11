@@ -2,7 +2,6 @@ package complexMobs.LothricKnight.Events;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -24,6 +23,7 @@ import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.LothricKnight.Methods.ShieldArc;
 import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
+import complexMobs.Methods.PlaySound;
 import complexMobs.Mobs.LothricKnight;
 
 public class Damage implements Listener {
@@ -42,7 +42,7 @@ public class Damage implements Listener {
 					
 					//Check if mob is dead, or if the attacker currently has a cooldown on hitting the mob
 					if (!mob.dead && !mob.entityAttackMobCooldown.containsKey(event.getDamager())) {
-						//Set hurt cooldown for attacking entity
+						//Set hurt cool down for attacking entity
 						mob.entityAttackMobCooldown.put(event.getDamager(), Instant.now());
 						
 						//Default to no shield
@@ -58,26 +58,18 @@ public class Damage implements Listener {
 									ResetTimers.reset(knight);
 									
 									//Shield hit sound
-									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-											"playsound minecraft:lothricknight.shieldhit master @a " +
-											knight.main.getLocation().getX() + 
-											" " +
-											knight.main.getLocation().getY() +
-											" " + knight.main.getLocation().getZ() + " 0.5 1"
-											);
+									PlaySound.normal("lothricknight.shieldhit", mob.main.getLocation(), 2, 1, 1);
+									
+									//Push back attacker
+									event.getDamager().setVelocity(event.getDamager().getLocation().getDirection().multiply(-.4).setY(.1));
 								}
 							}
 						
 						}
 						//Shield down or there is no shield at all
 						if (noShield) {		
-							//Health
-							double health = mob.health;
 							
-							//Poise
-							double poise = mob.poise;
-		
-							if (event.getFinalDamage() > health && event.getFinalDamage() > 2) {
+							if (event.getFinalDamage() > mob.health) {
 								//Dead
 								mob.health = 0;		
 								mob.dead = true;
@@ -110,39 +102,25 @@ public class Damage implements Listener {
 								mob.main.getWorld().spawnParticle(Particle.BLOCK_DUST, mob.main.getLocation().add(0,2,0), 400, 0.1, 0.3, 0.3, 0, Material.REDSTONE_WIRE.createBlockData());
 								
 								//Hurt sound
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-										"playsound minecraft:lothricknight.hurt master @a " +
-										mob.main.getLocation().getX() + 
-										" " +
-										mob.main.getLocation().getY() +
-										" " + mob.main.getLocation().getZ() + " 2 1"
-										);
+								PlaySound.normal("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
 							}
 							else {
-								if (event.getFinalDamage() > 2) {
-									//Deal damage
-									mob.health = health - event.getFinalDamage();
-									
-									//Particles
-									mob.main.getWorld().spawnParticle(Particle.BLOCK_DUST, mob.main.getLocation().add(0,2,0), 100, 0.1, 0.3, 0.1, 0, Material.REDSTONE_WIRE.createBlockData());
-									
-									//Hurt sound
-									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "" +
-											"playsound minecraft:lothricknight.hurt master @a " +
-											mob.main.getLocation().getX() + 
-											" " +
-											mob.main.getLocation().getY() +
-											" " + mob.main.getLocation().getZ() + " 2 1"
-											);
-									
-									//Lower poise
-									if (!mob.hyperArmor) {
-										poise = poise - event.getFinalDamage();
-									}
+								//Deal damage
+								mob.health = mob.health - event.getFinalDamage();
+								
+								//Particles
+								mob.main.getWorld().spawnParticle(Particle.BLOCK_DUST, mob.main.getLocation().add(0,2,0), 100, 0.1, 0.3, 0.1, 0, Material.REDSTONE_WIRE.createBlockData());
+								
+								//Hurt sound
+								PlaySound.normal("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
+								
+								//Lower poise
+								if (!mob.hyperArmor) {
+									mob.poise = mob.poise - event.getFinalDamage();
 								}
 								
 								//Stagger
-								if (mob.staggerTimer == null && mob.poise <= 0 && mob.poise > mob.maxPoise * -1.5 && event.getFinalDamage() > 3.5 && !mob.hyperArmor) {
+								if (mob.staggerTimer == null && mob.poise <= 0 && mob.poise > mob.maxPoise * -1.5 && !mob.hyperArmor) {
 									mob.staggerTimer = Instant.now();
 									mob.isAttacking = false;
 									if (mob instanceof LothricKnight) {

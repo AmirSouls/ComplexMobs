@@ -24,6 +24,7 @@ public class ComplexMob {
 	public Map<ArmorStand, String> partId = new HashMap<>();
 	public Map<Item, Boolean> dsItem = new HashMap<>();
 	public Map<Entity, Instant> entityAttackMobCooldown = new HashMap<>();
+	public Map<String, Boolean> played = new HashMap<>();
 	
 	//Doubles
 	public final double maxPoise;
@@ -43,6 +44,7 @@ public class ComplexMob {
 	//Collections
 	public Collection<ArmorStand> parts;
 	public Collection<Vector> attackAreaPts;
+	public Collection<String> soundList;
 	
 	//Timers
 	public Instant staggerTimer;
@@ -62,7 +64,7 @@ public class ComplexMob {
 	//part IDs
 	public Collection<String> partIds;
 	
-	protected ComplexMob(ArmorStand inpMain, double inpMaxHealth, double inpMaxPoise, Collection<ArmorStand> inpParts) {
+	protected ComplexMob(ArmorStand inpMain, double inpMaxHealth, double inpMaxPoise, Collection<ArmorStand> inpParts, Collection<String> inpSounds) {
 		//Input variables
 		main = inpMain;
 		
@@ -73,5 +75,7 @@ public class ComplexMob {
 		poise = maxPoise;
 		
 		parts = inpParts;
+		
+		soundList = inpSounds;
 	}
 }
