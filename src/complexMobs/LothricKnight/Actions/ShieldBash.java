@@ -92,7 +92,8 @@ public class ShieldBash {
 				LivingEntity target = knight.target;
 				double distance = target.getLocation().distance(knight.main.getLocation());
 				
-				DirectionAndMovement.timed(knight, distance * 0.14, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 705);
+				DirectionAndMovement.timed(knight, distance * 0.14, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 700);
+				if (distance > 3) DirectionAndMovement.timed(knight, 1, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 700, 755, true);
 				
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(1200))) {
 					ResetTimers.reset(knight);

@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.attribute.Attribute;
-
 import complexMobs.LothricKnight.Actions.Running;
 import complexMobs.LothricKnight.Actions.Standing;
 import complexMobs.LothricKnight.Actions.WalkingBackward;

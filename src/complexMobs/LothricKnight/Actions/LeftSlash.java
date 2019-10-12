@@ -92,7 +92,7 @@ public class LeftSlash {
 				LivingEntity target = knight.target;
 				double distance = target.getLocation().distance(knight.main.getLocation());
 				
-				DirectionAndMovement.timed(knight, distance * 0.12, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 505);
+				if (distance > 2) DirectionAndMovement.timed(knight, distance * 0.12, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 505);
 				
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(755))) {
 					if (distance < 4 && knight.stamina > 0 && Math.random() < .7) {
