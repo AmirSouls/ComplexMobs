@@ -92,8 +92,9 @@ public class ShieldBash {
 				LivingEntity target = knight.target;
 				double distance = target.getLocation().distance(knight.main.getLocation());
 				
-				DirectionAndMovement.timed(knight, distance * 0.14, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 700);
+				DirectionAndMovement.timed(knight, distance * 0.14, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 705);
 				if (distance > 3) DirectionAndMovement.timed(knight, 1, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 700, 755, true);
+				else DirectionAndMovement.timed(knight, 0, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 705, 805);
 				
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(1200))) {
 					ResetTimers.reset(knight);
@@ -205,7 +206,7 @@ public class ShieldBash {
 			}
 			
 			//Attack frames: Appears as 9 in 60fps, but is really 3 in game tick speed.
-			DamageArea.shield(knight, shield, 1, knight.animationTimer.get(shield), 600, 805, shieldPosition, yaw, true, 6, .8, .2);
+			DamageArea.shield(knight, shield, 1, knight.animationTimer.get(shield), 600, 805, shieldPosition, yaw, false, 6, .8, .2);
 			
 		} catch (NullPointerException event) {}
 	}

@@ -90,7 +90,9 @@ public class RightSlash {
 				LivingEntity target = knight.target;
 				double distance = target.getLocation().distance(knight.main.getLocation());
 				
-				if (distance > 2) DirectionAndMovement.timed(knight, distance * 0.12, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 505);
+				double moveMult = 0;
+				if (distance > 2) moveMult = .12;
+				DirectionAndMovement.timed(knight, distance * moveMult, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 605);
 				
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(805))) {
 					if (distance < 4 && knight.stamina > 0 && Math.random() < .7) {
