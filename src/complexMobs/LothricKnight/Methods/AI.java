@@ -10,14 +10,15 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import complexMobs.LothricKnight.Block;
-import complexMobs.LothricKnight.Death;
-import complexMobs.LothricKnight.LeftSlash;
-import complexMobs.LothricKnight.RightSlash;
-import complexMobs.LothricKnight.Stagger;
-import complexMobs.LothricKnight.Stance;
-import complexMobs.LothricKnight.StanceThrust;
-import complexMobs.LothricKnight.Standing;
+import complexMobs.LothricKnight.Actions.Block;
+import complexMobs.LothricKnight.Actions.Death;
+import complexMobs.LothricKnight.Actions.LeftSlash;
+import complexMobs.LothricKnight.Actions.RightSlash;
+import complexMobs.LothricKnight.Actions.ShieldBash;
+import complexMobs.LothricKnight.Actions.Stagger;
+import complexMobs.LothricKnight.Actions.Stance;
+import complexMobs.LothricKnight.Actions.StanceThrust;
+import complexMobs.LothricKnight.Actions.Standing;
 import complexMobs.Main.ComplexMobs;
 import complexMobs.Mobs.LothricKnight;
 
@@ -26,7 +27,7 @@ public class AI {
 	public static void process(LothricKnight knight) {
 		//Collision
 		try {
-			for (Entity entity : knight.main.getNearbyEntities(.1, .3, .1)) {
+			for (Entity entity : knight.main.getNearbyEntities(.125, .3, .125)) {
 				double distance = entity.getLocation().distance(knight.main.getLocation());
 				Location difference = entity.getLocation().subtract(knight.main.getLocation());
 				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
@@ -64,7 +65,7 @@ public class AI {
 		
 		
 		//Action logic
-		//See if the knight blocked an attack or got staggered, or is dead.
+		//See if the knight blocked an attack, got staggered, or is dead.
 		boolean outOfStamina = false;
 		boolean blocked = false;
 		boolean staggered = false;
@@ -98,7 +99,7 @@ public class AI {
 				//Why isn't it?
 				if (knight.target == null) {
 					//Standing idle animation
-					Standing.animate(knight, false);
+					Standing.animate(knight);
 					
 					LivingEntity target = null;
 					double targetDistance = 100000000;
@@ -188,6 +189,9 @@ public class AI {
 					}
 					else if (knight.activeAction == "StanceThrust") {
 						StanceThrust.animate(knight);
+					}
+					else if (knight.activeAction == "ShieldBash") {
+						ShieldBash.animate(knight);
 					}
 				}
 			}

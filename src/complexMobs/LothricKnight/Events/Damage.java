@@ -11,6 +11,7 @@ import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -61,7 +62,7 @@ public class Damage implements Listener {
 									PlaySound.normal("lothricknight.shieldhit", mob.main.getLocation(), 2, 1, 1);
 									
 									//Push back attacker
-									event.getDamager().setVelocity(event.getDamager().getLocation().getDirection().multiply(-.4).setY(.1));
+									event.getDamager().setVelocity(event.getDamager().getLocation().getDirection().multiply(-.3).setY(.1));
 								}
 							}
 						
@@ -131,10 +132,13 @@ public class Damage implements Listener {
 									//Higher poise
 									mob.poise = mob.maxPoise;
 								}
-								//Gone over chain threshold
+								//Gone over chain hit threshold
 								else if (mob.poise < -1.5 * mob.maxPoise) {
 									mob.poise = mob.maxPoise * 1.5;
 								}
+								
+								//Make the knight target the entity that attacked it
+								mob.target = (LivingEntity) event.getDamager();
 							}
 							event.setDamage(0);
 						}

@@ -35,6 +35,10 @@ public class ActiveAction {
 		//Initialize action list
 		Collection<String> actions = new ArrayList<>();
 		
+		//Really close range
+		if (distance3D < 4 && Math.random() < 0.4) {
+			actions.add("ShieldBash"); 
+		}
 		//Close range
 		if (distance3D > 2 && distance3D < 5 && knight.stamina > 34)  {
 			actions.add("LeftSlash"); 

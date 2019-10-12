@@ -1,4 +1,4 @@
-package complexMobs.LothricKnight;
+package complexMobs.LothricKnight.Actions;
 
 import java.time.Instant;
 
@@ -14,7 +14,7 @@ import complexMobs.Mobs.LothricKnight;
 
 public class Standing {
 	
-	public static void animate(LothricKnight knight, boolean shieldUp) {
+	public static void animate(LothricKnight knight) {
 		try {
 			if (knight.changeTimer == null) {
 				knight.changeTimer = Instant.now();
@@ -122,7 +122,7 @@ public class Standing {
 			GoTo.animate(rightFoot, rightFoot.getHeadPose(), 0, 0, 0);
 			
 			//Arms
-			if (shieldUp) {
+			if (knight.shieldUp) {
 				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), knight.main.getLocation(), yaw);
 				GoTo.animate(leftElbow, leftElbow.getHeadPose(), 15, 0, -10);
 				

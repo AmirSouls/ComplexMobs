@@ -1,4 +1,4 @@
-package complexMobs.LothricKnight;
+package complexMobs.LothricKnight.Actions;
 
 import java.time.Instant;
 import java.util.ArrayList;

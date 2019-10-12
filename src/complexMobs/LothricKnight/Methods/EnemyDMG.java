@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
@@ -15,7 +17,7 @@ import complexMobs.Methods.PlaySound;
 import complexMobs.Mobs.LothricKnight;
 
 public class EnemyDMG {
-	public static void normal(LothricKnight knight, Vector swordHB, double damage, double knockHorz, double knockVert) {
+	public static void normal(LothricKnight knight, Vector swordHB, double damage, double knockHorz, double knockVert, int slowLvl, int slowTicks) {
 		for (Entity entity : knight.main.getNearbyEntities(10, 10, 10)) {
 			BoundingBox hitBox = entity.getBoundingBox();
 			if (hitBox.contains(knight.main.getLocation().add(swordHB).toVector()) && entity.getType().isAlive() && entity.getType() != EntityType.ARMOR_STAND) {
@@ -41,8 +43,17 @@ public class EnemyDMG {
 					
 					livingEntity.damage(damage);
 					livingEntity.setVelocity(knight.main.getLocation().getDirection().multiply(knockHorz).setY(knockVert));
+					
+					//Slow down opponent
+					if (slowLvl > 0) {
+						livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, slowTicks, slowLvl));
+					}
 				}
 			}
 		}
+	}
+
+	public static void normal(LothricKnight mob, Vector inbShieldHB, double damage, double knockHorz, double knockVert) {
+		normal(mob, inbShieldHB, damage, knockHorz, knockVert, 0, 0);
 	}
 }

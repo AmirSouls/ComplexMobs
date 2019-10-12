@@ -1,4 +1,4 @@
-package complexMobs.LothricKnight;
+package complexMobs.LothricKnight.Actions;
 
 import java.time.Instant;
 
@@ -240,7 +240,7 @@ public class LeftSlash {
 			}
 			
 			//Attack frames: Appears as 9 in 60fps, but is really 3 in game tick speed.
-			DamageArea.process(knight, sword, 2, knight.animationTimer.get(sword), 500, 655, swordPosition, yaw, true, 14, .7, .2);
+			DamageArea.normal(knight, sword, 2, .5, knight.animationTimer.get(sword), 495, 655, swordPosition, yaw, true, 14, .7, .2);
 			
 		} catch (NullPointerException event) {}
 	}

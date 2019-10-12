@@ -1,4 +1,4 @@
-package complexMobs.LothricKnight;
+package complexMobs.LothricKnight.Actions;
 
 import java.time.Instant;
 
@@ -15,9 +15,10 @@ import complexMobs.Methods.PlaySound;
 import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
-public class WalkingSide {
+
+public class WalkingBackward {
 	
-	public static void animate(LothricKnight knight, boolean shieldUp) {
+	public static void animate(LothricKnight knight) {
 		try {
 			if (knight.changeTimer == null) {
 				knight.changeTimer = Instant.now();
@@ -88,13 +89,40 @@ public class WalkingSide {
 			}
 			
 			//Direction handling
-			{
-				DirectionAndMovement.normal(knight, .06, -90);
-			}
+			DirectionAndMovement.normal(knight, -.1, 0);
 			
 			
 			if (pelvis != null) {
-				pelvisPosition = new Vector(0,0.4,0);
+				//Default to this
+				pelvisPosition = new Vector(0,0.5,0);
+				
+				//Set position based on current time
+				//Up
+				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(300))) {
+					pelvisPosition = pelvisPosition.add(new Vector(0,.04,0));	
+				}
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(355))) {		
+				}
+				//Step sound
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(405))) {		
+					if (ToggleSound.isOn(knight, "lothricknight.walk")) PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
+				}
+				//Pause and re-enable sound
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(500))) {		
+					ToggleSound.on(knight, "lothricknight.walk");
+				}
+				//Down
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(805))) {
+					pelvisPosition = pelvisPosition.add(new Vector(0,-.04,0));	
+				}
+				else if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(1000))) {	
+				}
+				//Reset
+				else if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(1000))) {
+					knight.animationTimer.put(pelvis, Instant.now());
+					pelvisPosition = new Vector(0,0.5,0);
+				}
+				
 				pelvisPosition.rotateAroundY(-yaw);
 				pelvis.teleport(knight.main.getLocation().add(pelvisPosition));
 				
@@ -111,35 +139,36 @@ public class WalkingSide {
 			HeadZeroAnimation.animate(head, knight);
 			
 			PartPositioning.position(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), knight.main.getLocation(), yaw);
-			GoBtwn.animate(cape, cape.getHeadPose(), 20, 20, 35, 35, 0, 0, 30.0);
-			
-			//Arms
-			if (shieldUp) {
+			GoBtwn.animate(cape, cape.getHeadPose(), 15, 15, 0, 0, 0, 0, 30.0);
+	
+			//Arms, shield up or down boolean.
+			if (knight.shieldUp) {
 				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), knight.main.getLocation(), yaw);
-				GoBtwn.animate(leftElbow, leftElbow.getHeadPose(), 15, 15, 0, 0, -10, -10, 110.0);
+				GoBtwn.animate(leftElbow, leftElbow.getHeadPose(), 15, 15, 0, 0, -10, -10, 5);
 				
 				rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(rightElbow, rightElbow.getHeadPose(), 10, 10, 0, 0, 45, 45, 30.0);
+				GoBtwn.animate(rightElbow, rightElbow.getHeadPose(), 10, 10, 0, 0, 45, 45, 5);
 				
 				leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(leftArm, leftArm.getHeadPose(), -60, -60, 0, 0, 40, 40, 110.0);
+				GoBtwn.animate(leftArm, leftArm.getHeadPose(), -60, -60, 0, 0, 40, 40, 5);
 				
 				rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(rightArm, rightArm.getHeadPose(), 0, 0, 0, 0, 40, 40, 30.0);
+				GoBtwn.animate(rightArm, rightArm.getHeadPose(), 0, 0, 0, 0, 40, 40, 5);
 				
 				leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(leftHand, leftHand.getHeadPose(), 180, 180, 100, 100, 0, 0, 110.0);
+				GoBtwn.animate(leftHand, leftHand.getHeadPose(), 180, 180, 100, 100, 0, 0, 30.0);
 				
 				rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(rightHand, rightHand.getHeadPose(), 0, 0, 10);
+				GoBtwn.animate(rightHand, rightHand.getHeadPose(), 0, 0, 30.0);
 				
 				PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), knight.main.getLocation(), yaw);
-				GoBtwn.animate(sword, sword.getHeadPose(), 0, 0, 10);
+				GoBtwn.animate(sword, sword.getHeadPose(), 0, 0, 30.0);
 				
 				PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), knight.main.getLocation(), yaw);
 				GoBtwn.animate(shield, shield.getHeadPose(), 180, 180, 100, 100, 0, 0, 110);
 			}
 			else {
+				//Arms
 				leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), knight.main.getLocation(), yaw);
 				GoBtwn.animate(leftElbow, leftElbow.getHeadPose(), 0, 0, 0, 0, -20, -20, 30.0);
 				
@@ -168,66 +197,63 @@ public class WalkingSide {
 			//Legs
 			leftThighPosition = PartPositioning.position(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), knight.main.getLocation(), yaw);
 			//Right
-			FromTo.animate(leftThigh, -30, -20, 0, -50, 30, 0, 0, 755);
+			FromTo.animate(leftThigh, -15,0,0, 30,0,0, 0, 605);
 			//Pause
 			//Left
-			FromTo.animate(leftThigh, -50, 30, 0, -30, -20, 0, 900, 1655);
+			FromTo.animate(leftThigh, 30, 0, 0, -15, 0, 0, 800, 1405);
 			//Pause
 			//Reset
-			FromTo.reset(leftThigh, 1800);
+			FromTo.reset(leftThigh, 1600);
 			
 			rightThighPosition = PartPositioning.position(rightThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(-0.17,-.42,.04), knight.main.getLocation(), yaw);
 			//Right
-			FromTo.animate(rightThigh, -30, 30, 0, 20, 55, 0, 0, 755);
+			FromTo.animate(rightThigh, 30, 0, 0, -15,0,0, 0, 605);
 			//Pause
 			//Left
-			FromTo.animate(rightThigh, 20, 55, 0, -30, 30, 0, 900, 1655);
+			FromTo.animate(rightThigh, -15,0,0, 30, 0, 0, 800, 1405);
 			//Pause
 			//Reset
-			FromTo.reset(rightThigh, 1800);
+			FromTo.reset(rightThigh, 1600);
 			
 			leftCalfPosition = PartPositioning.position(leftCalf, leftThighPosition, leftThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
 			//Right
-			FromTo.animate(leftCalf, 10, 0, -10, -10, 15, 10, 0, 755);
+			FromTo.animate(leftCalf, -15, 0, 0, 60, 0, 0, 0, 605);
 			//Pause
 			//Left
-			FromTo.animate(leftCalf, -10, 15, 10, 10, 0, -10, 900, 1655);
+			FromTo.animate(leftCalf, 60, 0, 0, -15, 0, 0, 800, 1405);
 			//Pause
 			//Reset
-			FromTo.reset(leftCalf, 1800);
+			FromTo.reset(leftCalf, 1600);
 			
 			rightCalfPosition = PartPositioning.position(rightCalf, rightThighPosition, rightThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
 			//Right
-			FromTo.animate(rightCalf, 5, 0, 10, 50, 80, 0, 0, 755);
+			FromTo.animate(rightCalf, 60, 0, 0, -15, 0, 0, 0, 605);
 			//Pause
 			//Left
-			FromTo.animate(rightCalf, 50, 80, 0, 5, 0, 10, 900, 1655);
+			FromTo.animate(rightCalf, -15, 0, 0, 60, 0, 0, 800, 1405);
 			//Pause
 			//Reset
-			FromTo.reset(rightCalf, 1800);
-			
-			//Step sound
-			if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(755)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(805))) {		
-				if (ToggleSound.isOn(knight, "lothricknight.walk")) PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
-			}
-			//Re-enable sound
-			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(805)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(1655))) {	
-				ToggleSound.on(knight, "lothricknight.walk");
-			}
-			//Step sound
-			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(1655)) && Instant.now().isBefore(knight.animationTimer.get(rightCalf).plusMillis(1705))) {		
-				if (ToggleSound.isOn(knight, "lothricknight.walk")) PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
-			}
-			//Re-enable sound
-			else if (Instant.now().isAfter(knight.animationTimer.get(rightCalf).plusMillis(1705))) {	
-				ToggleSound.on(knight, "lothricknight.walk");
-			}
+			FromTo.reset(rightCalf, 1600);
 			
 			PartPositioning.position(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
-			GoBtwn.animate(leftFoot, leftFoot.getHeadPose(), 0, 0, 30.0);
+			//Right
+			FromTo.animate(leftFoot, -15, 0, 0, 60, 0, 0, 0, 605);
+			//Pause
+			//Left
+			FromTo.animate(leftFoot, 60, 0, 0, -15, 0, 0, 800, 1405);
+			//Pause
+			//Reset
+			FromTo.reset(leftFoot, 1600);
 
 			PartPositioning.position(rightFoot, rightCalfPosition, rightCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
-			GoBtwn.animate(rightFoot, rightFoot.getHeadPose(), 0, 0, 30.0);
+			//Right
+			FromTo.animate(rightFoot, 60, 0, 0, -15, 0, 0, 0, 605);
+			//Pause
+			//Left
+			FromTo.animate(rightFoot, -15, 0, 0, 60, 0, 0, 800, 1405);
+			//Pause
+			//Reset
+			FromTo.reset(rightFoot, 1600);
 			
 		} catch (NullPointerException event) {}
 	}
