@@ -115,11 +115,11 @@ public class Death {
 				FromTo.animate(pelvis, 50, 0, 0, 90, 0, 0, 3005, 3905);
 				
 				//Sounds
-				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55)) && ToggleSound.isOn(knight, "lothricknight.death")) {
+				if (Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(105)) && ToggleSound.isOn(knight, "lothricknight.death")) {
 					PlaySound.normal("lothricknight.death", knight.main.getLocation(), 3, 1, 1);
 					ToggleSound.off(knight, "lothricknight.death");
 				}
-				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(2700)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(2755)) && ToggleSound.isOn(knight, "lothricknight.deathknee")) {
+				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(2600)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(2755)) && ToggleSound.isOn(knight, "lothricknight.deathknee")) {
 					PlaySound.normal("lothricknight.deathknee", knight.main.getLocation(), 3, 1, 1);
 					ToggleSound.off(knight, "lothricknight.deathknee");
 				}

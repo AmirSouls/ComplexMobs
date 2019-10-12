@@ -109,7 +109,7 @@ public class StanceThrust {
 				}
 				
 				//Sounds
-				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(0)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(55))) {
+				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(350)) && Instant.now().isBefore(knight.animationTimer.get(pelvis).plusMillis(455))) {
 					
 					//Grunt sound
 					if (ToggleSound.isOn(knight, "lothricknight.grunt")) {

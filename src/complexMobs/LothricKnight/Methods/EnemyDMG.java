@@ -31,8 +31,12 @@ public class EnemyDMG {
 					if (player.getGameMode() == GameMode.CREATIVE) creative = true;
 				}
 				
-				//Armor Formula: TODO Implement real more complex formula
-				damage = damage - (damage * (livingEntity.getAttribute(Attribute.GENERIC_ARMOR).getValue()) / 25);
+				//Armor Formula
+				double defensePoints = livingEntity.getAttribute(Attribute.GENERIC_ARMOR).getValue();
+				double toughness = livingEntity.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
+				defensePoints -= (damage / (2 + toughness / 4));
+				damage *= (1 - (defensePoints / 25));
+				
 				
 				if ((livingEntity.getNoDamageTicks() == 0 || livingEntity.getLastDamage() + 1 < damage) && !creative) {
 					//Blood particle
