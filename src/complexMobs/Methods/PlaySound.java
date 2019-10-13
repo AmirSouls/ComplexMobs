@@ -1,40 +1,11 @@
 package complexMobs.Methods;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class PlaySound {
 	
 	public static void normal(String soundID, Location coords, double volume, double pitch, double minVolume) {
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-				"playsound minecraft:"
-				+
-				soundID
-				+
-				" master @a "
-				+
-				coords.getX()
-				+ 
-				" "
-				+
-				coords.getY()
-				+
-				" "
-				+
-				coords.getZ()
-				+
-				" "
-				+
-				volume
-				+
-				" "
-				+
-				pitch
-				+
-				" "
-				+
-				minVolume
-				);
+		coords.getWorld().playSound(coords, soundID, (float) volume, (float) pitch);
 	}
 	
 	//Without minimum volume

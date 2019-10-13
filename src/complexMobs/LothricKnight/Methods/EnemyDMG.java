@@ -1,5 +1,6 @@
 package complexMobs.LothricKnight.Methods;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -36,7 +37,6 @@ public class EnemyDMG {
 				double toughness = livingEntity.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
 				defensePoints -= (damage / (2 + toughness / 4));
 				damage *= (1 - (defensePoints / 25));
-				
 				
 				if ((livingEntity.getNoDamageTicks() == 0 || livingEntity.getLastDamage() + 1 < damage) && !creative) {
 					//Blood particle
