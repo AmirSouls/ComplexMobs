@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-public class ComplexMob {
+public abstract class ComplexMob {
 	//Main
 	public final ArmorStand main;
 
@@ -77,5 +78,9 @@ public class ComplexMob {
 		parts = inpParts;
 		
 		soundList = inpSounds;
+	}
+	
+	public void DirectionAndMovement() {
+		Bukkit.broadcastMessage("" + main.getCustomName());
 	}
 }
