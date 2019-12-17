@@ -11,11 +11,10 @@ import complexMobs.LothricKnight.Actions.Standing;
 import complexMobs.LothricKnight.Actions.WalkingBackward;
 import complexMobs.LothricKnight.Actions.WalkingForward;
 import complexMobs.LothricKnight.Actions.WalkingSide;
-import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class PassiveAction {
-	public static void select(LothricKnight knight, double distance3D) {
+	public void select(LothricKnight knight, double distance3D) {
 		
 		//Action selection
 		Collection<String> actions = new ArrayList<>();
@@ -29,7 +28,6 @@ public class PassiveAction {
 		final Instant changeTimer = knight.changeTimer;
 		
 		
-		
 		//"Too close, walk backwards" override
 		if (distance3D < 3 && !knight.passiveAction.contentEquals("WalkingBackward")) {
 			knight.passiveAction = "WalkingBackward";
@@ -39,7 +37,7 @@ public class PassiveAction {
 			ResetTimers.reset(knight);
 			
 			//Re-enable all sounds
-			ToggleSound.enableAllSounds(knight);
+			knight.enableAllSounds();
 		}
 		//"Rush for finish" override
 		else if (distance3D > 3 && knight.target.getHealth() < 5  && !knight.passiveAction.contentEquals("Running")) {
@@ -51,7 +49,7 @@ public class PassiveAction {
 			ResetTimers.reset(knight);
 			
 			//Re-enable all sounds
-			ToggleSound.enableAllSounds(knight);
+			knight.enableAllSounds();
 		}
 		//Check change timer
 		else if (Instant.now().isAfter(changeTimer.plusMillis(3000))) {
@@ -69,7 +67,7 @@ public class PassiveAction {
 			ResetTimers.reset(knight);
 			
 			//Re-enable all sounds
-			ToggleSound.enableAllSounds(knight);
+			knight.enableAllSounds();
 		}
 		
 		//Animate part with current passive action

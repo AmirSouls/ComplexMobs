@@ -10,11 +10,10 @@ import org.bukkit.entity.ArmorStand;
 
 import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
-import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
 
 public class ActiveAction {
-	public static void select(LothricKnight knight, double distance3D) {
+	public void select(LothricKnight knight, double distance3D) {
 		
 		//Hold for ally
 		for (ArmorStand armorStand : knight.main.getWorld().getEntitiesByClass(ArmorStand.class)) {
@@ -69,7 +68,7 @@ public class ActiveAction {
 			ResetTimers.reset(knight);
 			
 			//Re-enable all sounds
-			ToggleSound.enableAllSounds(knight);
+			knight.enableAllSounds();
 		}
 	}
 }

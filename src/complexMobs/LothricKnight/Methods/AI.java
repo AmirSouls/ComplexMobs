@@ -24,7 +24,7 @@ import complexMobs.Mobs.LothricKnight;
 
 public class AI {
 	
-	public static void process(LothricKnight knight) {
+	public void process(LothricKnight knight) {
 		//Collision
 		try {
 			for (Entity entity : knight.main.getNearbyEntities(.125, .3, .125)) {
@@ -147,7 +147,7 @@ public class AI {
 									
 								//Decide if it wants to attempt an attack
 								if (Math.random() < 0.7 * staminaModifier && !outOfStamina) {
-									ActiveAction.select(knight, distance3D);
+									knight.ActiveActionSelect(distance3D);
 								}
 								
 							}
@@ -165,11 +165,8 @@ public class AI {
 								LivingEntity target = knight.target;
 								double distance3D = target.getLocation().distance(knight.main.getLocation());
 								
-								
-								
 								//Action select and Execution
-								PassiveAction.select(knight, distance3D);
-								
+								knight.PassiveActionSelect(distance3D);
 							}	
 						}
 					}

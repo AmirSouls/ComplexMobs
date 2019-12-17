@@ -1,8 +1,7 @@
-package complexMobs.LothricKnight.Methods;
+package complexMobs.Methods;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -11,7 +10,7 @@ import complexMobs.Main.ComplexMob;
 import complexMobs.Mobs.LothricKnight;
 
 public class DirectionAndMovement {
-	public static void normal(ComplexMob mob, double speed, double rotation, boolean aim) {
+	public void normal(ComplexMob mob, double speed, double rotation, boolean aim) {
 		try {
 			
 			//Initiate direction vector
@@ -80,25 +79,25 @@ public class DirectionAndMovement {
 		} catch (IllegalArgumentException e) {}
 	}
 	
-	//Simplification
-	public static void normal(ComplexMob mob, double speed, double rotation) {
+	//Simple
+	public void normal(ComplexMob mob, double speed, double rotation) {
 		normal(mob, speed, rotation, true);
 	}
 	
 	//Timed
-	public static void timed(ComplexMob mob, double speed, double rotation, Instant timer, Instant timer2, int startMilli, int endMilli, boolean aim) {
+	public void timed(ComplexMob mob, double speed, double rotation, Instant timer, Instant timer2, int startMilli, int endMilli, boolean aim) {
 		if (Instant.now().isAfter(timer.plusMillis(startMilli)) && Instant.now().isBefore(timer2.plusMillis(endMilli))) {
 			normal(mob, speed, rotation, aim);
 		}
 	}
 	
 	//Timed, Assume aim
-	public static void timed(ComplexMob mob, double speed, double rotation, Instant timer, Instant timer2, int startMilli, int endMilli) {
+	public void timed(ComplexMob mob, double speed, double rotation, Instant timer, Instant timer2, int startMilli, int endMilli) {
 		timed(mob, speed, rotation, timer, timer2, startMilli, endMilli, true);
 	}
 	
 	//Can go through check
-	protected static boolean canGoThrough(Location location) {
+	protected boolean canGoThrough(Location location) {
 		if (location.getBlock().isEmpty() || location.getBlock().isPassable() || location.getBlock().isLiquid()) {
 			return true;
 		}

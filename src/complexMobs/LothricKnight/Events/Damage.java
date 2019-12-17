@@ -24,7 +24,6 @@ import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.LothricKnight.Methods.ShieldArc;
 import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
-import complexMobs.Methods.PlaySound;
 import complexMobs.Mobs.LothricKnight;
 
 public class Damage implements Listener {
@@ -59,7 +58,7 @@ public class Damage implements Listener {
 									ResetTimers.reset(knight);
 									
 									//Shield hit sound
-									PlaySound.normal("lothricknight.shieldhit", mob.main.getLocation(), 2, 1, 1);
+									knight.playSound("lothricknight.shieldhit", mob.main.getLocation(), 2, 1, 1);
 									
 									//Push back attacker
 									event.getDamager().setVelocity(event.getDamager().getLocation().getDirection().multiply(-.3).setY(.1));
@@ -103,7 +102,7 @@ public class Damage implements Listener {
 								mob.main.getWorld().spawnParticle(Particle.BLOCK_DUST, mob.main.getLocation().add(0,2,0), 400, 0.1, 0.3, 0.3, 0, Material.REDSTONE_WIRE.createBlockData());
 								
 								//Hurt sound
-								PlaySound.normal("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
+								mob.playSound("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
 							}
 							else {
 								//Deal damage
@@ -113,7 +112,7 @@ public class Damage implements Listener {
 								mob.main.getWorld().spawnParticle(Particle.BLOCK_DUST, mob.main.getLocation().add(0,2,0), 100, 0.1, 0.3, 0.1, 0, Material.REDSTONE_WIRE.createBlockData());
 								
 								//Hurt sound
-								PlaySound.normal("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
+								mob.playSound("lothricknight.hurt", mob.main.getLocation(), 2, 1, 1);
 								
 								//Lower poise
 								if (!mob.hyperArmor) {

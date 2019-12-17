@@ -6,12 +6,12 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import complexMobs.LothricKnight.Methods.DirectionAndMovement;
-import complexMobs.LothricKnight.Methods.FromTo;
-import complexMobs.LothricKnight.Methods.PartPositioning;
+import complexMobs.LothricKnight.Methods.DamageArea;
 import complexMobs.LothricKnight.Methods.ResetTimers;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
-import complexMobs.Methods.DamageArea;
+import complexMobs.Methods.DirectionAndMovement;
+import complexMobs.Methods.LegacyAnimate;
+import complexMobs.Methods.PartPositioning;
 import complexMobs.Methods.PlaySound;
 import complexMobs.Methods.ToggleSound;
 import complexMobs.Mobs.LothricKnight;
@@ -94,7 +94,7 @@ public class LeftSlash {
 				
 				double moveMult = 0;
 				if (distance > 2) moveMult = .12;
-				DirectionAndMovement.timed(knight, distance * moveMult, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 605);
+				knight.DirectionAndMovementTimed(distance * moveMult, 0, knight.animationTimer.get(pelvis), knight.animationTimer.get(pelvis), 0, 605, true);
 				
 				if (Instant.now().isAfter(knight.animationTimer.get(pelvis).plusMillis(755))) {
 					if (distance < 4 && knight.stamina > 0 && Math.random() < .7) {
@@ -105,14 +105,14 @@ public class LeftSlash {
 						knight.attackAreaPts = null;
 						
 						//Re-enable all sounds
-						ToggleSound.enableAllSounds(knight);
+						knight.enableAllSounds();
 					}
 					else {
 						ResetTimers.reset(knight);
 						knight.isAttacking = false;
 						
 						//Re-enable all sounds
-						ToggleSound.enableAllSounds(knight);
+						knight.enableAllSounds();
 					}
 				}
 			}
@@ -132,117 +132,117 @@ public class LeftSlash {
 				}
 				pelvisPosition.rotateAroundY(-yaw);
 				pelvis.teleport(knight.main.getLocation().add(pelvisPosition));
-				FromTo.animate(pelvis, 0, 0, 0, 0, -80, 0, 500, 605);
-				FromTo.animate(pelvis, 0, 0, 0, 0, 0, 0, 0, 505);
+				knight.legacyAnimate(pelvis, 0, 0, 0, 0, -80, 0, 500, 605);
+				knight.legacyAnimate(pelvis, 0, 0, 0, 0, 0, 0, 0, 505);
 			}
 			
 			//Chest and head
-			chestPosition = PartPositioning.position(chest, pelvisPosition, pelvis.getHeadPose(), new Vector(0,-.16,0.01), knight.main.getLocation(), yaw);
-			FromTo.animate(chest, 0, 0, 0, 14, 14, 0, 0, 355);
-			FromTo.animate(chest, 14, 14, 0, 14, -80, 0, 350, 505);
+			chestPosition = knight.partPosition(chest, pelvisPosition, pelvis.getHeadPose(), new Vector(0,-.16,0.01), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(chest, 0, 0, 0, 14, 14, 0, 0, 355);
+			knight.legacyAnimate(chest, 14, 14, 0, 14, -80, 0, 350, 505);
 			
-			PartPositioning.position(head, chestPosition, chest.getHeadPose(), new Vector(0,0.8,0), knight.main.getLocation(), yaw);
+			knight.partPosition(head, chestPosition, chest.getHeadPose(), new Vector(0,0.8,0), knight.main.getLocation(), yaw);
 			HeadZeroAnimation.animate(head, knight);	
 			
-			PartPositioning.position(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), knight.main.getLocation(), yaw);
-			FromTo.animate(cape, 10, 0, 0, 30, 0, -90, 0, 505);
-			FromTo.animate(cape, 30, 0, -90, 100, -80, 0, 550, 655);
-			FromTo.animate(cape, 100, -80, 0, 10, -70, 0, 650, 1000);
+			knight.partPosition(cape, chestPosition, chest.getHeadPose(), new Vector(0,0.9,-0.2), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(cape, 10, 0, 0, 30, 0, -90, 0, 505);
+			knight.legacyAnimate(cape, 30, 0, -90, 100, -80, 0, 550, 655);
+			knight.legacyAnimate(cape, 100, -80, 0, 10, -70, 0, 650, 1000);
 			
 			//Arms
-			leftElbowPosition = PartPositioning.position(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), knight.main.getLocation(), yaw);
-			FromTo.animate(rightElbow, 0, 0, 0, 0, 0, 0, 0, 1000);
+			leftElbowPosition = knight.partPosition(leftElbow, chestPosition, chest.getHeadPose(), new Vector(0.34,0.8,-.03), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightElbow, 0, 0, 0, 0, 0, 0, 0, 1000);
 			
-			rightElbowPosition = PartPositioning.position(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), knight.main.getLocation(), yaw);
-			FromTo.animate(rightElbow, 0, 0, 20, 0, 180, 110, 0, 155);
-			FromTo.animate(rightElbow, 0, 180, 110, 0, 180, 135, 150, 305);
-			FromTo.animate(rightElbow, 0, 180, 135, 0, -70, 105, 300, 405);
-			FromTo.animate(rightElbow, 0, -70, 105, -90, -45, 90, 400, 505);
-			FromTo.animate(rightElbow, -90, -45, 90, -80, -80, 80, 500, 605);
-			FromTo.animate(rightElbow, -80, -80, 80, 0, -80, 0, 600, 655);
+			rightElbowPosition = knight.partPosition(rightElbow, chestPosition, chest.getHeadPose(), new Vector(-0.34,0.9,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightElbow, 0, 0, 20, 0, 180, 110, 0, 155);
+			knight.legacyAnimate(rightElbow, 0, 180, 110, 0, 180, 135, 150, 305);
+			knight.legacyAnimate(rightElbow, 0, 180, 135, 0, -70, 105, 300, 405);
+			knight.legacyAnimate(rightElbow, 0, -70, 105, -90, -45, 90, 400, 505);
+			knight.legacyAnimate(rightElbow, -90, -45, 90, -80, -80, 80, 500, 605);
+			knight.legacyAnimate(rightElbow, -80, -80, 80, 0, -80, 0, 600, 655);
 		
-			leftArmPosition = PartPositioning.position(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), knight.main.getLocation(), yaw);
-			FromTo.animate(leftArm, 0, 0, -20, 0, 0, -20, 0, 1000);
+			leftArmPosition = knight.partPosition(leftArm, leftElbowPosition, leftElbow.getHeadPose(), new Vector(0.05,-0.51,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftArm, 0, 0, -20, 0, 0, -20, 0, 1000);
 			
-			rightArmPosition = PartPositioning.position(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), knight.main.getLocation(), yaw);
-			FromTo.animate(rightArm, 0, 0, 20, -20, 180, 145, 0, 155);
-			FromTo.animate(rightArm, -20, 180, 145, -20, 180, 210, 150, 305);
-			FromTo.animate(rightArm, -20, 180, 210, -20, 180, 185, 300, 405);
-			FromTo.animate(rightArm,-20, 180, 185, -135, 0, 0, 400, 505);
-			FromTo.animate(rightArm, -135, 0, 0, -50, 20, -80, 500, 605);
-			FromTo.animate(rightArm, -50, 20, -80, 0, -30, -70, 600, 655);
+			rightArmPosition = knight.partPosition(rightArm, rightElbowPosition, rightElbow.getHeadPose(), new Vector(-0.05,-0.51,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightArm, 0, 0, 20, -20, 180, 145, 0, 155);
+			knight.legacyAnimate(rightArm, -20, 180, 145, -20, 180, 210, 150, 305);
+			knight.legacyAnimate(rightArm, -20, 180, 210, -20, 180, 185, 300, 405);
+			knight.legacyAnimate(rightArm,-20, 180, 185, -135, 0, 0, 400, 505);
+			knight.legacyAnimate(rightArm, -135, 0, 0, -50, 20, -80, 500, 605);
+			knight.legacyAnimate(rightArm, -50, 20, -80, 0, -30, -70, 600, 655);
 			
-			leftHandPosition = PartPositioning.position(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
-			FromTo.animate(leftHand, 0, 0, -20, 0, 0, -20, 0, 1000);
+			leftHandPosition = knight.partPosition(leftHand, leftArmPosition, leftArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftHand, 0, 0, -20, 0, 0, -20, 0, 1000);
 			
-			rightHandPosition = PartPositioning.position(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
-			FromTo.animate(rightHand, 0, 0, 20, -20, 180, 145, 0, 155);
-			FromTo.animate(rightHand, -20, 180, 145, 0, 180, 210, 150, 305);
-			FromTo.animate(rightHand, -20, 180, 210, -20, 180, 185, 300, 405);
-			FromTo.animate(rightHand, -20, 180, 185, -90, 0, -90, 400, 505);
-			FromTo.animate(rightHand, -90, 0, -90, -50, 20, -80, 500, 605);
-			FromTo.animate(rightHand, -50, 20, -80, 0, -30, -70, 600, 655);
+			rightHandPosition = knight.partPosition(rightHand, rightArmPosition, rightArm.getHeadPose(), new Vector(0,-.4,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightHand, 0, 0, 20, -20, 180, 145, 0, 155);
+			knight.legacyAnimate(rightHand, -20, 180, 145, 0, 180, 210, 150, 305);
+			knight.legacyAnimate(rightHand, -20, 180, 210, -20, 180, 185, 300, 405);
+			knight.legacyAnimate(rightHand, -20, 180, 185, -90, 0, -90, 400, 505);
+			knight.legacyAnimate(rightHand, -90, 0, -90, -50, 20, -80, 500, 605);
+			knight.legacyAnimate(rightHand, -50, 20, -80, 0, -30, -70, 600, 655);
 			
-			Vector swordPosition = PartPositioning.position(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), knight.main.getLocation(), yaw);
-			FromTo.animate(sword, 0, 0, 0, -70, 60, 70, 0, 155);
-			FromTo.animate(sword, -70, 60, 70, 15, -95, 0, 150, 305);
-			FromTo.animate(sword, 15, -95, 0, 185, 30, -10, 300, 355);
-			FromTo.animate(sword, 185, 30, -10, -90, 0, -40, 400, 455);
-			FromTo.animate(sword, -90, 0, -40, -20, 15, -55, 500, 605);;
-			FromTo.animate(sword, -20, 15, -55, 100, -30, -70, 600, 655);;
+			Vector swordPosition = knight.partPosition(sword, rightHandPosition, rightHand.getHeadPose(), new Vector(.05,-.3,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(sword, 0, 0, 0, -70, 60, 70, 0, 155);
+			knight.legacyAnimate(sword, -70, 60, 70, 15, -95, 0, 150, 305);
+			knight.legacyAnimate(sword, 15, -95, 0, 185, 30, -10, 300, 355);
+			knight.legacyAnimate(sword, 185, 30, -10, -90, 0, -40, 400, 455);
+			knight.legacyAnimate(sword, -90, 0, -40, -20, 15, -55, 500, 605);;
+			knight.legacyAnimate(sword, -20, 15, -55, 100, -30, -70, 600, 655);;
 			
-			PartPositioning.position(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), knight.main.getLocation(), yaw);
-			FromTo.animate(shield, 10, 50, 0, 10, 50, 0, 0, 1000);
+			knight.partPosition(shield, leftHandPosition, leftHand.getHeadPose(), new Vector(0,-.5,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(shield, 10, 50, 0, 10, 50, 0, 0, 1000);
 			
 			//Legs
-			leftThighPosition = PartPositioning.position(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), knight.main.getLocation(), yaw);
-			FromTo.animate(leftThigh, 0, 0, 0, 30, -45, -30, 0, 155);
-			FromTo.animate(leftThigh, 30, -45, -30, 50, -45, -50, 150, 355);
-			FromTo.animate(leftThigh, 50, -45, -50, -75, -110, 0, 350, 605);
+			leftThighPosition = knight.partPosition(leftThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(0.17,-.42,.04), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftThigh, 0, 0, 0, 30, -45, -30, 0, 155);
+			knight.legacyAnimate(leftThigh, 30, -45, -30, 50, -45, -50, 150, 355);
+			knight.legacyAnimate(leftThigh, 50, -45, -50, -75, -110, 0, 350, 605);
 			
-			rightThighPosition = PartPositioning.position(rightThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(-0.17,-.42,.04), knight.main.getLocation(), yaw);
-			FromTo.animate(rightThigh, 0, 0, 0, -45, 30, 0, 0, 305);
-			FromTo.animate(rightThigh, -45, 30, 0, -75, -15, 0, 300, 605);
+			rightThighPosition = knight.partPosition(rightThigh, pelvisPosition, pelvis.getHeadPose(), new Vector(-0.17,-.42,.04), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightThigh, 0, 0, 0, -45, 30, 0, 0, 305);
+			knight.legacyAnimate(rightThigh, -45, 30, 0, -75, -15, 0, 300, 605);
 			
-			leftCalfPosition = PartPositioning.position(leftCalf, leftThighPosition, leftThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
-			FromTo.animate(leftCalf, 0, 0, 0, 40, -45, -40, 0, 155);
-			FromTo.animate(leftCalf, 40, -45, -40, 60, -10, 0, 150, 355);
-			FromTo.animate(leftCalf, 60, -10, 0, 10, -110, 0, 350, 605);
+			leftCalfPosition = knight.partPosition(leftCalf, leftThighPosition, leftThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftCalf, 0, 0, 0, 40, -45, -40, 0, 155);
+			knight.legacyAnimate(leftCalf, 40, -45, -40, 60, -10, 0, 150, 355);
+			knight.legacyAnimate(leftCalf, 60, -10, 0, 10, -110, 0, 350, 605);
 			
-			rightCalfPosition = PartPositioning.position(rightCalf, rightThighPosition, rightThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
-			FromTo.animate(rightCalf, 0, 0, 0, 15, 60, 0, 0, 205);
-			FromTo.animate(rightCalf, 15, 60, 0, 15, 0, 5, 200, 605);
+			rightCalfPosition = knight.partPosition(rightCalf, rightThighPosition, rightThigh.getHeadPose(), new Vector(0,-0.6,0), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(rightCalf, 0, 0, 0, 15, 60, 0, 0, 205);
+			knight.legacyAnimate(rightCalf, 15, 60, 0, 15, 0, 5, 200, 605);
 			
-			PartPositioning.position(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
-			FromTo.animate(leftFoot, 0, -45, 0, 30, 0, 0, 0, 305);
-			FromTo.animate(leftFoot, 0, 30, 0, 0, -90, 0, 300, 605);
+			knight.partPosition(leftFoot, leftCalfPosition, leftCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftFoot, 0, -45, 0, 30, 0, 0, 0, 305);
+			knight.legacyAnimate(leftFoot, 0, 30, 0, 0, -90, 0, 300, 605);
 		
-			PartPositioning.position(rightFoot, rightCalfPosition, rightCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
-			FromTo.animate(leftFoot, 0, 0, 0, 0, 0, 0, 0, 1000);
+			knight.partPosition(rightFoot, rightCalfPosition, rightCalf.getHeadPose(), new Vector(0,-0.585,-0.035), knight.main.getLocation(), yaw);
+			knight.legacyAnimate(leftFoot, 0, 0, 0, 0, 0, 0, 0, 1000);
 			
 			//Sounds
 			if (Instant.now().isAfter(knight.animationTimer.get(sword).plusMillis(500)) && Instant.now().isBefore(knight.animationTimer.get(sword).plusMillis(555))) {
-				if (ToggleSound.isOn(knight, "lothricknight.slash")) {
+				if (knight.soundIsOn("lothricknight.slash")) {
 					//Slash sound
-					PlaySound.normal("lothricknight.slash", knight.main.getLocation(), 2, 1, 1);
-					ToggleSound.off(knight, "lothricknight.slash");
+					knight.playSound("lothricknight.slash", knight.main.getLocation(), 2, 1, 1);
+					knight.soundOff("lothricknight.slash");
 				}
 				
-				if (ToggleSound.isOn(knight, "lothricknight.grunt")) {
+				if (knight.soundIsOn("lothricknight.grunt")) {
 					//Grunt sound
-					PlaySound.normal("lothricknight.grunt", knight.main.getLocation(), 2, 1, 1);
-					ToggleSound.off(knight, "lothricknight.grunt");
+					knight.playSound("lothricknight.grunt", knight.main.getLocation(), 2, 1, 1);
+					knight.soundOff("lothricknight.grunt");
 				}
 				
-				if (ToggleSound.isOn(knight, "lothricknight.walk")) {
+				if (knight.soundIsOn("lothricknight.walk")) {
 					//Step sound
-					PlaySound.normal("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
-					ToggleSound.off(knight, "lothricknight.walk");
+					knight.playSound("lothricknight.walk", knight.main.getLocation(), 2, 1, 1);
+					knight.soundOff("lothricknight.walk");
 				}
 			}
 			
 			//Attack frames: Appears as 9 in 60fps, but is really 3 in game tick speed.
-			DamageArea.normal(knight, sword, 2, .5, knight.animationTimer.get(sword), 495, 655, swordPosition, yaw, true, 12, .7, .2);
+			knight.DamageArea(sword, 2, .5, knight.animationTimer.get(sword), 495, 655, swordPosition, yaw, true, 12, .7, .2);
 			
 		} catch (NullPointerException event) {}
 	}

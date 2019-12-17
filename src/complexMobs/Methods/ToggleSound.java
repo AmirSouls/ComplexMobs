@@ -4,17 +4,17 @@ import complexMobs.Main.ComplexMob;
 
 public class ToggleSound {
 	
-	public static void off(ComplexMob mob, String soundID) {
+	public void off(ComplexMob mob, String soundID) {
 		mob.played.put(soundID, true);
 	}
 	
-	public static void on(ComplexMob mob, String soundID) {
+	public void on(ComplexMob mob, String soundID) {
 		if (mob.played.containsKey(soundID)) {
 			mob.played.remove(soundID);
 		}
 	}
 	
-	public static boolean isOn(ComplexMob mob, String soundID) {
+	public boolean isOn(ComplexMob mob, String soundID) {
 		if (mob.played.containsKey(soundID)) {
 			return false;
 		}
@@ -23,7 +23,7 @@ public class ToggleSound {
 		}
 	}
 	
-	public static void enableAllSounds(ComplexMob mob) {
+	public void enableAllSounds(ComplexMob mob) {
 		for (String soundID : mob.soundList) {
 			if (mob.played.containsKey(soundID)) {
 				mob.played.remove(soundID);

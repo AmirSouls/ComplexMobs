@@ -21,7 +21,6 @@ import complexMobs.Commands.SpawnCustomMob;
 import complexMobs.LothricKnight.Events.ArenaManager;
 import complexMobs.LothricKnight.Events.Damage;
 import complexMobs.LothricKnight.Events.LKSSFixer;
-import complexMobs.LothricKnight.Methods.AI;
 import complexMobs.LothricKnight.Methods.DsItem;
 import complexMobs.Mobs.LothricKnight;
 
@@ -78,7 +77,8 @@ public class ComplexMobs extends JavaPlugin implements Listener {
 							ArenaManager.checkEmpty(world);
 							if (isMain.containsKey(armorStand)) {
 								if (partMob.containsKey(armorStand)) {
-									AI.process((LothricKnight) partMob.get(armorStand));
+									LothricKnight knight = (LothricKnight) partMob.get(armorStand);
+									knight.AI();
 								}
 							}
 						}

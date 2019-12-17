@@ -10,7 +10,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-import complexMobs.LothricKnight.Methods.FromTo;
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
 import complexMobs.LothricKnight.SpecialAnimations.PelvisZeroAnimation;
 import complexMobs.Mobs.LothricKnight;
@@ -307,8 +306,8 @@ public class Block {
 				
 				leftElbow.teleport(knight.main.getLocation().add(leftElbowPosition));
 				
-				FromTo.animate(leftElbow, 15,0,-10, -10, -10, -10, 0, 205);
-				FromTo.animate(leftElbow, -10, -10, -10, 15, 0, -10, 205, 605);
+				knight.legacyAnimate(leftElbow, 15,0,-10, -10, -10, -10, 0, 205);
+				knight.legacyAnimate(leftElbow, -10, -10, -10, 15, 0, -10, 205, 605);
 			}
 			
 			if (rightElbow != null) {
@@ -440,8 +439,8 @@ public class Block {
 				//Special cape animation
 				cape.teleport(knight.main.getLocation().add(capePosition));
 				
-				FromTo.animate(cape, 0, 0, 0, 70, 0, 40, 0, 105);
-				FromTo.animate(cape, 70, 0, 40, 0, 0, 0, 105, 1005);
+				knight.legacyAnimate(cape, 0, 0, 0, 70, 0, 40, 0, 105);
+				knight.legacyAnimate(cape, 70, 0, 40, 0, 0, 0, 105, 1005);
 			}
 			
 			
