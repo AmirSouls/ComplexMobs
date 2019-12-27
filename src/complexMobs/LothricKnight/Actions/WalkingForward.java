@@ -2,7 +2,6 @@ package complexMobs.LothricKnight.Actions;
 
 import java.time.Instant;
 
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 import complexMobs.LothricKnight.SpecialAnimations.HeadZeroAnimation;
@@ -13,8 +12,6 @@ public class WalkingForward {
 	public static void animate(LothricKnight knight) {
 		try {
 			knight.restoreVectors();
-			
-			Bukkit.broadcastMessage("" + knight.yaw);
 			
 			//Direction handling
 			knight.DirectionAndMovement(.1, 0, true);
