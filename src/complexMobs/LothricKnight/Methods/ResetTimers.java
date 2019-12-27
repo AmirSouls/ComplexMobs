@@ -1,67 +1,50 @@
 package complexMobs.LothricKnight.Methods;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.bukkit.entity.ArmorStand;
 
 import complexMobs.Mobs.LothricKnight;
 
 public class ResetTimers {
 	public static void reset(LothricKnight knight) {
-		Collection<String> armorStandIds = new ArrayList<>();
-		armorStandIds.add("pelvis");
-		armorStandIds.add("chest");
-		armorStandIds.add("head");
-		armorStandIds.add("cape");
-		armorStandIds.add("sword");
-		armorStandIds.add("shield");
-		armorStandIds.add("leftFoot");
-		armorStandIds.add("rightFoot");
-		armorStandIds.add("leftCalf");
-		armorStandIds.add("rightCalf");
-		armorStandIds.add("leftThigh");
-		armorStandIds.add("rightThigh");
-		armorStandIds.add("leftElbow");
-		armorStandIds.add("rightElbow");
-		armorStandIds.add("leftArm");
-		armorStandIds.add("rightArm");
-		armorStandIds.add("leftHand");
-		armorStandIds.add("rightHand");
+		knight.animationTimer.put(knight.pelvis, Instant.now()); 
+		knight.animationTimer.put(knight.chest, Instant.now());
+		knight.animationTimer.put(knight.head, Instant.now()); 
+		knight.animationTimer.put(knight.cape, Instant.now()); 
+		knight.animationTimer.put(knight.sword , Instant.now());
+		knight.animationTimer.put(knight.shield, Instant.now()); 
+		knight.animationTimer.put(knight.leftFoot , Instant.now());
+		knight.animationTimer.put(knight.rightFoot, Instant.now());
+		knight.animationTimer.put(knight.leftCalf, Instant.now()); 
+		knight.animationTimer.put(knight.rightCalf, Instant.now()); 
+		knight.animationTimer.put(knight.leftThigh, Instant.now());
+		knight.animationTimer.put(knight.rightThigh, Instant.now());
+		knight.animationTimer.put(knight.leftElbow, Instant.now());
+		knight.animationTimer.put(knight.rightElbow, Instant.now()); 
+		knight.animationTimer.put(knight.leftArm, Instant.now());
+		knight.animationTimer.put(knight.rightArm, Instant.now()); 
+		knight.animationTimer.put(knight.leftHand, Instant.now());
+		knight.animationTimer.put(knight.rightHand, Instant.now());
 		
-		Collection<ArmorStand> armorStands = knight.parts;
-		
-		for (ArmorStand part : armorStands) {
-			knight.animationTimer.put(part, Instant.now());
-		}
 	}
 	
 	public static void resetOffset(LothricKnight knight, int plusMillis) {
-		Collection<String> armorStandIds = new ArrayList<>();
-		armorStandIds.add("pelvis");
-		armorStandIds.add("chest");
-		armorStandIds.add("head");
-		armorStandIds.add("cape");
-		armorStandIds.add("sword");
-		armorStandIds.add("shield");
-		armorStandIds.add("leftFoot");
-		armorStandIds.add("rightFoot");
-		armorStandIds.add("leftCalf");
-		armorStandIds.add("rightCalf");
-		armorStandIds.add("leftThigh");
-		armorStandIds.add("rightThigh");
-		armorStandIds.add("leftElbow");
-		armorStandIds.add("rightElbow");
-		armorStandIds.add("leftArm");
-		armorStandIds.add("rightArm");
-		armorStandIds.add("leftHand");
-		armorStandIds.add("rightHand");
-		
-		Collection<ArmorStand> armorStands = knight.parts;
-		
-		for (ArmorStand part : armorStands) {
-			knight.animationTimer.put(part, Instant.now().plusMillis(plusMillis));
-		}
+		knight.animationTimer.put(knight.pelvis, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.chest, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.head, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.cape, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.sword , Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.shield, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.leftFoot , Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.rightFoot, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.leftCalf, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.rightCalf, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.leftThigh, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.rightThigh, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.leftElbow, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.rightElbow, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.leftArm, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.rightArm, Instant.now().plusMillis(plusMillis)); 
+		knight.animationTimer.put(knight.leftHand, Instant.now().plusMillis(plusMillis));
+		knight.animationTimer.put(knight.rightHand, Instant.now().plusMillis(plusMillis));
 	}
 }

@@ -52,7 +52,6 @@ public abstract class ComplexMob {
 	public String killer;
 	
 	//Collections
-	public Collection<ArmorStand> parts;
 	public Collection<Vector> attackAreaPts;
 	public Collection<String> soundList;
 	
@@ -76,7 +75,7 @@ public abstract class ComplexMob {
 	
 	
 	//Constructor--
-	protected ComplexMob(ArmorStand inpMain, double inpMaxHealth, double inpMaxPoise, Collection<ArmorStand> inpParts, Collection<String> inpSounds) {
+	protected ComplexMob(ArmorStand inpMain, double inpMaxHealth, double inpMaxPoise, Collection<String> inpSounds) {
 		//Input variables
 		main = inpMain;
 		
@@ -85,8 +84,6 @@ public abstract class ComplexMob {
 		
 		maxPoise = inpMaxPoise;
 		poise = maxPoise;
-		
-		parts = inpParts;
 		
 		soundList = inpSounds;
 	}

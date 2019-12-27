@@ -27,6 +27,8 @@ public class AI {
 	public void process(LothricKnight knight) {
 		//Collision
 		try {
+			knight.restoreVectors();
+			
 			for (Entity entity : knight.main.getNearbyEntities(.125, .3, .125)) {
 				double distance = entity.getLocation().distance(knight.main.getLocation());
 				Location difference = entity.getLocation().subtract(knight.main.getLocation());
@@ -39,6 +41,9 @@ public class AI {
 				}
 			}
 		} catch (IllegalArgumentException e) {}
+		
+		//Update yaw
+		knight.yaw = knight.main.getLocation().getYaw() / 57.2957795;
 		
 		//Refill stamina
 		if (knight.staminaUseTimer != null) {
@@ -57,7 +62,6 @@ public class AI {
 		//Low poise modifier
 		double lowPoiseModifier = 0;
 		if (knight.poise < knight.maxPoise / 3) lowPoiseModifier = 0.15;
-		
 		//If less than max, increase, if max or slightly more, set to max, if more enough, decrease
 		if (knight.poise < knight.maxPoise) knight.poise = (knight.poise + .2 - lowPoiseModifier);
 		if (knight.poise >= knight.maxPoise && knight.poise < knight.maxPoise + 1);
@@ -175,6 +179,7 @@ public class AI {
 			else {
 				//Knight is attacking! Lets direct it to its animation and mechanics:
 				if (knight.activeAction != null) {
+
 					if (knight.activeAction == "LeftSlash") {
 						LeftSlash.animate(knight);
 					}

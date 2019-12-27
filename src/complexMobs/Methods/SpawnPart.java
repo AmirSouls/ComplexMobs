@@ -1,7 +1,5 @@
 package complexMobs.Methods;
 
-import java.util.Collection;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -12,7 +10,7 @@ import complexMobs.Main.ComplexMob;
 import complexMobs.Main.ComplexMobs;
 
 public class SpawnPart {
-	public static Collection<ArmorStand> normal(ArmorStand main, Location location, Material item, int itemDmg, String partId, ComplexMob mob, Collection<ArmorStand> partCollection) {
+	public static ArmorStand normal(ArmorStand main, Location location, Material item, int itemDmg, String partId, ComplexMob mob) {
 		ArmorStand part = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
@@ -26,20 +24,18 @@ public class SpawnPart {
 		mob.partHost.put(part, main);
 		mob.partId.put(part, partId);
 		ComplexMobs.partMob.put(part, mob);
-		partCollection.add(part);
 	
-		return partCollection;
+		return part;
 	}
 	
-	public static Collection<ArmorStand> main(ArmorStand part, Collection<ArmorStand> partCollection) {
+	public static ArmorStand main(ArmorStand part) {
 		part.addScoreboardTag("complexMobPart");
 		part.setInvulnerable(false);
 		part.setVisible(false);
 		part.setGravity(false);
 		part.setCollidable(false);
 		part.setSilent(true);
-		partCollection.add(part);
 	
-		return partCollection;
+		return part;
 	}
 }
