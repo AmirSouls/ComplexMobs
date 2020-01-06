@@ -24,7 +24,7 @@ public class LothricKnight extends SoulsKnight {
 
 	}
 
-	public void thinkThread() {
+	public void run() {
 
 	}
 

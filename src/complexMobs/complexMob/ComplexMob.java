@@ -21,6 +21,8 @@ public interface ComplexMob {
 	
 	void setParts(List<ArmorStand> parts);
 	
+	void run();
+	
 	void build(Location spawnLocation);
 	
 }

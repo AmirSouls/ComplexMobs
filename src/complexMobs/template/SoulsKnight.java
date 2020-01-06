@@ -4,6 +4,12 @@ import complexMobs.object.SoulsWeapon;
 
 public abstract class SoulsKnight extends SoulsMob {
 
+	private boolean shieldUp = false;
+	
+	private SoulsWeapon sword;
+	
+	private SoulsWeapon shield;
+	
 	protected SoulsKnight(String ID, String name, double maxHealth, double maxPoise, SoulsWeapon sword, SoulsWeapon shield) {
 		super(ID, name, maxHealth, maxPoise);
 		this.sword = sword;
@@ -38,9 +44,4 @@ public abstract class SoulsKnight extends SoulsMob {
 	
 	public abstract void attackFrameShield();
 	
-	private boolean shieldUp = false;
-	
-	private SoulsWeapon sword;
-	
-	private SoulsWeapon shield;
 }

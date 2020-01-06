@@ -1,10 +1,15 @@
 package complexMobs.template;
 
-
-import org.bukkit.Location;
-
 public abstract class SoulsMob extends LivingComplexMob {
 
+	private double stamina = 100;
+	
+	private double maxStamina = 100;
+	
+	private double poise;
+	
+	private double maxPoise;
+	
 	protected SoulsMob(String ID, String name, double maxHealth, double maxPoise) {
 		super(ID, name, maxHealth);
 		this.maxPoise = maxPoise;
@@ -36,17 +41,4 @@ public abstract class SoulsMob extends LivingComplexMob {
 	}
 	
 	public abstract void move();
-	
-	public abstract void thinkThread();
-	
-	public abstract void build(Location spawnLocation);
-	
-	private double stamina = 100;
-	
-	private double maxStamina = 100;
-	
-	private double poise;
-	
-	private double maxPoise;
-
 }

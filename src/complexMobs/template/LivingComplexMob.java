@@ -2,13 +2,30 @@ package complexMobs.template;
 
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 
 import complexMobs.complexMob.ComplexMob;
 import complexMobs.object.Animation;
 
 public abstract class LivingComplexMob implements ComplexMob {
+	
+	private Animation currentAnimation;
+	
+	private String ID;
+	
+	private String name;
+	
+	private ArmorStand main;
+	
+	private double health;
+	
+	private double maxHealth;
+	
+	private List<ArmorStand> parts;
+	
+	private boolean isRemoved = false;
+	
+	private boolean isDead = false;
 	
 	protected LivingComplexMob(String ID, String name, double maxHealth) {
 		this.ID = ID;
@@ -96,29 +113,6 @@ public abstract class LivingComplexMob implements ComplexMob {
 		this.currentAnimation.terminate();
 		this.currentAnimation = null;
 	}
-	
-	public abstract void thinkThread();
-	
-	public abstract void build(Location spawnLocation);
-	
-	private Animation currentAnimation;
-	
-	private String ID;
-	
-	private String name;
-	
-	private ArmorStand main;
-	
-	private double health;
-	
-	private double maxHealth;
-	
-	private List<ArmorStand> parts;
-	
-	private boolean isRemoved = false;
-	
-	private boolean isDead = false;
-	
 }
 
 
