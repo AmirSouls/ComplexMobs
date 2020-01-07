@@ -1,9 +1,11 @@
 package complexMobs.complexMob;
 
-import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+
+import complexMobs.object.Part;
 
 public interface ComplexMob {
 	
@@ -17,9 +19,9 @@ public interface ComplexMob {
 	
 	void setMain(ArmorStand main);
 	
-	List<ArmorStand> getParts();
+	Map<String, Part> getParts();
 	
-	void setParts(List<ArmorStand> parts);
+	void setParts(Map<String, Part> parts);
 	
 	void run();
 	

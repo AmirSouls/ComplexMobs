@@ -16,11 +16,11 @@ public abstract class SoulsKnight extends SoulsMob {
 		this.shield = shield;
 	}
 	
-	public void setSword(SoulsWeapon sword) {
+	public void setSwordWeapon(SoulsWeapon sword) {
 		this.sword = sword;
 	}
 	
-	public SoulsWeapon getSword() {
+	public SoulsWeapon getSwordWeapon() {
 		return this.sword;
 	}
 	

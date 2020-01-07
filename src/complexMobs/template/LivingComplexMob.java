@@ -1,11 +1,13 @@
 package complexMobs.template;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.entity.ArmorStand;
 
 import complexMobs.complexMob.ComplexMob;
 import complexMobs.object.Animation;
+import complexMobs.object.Part;
 
 public abstract class LivingComplexMob implements ComplexMob {
 	
@@ -21,7 +23,7 @@ public abstract class LivingComplexMob implements ComplexMob {
 	
 	private double maxHealth;
 	
-	private List<ArmorStand> parts;
+	private Map<String, Part> parts = new HashMap<>();
 	
 	private boolean isRemoved = false;
 	
@@ -57,11 +59,11 @@ public abstract class LivingComplexMob implements ComplexMob {
 		this.main = main;
 	}
 	
-	public List<ArmorStand> getParts() {
+	public Map<String, Part> getParts() {
 		return this.parts;
 	}
 	
-	public void setParts(List<ArmorStand> parts) {
+	public void setParts(Map<String, Part> parts) {
 		this.parts = parts;
 	}
 	
@@ -82,8 +84,8 @@ public abstract class LivingComplexMob implements ComplexMob {
 	}
 	
 	public void remove() {
-		for (ArmorStand stand : this.parts) {
-			stand.remove();
+		for (Part part : this.parts.values()) {
+			part.getArmorStand().remove();
 		}
 		isRemoved = true;
 		isDead = true;
