@@ -1,16 +1,11 @@
 package complexMobs.mob;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import complexMobs.main.ComplexMobs;
 import complexMobs.mob.lothicKnight.Build;
-import complexMobs.object.ChildPart;
-import complexMobs.object.Part;
+import complexMobs.mob.lothicKnight.Run;
 import complexMobs.object.SoulsWeapon;
 import complexMobs.template.SoulsKnight;
 
@@ -25,15 +20,12 @@ public class LothricKnight extends SoulsKnight {
 	}
 
 	public void attackFrameShield() {
-
-	}
-
-	public void move() {
-
+		
 	}
 
 	public void run() {
-		
+		Run run= new Run();
+		run.run(this, ComplexMobs.getProvidingPlugin(ComplexMobs.class));
 	}
 
 	public void build(Location spawnLocation) {

@@ -1,17 +1,17 @@
 package complexMobs.template;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.bukkit.entity.ArmorStand;
 
 import complexMobs.complexMob.ComplexMob;
-import complexMobs.object.Animation;
+import complexMobs.object.Action;
 import complexMobs.object.Part;
 
 public abstract class LivingComplexMob implements ComplexMob {
 	
-	private Animation currentAnimation;
+	private Action action;
 	
 	private String ID;
 	
@@ -23,7 +23,7 @@ public abstract class LivingComplexMob implements ComplexMob {
 	
 	private double maxHealth;
 	
-	private Map<String, Part> parts = new HashMap<>();
+	private Map<String, Part> parts = new LinkedHashMap<>();
 	
 	private boolean isRemoved = false;
 	
@@ -36,8 +36,12 @@ public abstract class LivingComplexMob implements ComplexMob {
 		this.health = maxHealth;
 	}
 	
-	public Animation getCurrentAnimation() {
-		return this.currentAnimation;
+	public Action getAction() {
+		return this.action;
+	}
+	
+	public void setAction(Action action) {
+		this.action = action;
 	}
 	
 	public String getID() {
@@ -104,17 +108,8 @@ public abstract class LivingComplexMob implements ComplexMob {
 		this.isDead = false;
 	}
 	
-	public abstract void move();
+	public abstract void move(double vectorScalar, double angleTurn);
 	
-	public void animate(Animation animation) {
-		animation.thread();
-		this.currentAnimation = animation;
-	}
-	
-	public void cancelAnimation() {
-		this.currentAnimation.terminate();
-		this.currentAnimation = null;
-	}
 }
 
 

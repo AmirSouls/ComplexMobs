@@ -14,13 +14,17 @@ public class Part {
 	
 	private Vector partPosition;
 	
-	private EulerAngle headPose;
+	private EulerAngle headPose = new EulerAngle(0,0,0);
 	
 	public Part(ArmorStand part, ArmorStand main, Vector partOffset) {
 		this.part = part;
 		this.main = main;
 		this.partOffset = partOffset;
-		this.partPosition = part.getLocation().toVector();
+		this.partPosition = new Vector();
+	}
+	
+	public ArmorStand getMain() {
+		return this.main;
 	}
 	
 	public ArmorStand getArmorStand() {
@@ -32,24 +36,62 @@ public class Part {
 	}
 	
 	public void setPosition(Vector partPosition) {
+		part.teleport(main.getLocation().clone().add(partPosition));
 		this.partPosition = partPosition;
+	}
+	
+	public void resetPosition() {
+		this.partPosition = new Vector();
+	}
+	
+	public Vector getOffset() {
+		return this.partOffset;
 	}
 	
 	public EulerAngle getHeadPose() {
 		return this.headPose;
 	}
 	
-	public void setHeadPose(EulerAngle headPose) {
+	private void setHeadPose(EulerAngle headPose) {
 		this.headPose = headPose;
+		this.part.setHeadPose(headPose);
 	}
 
+	public void animationFrame(int frame, int tick, double x, double y, double z) {
+		if (tick == frame) {
+			double rd = 57.2958;
+			
+			EulerAngle newPose = new EulerAngle(
+					x / rd
+					,
+					y / rd
+					,
+					z / rd
+			);
+			
+			setHeadPose(newPose);
+		}
+	}
+	
+	public void animation(double x, double y, double z) {
+		double rd = 57.2958;
+		
+		EulerAngle newPose = new EulerAngle(
+				x / rd
+				,
+				y / rd
+				,
+				z / rd
+		);
+		
+		setHeadPose(newPose);
+	}
+	
 	public void position() {
 		Vector partOffset = this.partOffset.clone();
 		Vector partPosition = new Vector();
 		partPosition.add(partOffset);
 		
-		part.teleport(main.getLocation().clone().add(partPosition));
-		
-		this.partPosition = partPosition;
+		setPosition(partPosition);
 	}
 }

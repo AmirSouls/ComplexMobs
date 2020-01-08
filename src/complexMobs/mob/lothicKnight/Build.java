@@ -17,80 +17,87 @@ public class Build {
 	public void run(LothricKnight lothricKnight, Location spawnLocation) {
 		World world = spawnLocation.getWorld();
 		ArmorStand main = (ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND);
+		main.setSilent(true);
+		main.setVisible(false);
+		main.setMarker(true);
+		main.setGravity(false);
+		lothricKnight.setMain(main);
+		
 		lothricKnight.getParts().put(
 				"pelvis", 
 				new Part((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main, 
-				new Vector()));
+				new Vector(0,.5,0)));
 		
 		lothricKnight.getParts().put(
 				"chest", 
-				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
-				main,
-				new Vector(), 
-				lothricKnight.getParts().get("pelvis")));
+					new ChildPart(
+					(ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
+					main,
+					new Vector(0,-.16,.01), 
+					lothricKnight.getParts().get("pelvis")));
 		
 		lothricKnight.getParts().put(
 				"head", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,.8,0), 
 				lothricKnight.getParts().get("chest")));
 		
 		lothricKnight.getParts().put(
 				"cape", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,.9,-.2), 
 				lothricKnight.getParts().get("chest")));
 		
 		lothricKnight.getParts().put(
 				"left_elbow", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(.34,.8,-.03), 
 				lothricKnight.getParts().get("chest")));
 		
 		lothricKnight.getParts().put(
 				"left_arm", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(.05,-0.51,0), 
 				lothricKnight.getParts().get("left_elbow")));
 		
 		lothricKnight.getParts().put(
 				"left_hand", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.4,0), 
 				lothricKnight.getParts().get("left_arm")));
 		
 		lothricKnight.getParts().put(
 				"shield", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.5,0), 
 				lothricKnight.getParts().get("left_hand")));
 		
 		lothricKnight.getParts().put(
 				"right_elbow", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(-.34,.9,0), 
 				lothricKnight.getParts().get("chest")));
 		
 		lothricKnight.getParts().put(
 				"right_arm", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(-.05,-0.51,0), 
 				lothricKnight.getParts().get("right_elbow")));
 		
 		lothricKnight.getParts().put(
 				"right_hand", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.4,0), 
 				lothricKnight.getParts().get("right_arm")));
 		
 		lothricKnight.getParts().put(
@@ -104,43 +111,51 @@ public class Build {
 				"left_thigh", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(.17,-.42,.04), 
 				lothricKnight.getParts().get("pelvis")));
 		
 		lothricKnight.getParts().put(
 				"left_calf", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-0.6,0), 
 				lothricKnight.getParts().get("left_thigh")));
 		
 		lothricKnight.getParts().put(
 				"left_foot", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.585,-.035), 
 				lothricKnight.getParts().get("left_calf")));
 		
 		lothricKnight.getParts().put(
 				"right_thigh", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(-.17,-.42,.04), 
 				lothricKnight.getParts().get("pelvis")));
 		
 		lothricKnight.getParts().put(
 				"right_calf", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-0.6,0), 
 				lothricKnight.getParts().get("right_thigh")));
 		
 		lothricKnight.getParts().put(
 				"right_foot", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.585,-.035), 
 				lothricKnight.getParts().get("right_calf")));
+		
+		for (Part part : lothricKnight.getParts().values()) {
+			ArmorStand armorStand = part.getArmorStand();
+			armorStand.setSilent(true);
+			armorStand.setVisible(false);
+			armorStand.setGravity(false);
+			armorStand.setMarker(true);
+		}
 		
 		for (String key : lothricKnight.getParts().keySet()) {
 			ItemStack partModel = new ItemStack(Material.DIAMOND_HOE);

@@ -18,6 +18,7 @@ public class SummonComplexMob  implements CommandExecutor {
 				if (sender instanceof Player) {
 					ComplexMob complexMob = new LothricKnight();
 					complexMob.build(((Player) sender).getLocation());
+					complexMob.run();
 				}
 			}
 			else {
