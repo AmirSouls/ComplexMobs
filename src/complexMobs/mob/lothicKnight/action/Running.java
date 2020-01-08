@@ -1,12 +1,21 @@
 package complexMobs.mob.lothicKnight.action;
 
+import org.bukkit.entity.ArmorStand;
+
 import complexMobs.object.Part;
 
 public class Running extends LothricKnightAction {
 	
 	@Override
+	protected void playSound() {
+		ArmorStand main = getMob().getMain();
+		if (getTick() == 4) main.getWorld().playSound(main.getLocation(), "lothricknight.run", 1, 1);
+		if (getTick() == 9) main.getWorld().playSound(main.getLocation(), "lothricknight.run", 1, 1);
+	}
+	
+	@Override
 	protected void move() {
-		getMob().move(.28, 4);
+		getMob().move(.28, 20);
 	}
 	
 	@Override
@@ -33,7 +42,7 @@ public class Running extends LothricKnightAction {
 	@Override
 	protected void cape() {
 		Part part = getMob().getParts().get("cape");
-		part.animationFrame(0, getTick(), 90, 0, 0);
+		part.animation(40, 0, 0);
 	}
 
 	//@Override

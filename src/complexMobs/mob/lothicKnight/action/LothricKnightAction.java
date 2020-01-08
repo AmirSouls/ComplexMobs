@@ -9,6 +9,7 @@ import complexMobs.object.Part;
 
 public abstract class LothricKnightAction extends Action {
 	protected void actions() {
+		playSound();
 		move();
 		pelvis();
 		chest();
@@ -28,6 +29,10 @@ public abstract class LothricKnightAction extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
+	}
+	
+	protected void playSound() {
+	
 	}
 	
 	protected void move() {

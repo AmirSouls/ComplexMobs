@@ -1,8 +1,6 @@
 package complexMobs.template;
 
-import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.Vector;
 
 public abstract class SoulsMob extends LivingComplexMob {
 
@@ -54,31 +52,5 @@ public abstract class SoulsMob extends LivingComplexMob {
 		return this.maxPoise;
 	}
 	
-	public void move(double vectorScalar, double angleTurn) {
-		
-		
-		double distance = getTarget().getLocation().distance(getMain().getLocation());
-		Vector difference = getTarget().getLocation().toVector().subtract(getMain().getLocation().toVector());
-		Vector direction = difference.divide(new Vector(distance, distance, distance));
-		
-		
-		double targetYaw = Math.atan2(direction.getX(), direction.getZ()) * 57.29;
-		double mobYaw = getMain().getLocation().getYaw();
-		double newAngle;
-		if (Math.pow(targetYaw + (mobYaw-angleTurn),2) > Math.pow(targetYaw + (mobYaw+angleTurn),2)) {
-			newAngle = mobYaw + angleTurn;
-			if (newAngle < targetYaw) newAngle = targetYaw;
-		}
-		else {
-			newAngle = mobYaw - angleTurn;
-			if (newAngle > targetYaw) newAngle = targetYaw;
-		}
-		
-		Vector moveVector = new Vector(0,0,1);
-		moveVector.multiply(vectorScalar);
-		moveVector.rotateAroundY(newAngle / 57.29);
-		Location newLocation = getMain().getLocation().add(moveVector);
-		newLocation.setDirection(direction);
-		getMain().teleport(newLocation);
-	}
+	public abstract void move(double vectorScalar, double angleTurn);
 }

@@ -32,4 +32,57 @@ public class LothricKnight extends SoulsKnight {
 		Build build = new Build();
 		build.run(this, spawnLocation);
 	}
+	
+	@Override
+	public void move(double vectorScalar, double angleTurn) {
+		double distance = getTarget().getLocation().distance(getMain().getLocation());
+		Vector difference = getTarget().getLocation().toVector().subtract(getMain().getLocation().toVector());
+		Vector direction = difference.divide(new Vector(distance, distance, distance));
+		
+		double targetYaw = Math.atan2(direction.getX(), direction.getZ()) * 57.29;
+		double mobYaw = getMain().getLocation().getYaw();
+		if (mobYaw > 180) mobYaw -= 360;
+		mobYaw *= -1;
+		
+		double deltaYaw = targetYaw - mobYaw;
+		double newYaw = mobYaw;
+		
+		if (deltaYaw > 0) {
+			newYaw += angleTurn;
+			if (newYaw > targetYaw) newYaw = targetYaw;
+		}
+		else if (deltaYaw < 0) {
+			newYaw -= angleTurn;
+			if (newYaw < targetYaw) newYaw = targetYaw;
+		}
+		
+		Vector moveVector = getMain().getLocation().getDirection().multiply(vectorScalar);
+		Location newLocation = getMain().getLocation();
+			
+		if (newLocation.clone().add(0,-1,0).getBlock().isPassable()) {
+			newLocation = newLocation.clone().add(0,-1,0).getBlock().getLocation();
+		}
+		else {
+			newLocation.add(moveVector);
+			if (
+					!newLocation.clone().getBlock().isPassable() && 
+					newLocation.clone().add(0,1,0).getBlock().isPassable() && 
+					newLocation.clone().add(0,2,0).getBlock().isPassable() &&
+					newLocation.clone().add(0,3,0).getBlock().isPassable() &&
+					newLocation.clone().add(0,4,0).getBlock().isPassable()) {
+				newLocation = newLocation.clone().add(0,1,0);
+			}
+			else if (
+					!newLocation.getBlock().isPassable() || 
+					!newLocation.clone().add(0,1,0).getBlock().isPassable() || 
+					!newLocation.clone().add(0,2,0).getBlock().isPassable() ||
+					!newLocation.clone().add(0,3,0).getBlock().isPassable()) {
+				newLocation.subtract(moveVector);
+			}
+			
+		}
+
+		newLocation.setDirection(new Vector(0,0,1).rotateAroundY(newYaw / 57.29));
+		getMain().teleport(newLocation);
+	}
 }

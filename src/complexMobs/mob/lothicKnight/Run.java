@@ -26,7 +26,7 @@ public class Run {
 				}
 				else {
 					tick++;
-					if (tick > 9) tick = 1;
+					if (tick > 11) tick = 1;
 					new Running().run(lothricKnight, tick);
 					for (Part part : lothricKnight.getParts().values()) { part.position(); }
 					for (Part part : lothricKnight.getParts().values()) { part.resetPosition(); }
