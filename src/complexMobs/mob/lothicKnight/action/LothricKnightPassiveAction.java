@@ -68,6 +68,8 @@ public abstract class LothricKnightPassiveAction extends Action {
 			Vector direction = difference.divide(new Vector(distance, distance, distance));
 			double targetYaw = Math.atan2(direction.getX(), direction.getZ()) * 57.29;
 			double mobYaw = getMob().getMain().getLocation().getYaw();
+			if (mobYaw > 180) mobYaw -= 360;
+			mobYaw *= -1;
 			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), Math.min(Math.max(-70, mobYaw - targetYaw), 70), 0);
 			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), mobYaw - targetYaw, 0);
 			

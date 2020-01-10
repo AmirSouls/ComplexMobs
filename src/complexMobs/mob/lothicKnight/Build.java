@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Spider;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;

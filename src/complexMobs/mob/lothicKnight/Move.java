@@ -1,12 +1,9 @@
 package complexMobs.mob.lothicKnight;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
-import net.md_5.bungee.api.ChatColor;
 
 public class Move {
 
@@ -17,11 +14,8 @@ public class Move {
 		double mobYaw = lothricKnight.getMain().getLocation().getYaw(); //Current yaw of the mob
 		
 		double targetCompareYaw = targetYaw;
-		//if (targetCompareYaw > 0) targetCompareYaw -= 360;
-		//targetCompareYaw *= -1;
-		
-		Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + targetCompareYaw);
-		Bukkit.broadcastMessage("" + mobYaw);
+		if (targetCompareYaw > 0) targetCompareYaw -= 360;
+		targetCompareYaw *= -1;
 		
 		double deltaYaw = targetCompareYaw - mobYaw;
 		double newYaw = mobYaw;
@@ -80,12 +74,9 @@ public class Move {
 			}
 		}
 		
-		//if (newYaw > 0) newYaw -= 360;
-		//newYaw *= -1;
+		if (newYaw > 0) newYaw -= 360;
+		newYaw *= -1;
 		newLocation.setDirection(new Vector(0,0,1).rotateAroundY(newYaw / 57.29));
-		//lothricKnight.getMain().teleport(newLocation.clone());
-		net.minecraft.server.v1_13_R2.Entity nmsMain = ((CraftEntity) lothricKnight.getMain()).getHandle();
-		nmsMain.setPositionRotation(newLocation.getX(), newLocation.getY(), newLocation.getZ(), (float) newYaw, 0f);
-		
+		lothricKnight.getMain().teleport(newLocation.clone());
 	}
 }

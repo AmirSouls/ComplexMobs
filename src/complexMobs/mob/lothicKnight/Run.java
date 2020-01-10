@@ -169,7 +169,7 @@ public class Run {
 		newLocation.setYaw((float) yaw);
 		targeter.setFireTicks(-1);
 		//lothricKnight.getTargeter().teleport(newLocation);
-		//((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
+		((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
 		
 		//Set targeter's target
 		targeter.setTarget(lothricKnight.getTarget());
