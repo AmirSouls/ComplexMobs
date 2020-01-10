@@ -1,10 +1,15 @@
 package complexMobs.mob.lothicKnight.action;
 
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.util.Vector;
 
 import complexMobs.object.Part;
 
-public class Running extends LothricKnightAction {
+public class Running extends LothricKnightPassiveAction {
+	
+	public Running() {
+		setReturnTick(11);
+	}
 	
 	@Override
 	protected void playSound() {
@@ -15,13 +20,25 @@ public class Running extends LothricKnightAction {
 	
 	@Override
 	protected void move() {
-		getMob().move(.28, 20);
+		getMob().move(.28, 20, 0);
 	}
 	
 	@Override
 	protected void pelvis() {
 		Part part = getMob().getParts().get("pelvis");
 		part.animation(20, 0, 0);
+		if (getTick() == 0) part.setOffset(new Vector(0,.5,0));
+		if (getTick() == 1) part.setOffset(new Vector(0,.48,0));
+		if (getTick() == 2) part.setOffset(new Vector(0,.46,0));
+		if (getTick() == 3) part.setOffset(new Vector(0,.44,0));
+		if (getTick() == 4) part.setOffset(new Vector(0,.42,0));
+		if (getTick() == 5) part.setOffset(new Vector(0,.4,0));
+		if (getTick() == 6) part.setOffset(new Vector(0,.42,0));
+		if (getTick() == 7) part.setOffset(new Vector(0,.44,0));
+		if (getTick() == 8) part.setOffset(new Vector(0,.46,0));
+		if (getTick() == 9) part.setOffset(new Vector(0,.48,0));
+		if (getTick() == 10) part.setOffset(new Vector(0,.50,0));
+		if (getTick() == 11) part.setOffset(new Vector(0,.52,0));
 	}
 	
 	@Override
@@ -46,7 +63,7 @@ public class Running extends LothricKnightAction {
 	}
 
 	//@Override
-	protected void head() {}
+	//protected void head() {}
 	
 	@Override
 	protected void leftElbow() {

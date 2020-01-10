@@ -7,8 +7,9 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public abstract class LothricKnightAction extends Action {
-	protected void actions() {
+public abstract class LothricKnightActiveAction extends Action {
+	
+	protected int actions() {
 		playSound();
 		move();
 		pelvis();
@@ -29,19 +30,20 @@ public abstract class LothricKnightAction extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
+		if (getTick() >= getReturnTick()) return -1;
+		return getTick()+1;
 	}
 	
-	protected void playSound() {
-	
-	}
+	protected abstract void playSound();
 	
 	protected void move() {
-		getMob().move(0, 20);
+		getMob().move(0, 20, 0);
 	}
 	
 	protected void pelvis() {
 		Part part = getMob().getParts().get("pelvis");
 		part.animation(0, 0, 0);
+		part.setOffset(new Vector(0,.5,0));
 	}
 	
 	protected void chest() {
@@ -56,12 +58,25 @@ public abstract class LothricKnightAction extends Action {
 
 	protected void head() {
 		Part part = getMob().getParts().get("head");
-		Location targetEyes = ((LothricKnight) getMob()).getTarget().getEyeLocation();
-		Location headEyes = part.getArmorStand().getEyeLocation();
-		double distance = headEyes.distance(targetEyes);
-		Vector difference = targetEyes.toVector().subtract(headEyes.toVector());
-		Vector direction = difference.divide(new Vector(distance, distance, distance));
-		part.animation(-Math.asin(direction.getY()), 0, 0);
+		
+		if (((LothricKnight) getMob()).getTarget() != null) {
+			
+			Location targetEyes = ((LothricKnight) getMob()).getTarget().getEyeLocation();
+			Location headEyes = part.getArmorStand().getEyeLocation();
+			double distance = headEyes.distance(targetEyes);
+			Vector difference = targetEyes.toVector().subtract(headEyes.toVector());
+			Vector direction = difference.divide(new Vector(distance, distance, distance));
+			double targetYaw = Math.atan2(direction.getX(), direction.getZ()) * 57.29;
+			double mobYaw = getMob().getMain().getLocation().getYaw();
+			if (mobYaw > 180) mobYaw -= 360;
+			mobYaw *= -1;
+			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.max((part.getHeadPose().getX()*57.29) - 5, 20), 0, 0);
+			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), 0, 0);
+			
+		}
+		else {
+			part.animation(0, 0, 0);
+		}
 	}
 
 	protected void leftElbow() {

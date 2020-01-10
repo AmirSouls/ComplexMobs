@@ -44,6 +44,10 @@ public class Part {
 		this.partPosition = new Vector();
 	}
 	
+	public void setOffset(Vector partOffset) {
+		this.partOffset = partOffset;
+	}
+	
 	public Vector getOffset() {
 		return this.partOffset;
 	}

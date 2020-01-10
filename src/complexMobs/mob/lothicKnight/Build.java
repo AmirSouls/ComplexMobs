@@ -5,7 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Spider;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
@@ -16,12 +21,22 @@ public class Build {
 
 	public void run(LothricKnight lothricKnight, Location spawnLocation) {
 		World world = spawnLocation.getWorld();
+		
 		ArmorStand main = (ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND);
 		main.setSilent(true);
 		main.setVisible(false);
-		main.setMarker(true);
 		main.setGravity(false);
+		main.setCollidable(false);
 		lothricKnight.setMain(main);
+		
+		Zombie targeter = (Zombie) world.spawnEntity(spawnLocation, EntityType.ZOMBIE);
+		targeter.setSilent(true);
+		targeter.setInvulnerable(true);
+		targeter.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000000, 0));
+		targeter.setCollidable(false);
+		targeter.setBaby(false);
+		main.addPassenger(targeter);
+		lothricKnight.setTargeter(targeter);
 		
 		lothricKnight.getParts().put(
 				"pelvis", 
@@ -31,11 +46,11 @@ public class Build {
 		
 		lothricKnight.getParts().put(
 				"chest", 
-					new ChildPart(
-					(ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
-					main,
-					new Vector(0,-.16,.01), 
-					lothricKnight.getParts().get("pelvis")));
+				new ChildPart(
+				(ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
+				main,
+				new Vector(0,-.16,.01), 
+				lothricKnight.getParts().get("pelvis")));
 		
 		lothricKnight.getParts().put(
 				"head", 
@@ -154,7 +169,7 @@ public class Build {
 			armorStand.setSilent(true);
 			armorStand.setVisible(false);
 			armorStand.setGravity(false);
-			armorStand.setMarker(true);
+			armorStand.setCollidable(false);
 		}
 		
 		for (String key : lothricKnight.getParts().keySet()) {
