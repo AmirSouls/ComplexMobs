@@ -1,6 +1,11 @@
 package complexMobs.mob.lothicKnight;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
@@ -42,33 +47,33 @@ public class Move {
 			
 			newLocation.add(moveVector);
 			if (
-					!newLocation.clone().getBlock().isPassable() && 
-					newLocation.clone().add(0,1,0).getBlock().isPassable() && 
-					newLocation.clone().add(0,2,0).getBlock().isPassable() &&
-					newLocation.clone().add(0,3,0).getBlock().isPassable() &&
-					newLocation.clone().add(0,4,0).getBlock().isPassable()) {
+					!isPassableExtra(newLocation.clone().getBlock()) && 
+					isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) && 
+					isPassableExtra(newLocation.clone().add(0,2,0).getBlock()) &&
+					isPassableExtra(newLocation.clone().add(0,3,0).getBlock()) &&
+					isPassableExtra(newLocation.clone().add(0,4,0).getBlock())) {
 				newLocation = newLocation.clone().add(0,1,0);
 			}
 			else if (
-					!newLocation.clone().getBlock().isPassable() || 
-					!newLocation.clone().add(0,1,0).getBlock().isPassable() || 
-					!newLocation.clone().add(0,2,0).getBlock().isPassable() ||
-					!newLocation.clone().add(0,3,0).getBlock().isPassable()) {
+					!isPassableExtra(newLocation.clone().getBlock()) || 
+					!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
+					!isPassableExtra(newLocation.clone().add(0,2,0).getBlock()) ||
+					!isPassableExtra(newLocation.clone().add(0,3,0).getBlock())) {
 				newLocation.subtract(moveVector);
 				newLocation.add(moveVector.clone().setX(0));
 				if (
-						!newLocation.clone().getBlock().isPassable() || 
-						!newLocation.clone().add(0,1,0).getBlock().isPassable() || 
-						!newLocation.clone().add(0,2,0).getBlock().isPassable() ||
-						!newLocation.clone().add(0,3,0).getBlock().isPassable()) {
+						!isPassableExtra(newLocation.clone().getBlock()) || 
+						!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
+						!isPassableExtra(newLocation.clone().add(0,2,0).getBlock()) ||
+						!isPassableExtra(newLocation.clone().add(0,3,0).getBlock())) {
 					newLocation.subtract(moveVector.clone().setX(0));
 				}
 				newLocation.add(moveVector.clone().setZ(0));
-				if (
-						!newLocation.clone().getBlock().isPassable() || 
-						!newLocation.clone().add(0,1,0).getBlock().isPassable() || 
-						!newLocation.clone().add(0,2,0).getBlock().isPassable() ||
-						!newLocation.clone().add(0,3,0).getBlock().isPassable()) {
+					if (
+						!isPassableExtra(newLocation.clone().getBlock()) || 
+						!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
+						!isPassableExtra(newLocation.clone().add(0,2,0).getBlock()) ||
+						!isPassableExtra(newLocation.clone().add(0,3,0).getBlock())) {
 					newLocation.subtract(moveVector.clone().setZ(0));
 				}
 			}
@@ -78,5 +83,31 @@ public class Move {
 		newYaw *= -1;
 		newLocation.setDirection(new Vector(0,0,1).rotateAroundY(newYaw / 57.29));
 		lothricKnight.getMain().teleport(newLocation.clone());
+	}
+	
+	private boolean isPassableExtra(Block block) {
+		List<Material> passables = new ArrayList<>();
+		passables.add(Material.BLACK_CARPET);
+		passables.add(Material.BLUE_CARPET);
+		passables.add(Material.BROWN_CARPET);
+		passables.add(Material.CYAN_CARPET);
+		passables.add(Material.GRAY_CARPET);
+		passables.add(Material.GREEN_CARPET);
+		passables.add(Material.LIGHT_BLUE_CARPET);
+		passables.add(Material.LIGHT_GRAY_CARPET);
+		passables.add(Material.LIME_CARPET);
+		passables.add(Material.MAGENTA_CARPET);
+		passables.add(Material.ORANGE_CARPET);
+		passables.add(Material.PINK_CARPET);
+		passables.add(Material.PURPLE_CARPET);
+		passables.add(Material.RED_CARPET);
+		passables.add(Material.WHITE_CARPET);
+		passables.add(Material.YELLOW_CARPET);
+		passables.add(Material.SNOW);
+		
+		if (block.isPassable() || passables.contains(block.getType())) {
+			return true;
+		}
+		return false;
 	}
 }
