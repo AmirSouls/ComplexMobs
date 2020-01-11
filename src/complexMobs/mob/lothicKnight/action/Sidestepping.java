@@ -15,13 +15,13 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void playSound() {
 		ArmorStand main = getMob().getMain();
-		if (getTick() == 10) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
-		if (getTick() == 21) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
+		if (getTick() == 14) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
+		if (getTick() == 33) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
 	}
 	
 	@Override
 	protected void move() {
-		getMob().move(.1, 20, 90);
+		getMob().move(.1, 20, -80);
 	}
 	
 	@Override
@@ -149,34 +149,40 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void leftCalf() {
 		Part part = getMob().getParts().get("left_calf");
-		part.animationFrame(0, getTick(), -15, 0, 0);
-		part.animationFrame(1, getTick(), -8, 0, 0);
-		part.animationFrame(2, getTick(), -1, 0, 0);
-		part.animationFrame(3, getTick(), 6, 0, 0);
-		part.animationFrame(4, getTick(), 13, 0, 0);
-		part.animationFrame(5, getTick(), 20, 0, 0);
-		part.animationFrame(6, getTick(), 27, 0, 0);
-		part.animationFrame(7, getTick(), 34, 0, 0);
-		part.animationFrame(8, getTick(), 41, 0, 0);
-		part.animationFrame(9, getTick(), 48, 0, 0);
-		part.animationFrame(10, getTick(), 55, 0, 0);
-		part.animationFrame(11, getTick(), 60, 0, 0);
+		part.animationFrame(0, getTick(), 10, 0, -10);
+		part.animationFrame(1, getTick(), 9, 1, -8);
+		part.animationFrame(2, getTick(), 7, 2, -7);
+		part.animationFrame(3, getTick(), 6, 3, -5);
+		part.animationFrame(4, getTick(), 5, 4, -3);
+		part.animationFrame(5, getTick(), 4, 5, -2);
+		part.animationFrame(6, getTick(), 2, 6, 0);
+		part.animationFrame(7, getTick(), 1, 7, 1);
+		part.animationFrame(8, getTick(), 0, 8, 2);
+		part.animationFrame(9, getTick(), -2, 9, 4);
+		part.animationFrame(10, getTick(), -3, 10, 5);
+		part.animationFrame(11, getTick(), -5, 11, 6);
+		part.animationFrame(12, getTick(), -7, 13, 7);
+		part.animationFrame(13, getTick(), -8, 14, 9);
+		part.animationFrame(14, getTick(), -10, 15, 10);
 		//
 		//
 		//
 		//
-		part.animationFrame(16, getTick(), 60, 0, 0);
-		part.animationFrame(17, getTick(), 55, 0, 0);
-		part.animationFrame(18, getTick(), 48, 0, 0);
-		part.animationFrame(19, getTick(), 41, 0, 0);
-		part.animationFrame(20, getTick(), 34, 0, 0);
-		part.animationFrame(21, getTick(), 27, 0, 0);
-		part.animationFrame(22, getTick(), 20, 0, 0);
-		part.animationFrame(23, getTick(), 13, 0, 0);
-		part.animationFrame(24, getTick(), 6, 0, 0);
-		part.animationFrame(25, getTick(), -1, 0, 0);
-		part.animationFrame(26, getTick(), -8, 0, 0);
-		part.animationFrame(27, getTick(), -15, 0, 0);
+		part.animationFrame(19, getTick(), -10, 15, 10);
+		part.animationFrame(20, getTick(), -8, 14, 9);
+		part.animationFrame(21, getTick(), -7, 13, 7);
+		part.animationFrame(22, getTick(), -5, 12, 6);
+		part.animationFrame(23, getTick(), -3, 11, 5);
+		part.animationFrame(24, getTick(), -2, 10, 4);
+		part.animationFrame(25, getTick(), 0, 9, 2);
+		part.animationFrame(26, getTick(), 1, 8, 1);
+		part.animationFrame(27, getTick(), 2, 7, 0);
+		part.animationFrame(28, getTick(), 4, 6, -2);
+		part.animationFrame(29, getTick(), 5, 5, -3);
+		part.animationFrame(30, getTick(), 6, 4, -5);
+		part.animationFrame(31, getTick(), 7, 3, -7);
+		part.animationFrame(32, getTick(), 9, 1, -8);
+		part.animationFrame(33, getTick(), 10, 0, -10);
 		//
 		//
 		//
@@ -186,71 +192,40 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void leftFoot() {
 		Part part = getMob().getParts().get("left_foot");
-		part.animationFrame(0, getTick(), -15, 0, 0);
-		part.animationFrame(1, getTick(), -8, 0, 0);
-		part.animationFrame(2, getTick(), -1, 0, 0);
-		part.animationFrame(3, getTick(), 6, 0, 0);
-		part.animationFrame(4, getTick(), 13, 0, 0);
-		part.animationFrame(5, getTick(), 20, 0, 0);
-		part.animationFrame(6, getTick(), 27, 0, 0);
-		part.animationFrame(7, getTick(), 34, 0, 0);
-		part.animationFrame(8, getTick(), 41, 0, 0);
-		part.animationFrame(9, getTick(), 48, 0, 0);
-		part.animationFrame(10, getTick(), 55, 0, 0);
-		part.animationFrame(11, getTick(), 60, 0, 0);
-		//
-		//
-		//
-		//
-		part.animationFrame(16, getTick(), 60, 0, 0);
-		part.animationFrame(17, getTick(), 55, 0, 0);
-		part.animationFrame(18, getTick(), 48, 0, 0);
-		part.animationFrame(19, getTick(), 41, 0, 0);
-		part.animationFrame(20, getTick(), 34, 0, 0);
-		part.animationFrame(21, getTick(), 27, 0, 0);
-		part.animationFrame(22, getTick(), 20, 0, 0);
-		part.animationFrame(23, getTick(), 13, 0, 0);
-		part.animationFrame(24, getTick(), 6, 0, 0);
-		part.animationFrame(25, getTick(), -1, 0, 0);
-		part.animationFrame(26, getTick(), -8, 0, 0);
-		part.animationFrame(27, getTick(), -15, 0, 0);
-		//
-		//
-		//
-		//
+		part.animation(0, 0, 0);
 	}
 
 	@Override
 	protected void rightThigh() {
 		Part part = getMob().getParts().get("right_thigh");
-		part.animationFrame(0, getTick(), 30, 0, 0);
-		part.animationFrame(1, getTick(), 25, 0, 0);
-		part.animationFrame(2, getTick(), 21, 0, 0);
-		part.animationFrame(3, getTick(), 17, 0, 0);
-		part.animationFrame(4, getTick(), 13, 0, 0);
-		part.animationFrame(5, getTick(), 9, 0, 0);
-		part.animationFrame(6, getTick(), 5, 0, 0);
-		part.animationFrame(7, getTick(), 1, 0, 0);
-		part.animationFrame(8, getTick(), -3, 0, 0);
-		part.animationFrame(9, getTick(), -7, 0, 0);
-		part.animationFrame(10, getTick(), -11, 0, 0);
-		part.animationFrame(11, getTick(), -15, 0, 0);
+		part.animationFrame(0, getTick(), -30, 30, 0);
+		part.animationFrame(1, getTick(), -25, 32, 0);
+		part.animationFrame(2, getTick(), -20, 34, 0);
+		part.animationFrame(3, getTick(), -15, 36, 0);
+		part.animationFrame(4, getTick(), -10, 39, 0);
+		part.animationFrame(5, getTick(), -5, 41, 0);
+		part.animationFrame(6, getTick(), 0, 43, 0);
+		part.animationFrame(7, getTick(), 5, 46, 0);
+		part.animationFrame(8, getTick(), 10, 48, 0);
+		part.animationFrame(9, getTick(), 12, 51, 0);
+		part.animationFrame(10, getTick(), 16, 52, 0);
+		part.animationFrame(11, getTick(), 20, 55, 0);
 		//
 		//
 		//
 		//
-		part.animationFrame(16, getTick(), -15, 0, 0);
-		part.animationFrame(17, getTick(), -11, 0, 0);
-		part.animationFrame(18, getTick(), -7, 0, 0);
-		part.animationFrame(19, getTick(), -3, 0, 0);
-		part.animationFrame(20, getTick(), 1, 0, 0);
-		part.animationFrame(21, getTick(), 5, 0, 0);
-		part.animationFrame(22, getTick(), 9, 0, 0);
-		part.animationFrame(23, getTick(), 13, 0, 0);
-		part.animationFrame(24, getTick(), 17, 0, 0);
-		part.animationFrame(25, getTick(), 21, 0, 0);
-		part.animationFrame(26, getTick(), 25, 0, 0);
-		part.animationFrame(27, getTick(), 30, 0, 0);
+		part.animationFrame(16, getTick(), 20, 55, 0);
+		part.animationFrame(17, getTick(), 16, 55, 0);
+		part.animationFrame(18, getTick(), 12, 52, 0);
+		part.animationFrame(19, getTick(), 10, 51, 0);
+		part.animationFrame(20, getTick(), 5, 48, 0);
+		part.animationFrame(21, getTick(), 0, 46, 0);
+		part.animationFrame(22, getTick(), -5, 43, 0);
+		part.animationFrame(23, getTick(), -10, 41, 0);
+		part.animationFrame(24, getTick(), -15, 39, 0);
+		part.animationFrame(25, getTick(), -20, 36, 0);
+		part.animationFrame(26, getTick(), -25, 32, 0);
+		part.animationFrame(27, getTick(), -30, 30, 0);
 		//
 		//
 		//
@@ -260,34 +235,40 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void rightCalf() {
 		Part part = getMob().getParts().get("right_calf");
-		part.animationFrame(0, getTick(), 60, 0, 0);
-		part.animationFrame(2, getTick(), 55, 0, 0);
-		part.animationFrame(3, getTick(), 48, 0, 0);
-		part.animationFrame(4, getTick(), 41, 0, 0);
-		part.animationFrame(5, getTick(), 34, 0, 0);
-		part.animationFrame(6, getTick(), 27, 0, 0);
-		part.animationFrame(7, getTick(), 20, 0, 0);
-		part.animationFrame(8, getTick(), 13, 0, 0);
-		part.animationFrame(9, getTick(), 6, 0, 0);
-		part.animationFrame(10, getTick(), -1, 0, 0);
-		part.animationFrame(11, getTick(), -8, 0, 0);
-		part.animationFrame(12, getTick(), -15, 0, 0);
+		part.animationFrame(0, getTick(), 5, 0, 10);
+		part.animationFrame(1, getTick(), 8, 6, 9);
+		part.animationFrame(2, getTick(), 12, 12, 8.5);
+		part.animationFrame(3, getTick(), 15, 17, 8);
+		part.animationFrame(4, getTick(), 20, 23, 7);
+		part.animationFrame(5, getTick(), 24, 29, 6.5);
+		part.animationFrame(6, getTick(), 28, 34, 6);
+		part.animationFrame(7, getTick(), 32, 40, 5.5);
+		part.animationFrame(8, getTick(), 35, 46, 5);
+		part.animationFrame(9, getTick(), 36, 51, 4);
+		part.animationFrame(10, getTick(), 39, 57, 3.5);
+		part.animationFrame(11, getTick(), 42, 62, 3);
+		part.animationFrame(12, getTick(), 45, 68, 2);
+		part.animationFrame(13, getTick(), 47, 74, 1);
+		part.animationFrame(14, getTick(), 50, 80, 0);
 		//
 		//
 		//
 		//
-		part.animationFrame(16, getTick(), -15, 0, 0);
-		part.animationFrame(17, getTick(), -8, 0, 0);
-		part.animationFrame(18, getTick(), -1, 0, 0);
-		part.animationFrame(19, getTick(), 6, 0, 0);
-		part.animationFrame(20, getTick(), 13, 0, 0);
-		part.animationFrame(21, getTick(), 20, 0, 0);
-		part.animationFrame(22, getTick(), 27, 0, 0);
-		part.animationFrame(23, getTick(), 34, 0, 0);
-		part.animationFrame(24, getTick(), 41, 0, 0);
-		part.animationFrame(25, getTick(), 48, 0, 0);
-		part.animationFrame(26, getTick(), 55, 0, 0);
-		part.animationFrame(27, getTick(), 60, 0, 0);
+		part.animationFrame(19, getTick(), 50, 80, 0);
+		part.animationFrame(20, getTick(), 47, 74, 1);
+		part.animationFrame(21, getTick(), 45, 68, 2);
+		part.animationFrame(22, getTick(), 42, 62, 3);
+		part.animationFrame(23, getTick(), 39, 57, 3.5);
+		part.animationFrame(24, getTick(), 36, 51, 4);
+		part.animationFrame(25, getTick(), 35, 46, 5);
+		part.animationFrame(26, getTick(), 32, 34, 5.5);
+		part.animationFrame(27, getTick(), 28, 29, 6);
+		part.animationFrame(28, getTick(), 24, 23, 6.5);
+		part.animationFrame(29, getTick(), 20, 17, 7);
+		part.animationFrame(30, getTick(), 15, 12, 8);
+		part.animationFrame(31, getTick(), 12, 6, 8.5);
+		part.animationFrame(32, getTick(), 8, 3, 9);
+		part.animationFrame(33, getTick(), 5, 0, 10);
 		//
 		//
 		//
@@ -297,37 +278,6 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void rightFoot() {
 		Part part = getMob().getParts().get("right_foot");
-		part.animationFrame(0, getTick(), 60, 0, 0);
-		part.animationFrame(2, getTick(), 55, 0, 0);
-		part.animationFrame(3, getTick(), 48, 0, 0);
-		part.animationFrame(4, getTick(), 41, 0, 0);
-		part.animationFrame(5, getTick(), 34, 0, 0);
-		part.animationFrame(6, getTick(), 27, 0, 0);
-		part.animationFrame(7, getTick(), 20, 0, 0);
-		part.animationFrame(8, getTick(), 13, 0, 0);
-		part.animationFrame(9, getTick(), 6, 0, 0);
-		part.animationFrame(10, getTick(), -1, 0, 0);
-		part.animationFrame(11, getTick(), -8, 0, 0);
-		part.animationFrame(12, getTick(), -15, 0, 0);
-		//
-		//
-		//
-		//
-		part.animationFrame(16, getTick(), -15, 0, 0);
-		part.animationFrame(17, getTick(), -8, 0, 0);
-		part.animationFrame(18, getTick(), -1, 0, 0);
-		part.animationFrame(19, getTick(), 6, 0, 0);
-		part.animationFrame(20, getTick(), 13, 0, 0);
-		part.animationFrame(21, getTick(), 20, 0, 0);
-		part.animationFrame(22, getTick(), 27, 0, 0);
-		part.animationFrame(23, getTick(), 34, 0, 0);
-		part.animationFrame(24, getTick(), 41, 0, 0);
-		part.animationFrame(25, getTick(), 48, 0, 0);
-		part.animationFrame(26, getTick(), 55, 0, 0);
-		part.animationFrame(27, getTick(), 60, 0, 0);
-		//
-		//
-		//
-		//
+		part.animation(0, 0, 0);
 	}
 }

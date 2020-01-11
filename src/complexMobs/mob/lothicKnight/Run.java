@@ -11,12 +11,18 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.mob.lothicKnight.action.Idle;
+import complexMobs.mob.lothicKnight.action.RightSlash;
 import complexMobs.mob.lothicKnight.action.Running;
+import complexMobs.mob.lothicKnight.action.Sidestepping;
 import complexMobs.mob.lothicKnight.action.Walking;
+import complexMobs.mob.lothicKnight.action.WalkingBack;
 import complexMobs.object.Part;
+import net.etheria.core.util.ai.action.GoToAction;
+import net.etheria.core.util.ai.action.LookAroundAction;
 
 public class Run {
 
@@ -25,6 +31,8 @@ public class Run {
 	private int tick = 0;
 	
 	private boolean forceChange = false;
+	
+	private boolean attacking = false;
 	
 	private LothricKnight lothricKnight;
 	
@@ -48,38 +56,19 @@ public class Run {
 				if (lothricKnight.getAction() == null) lothricKnight.setAction("idle"); //Default animation
 				
 				if (lothricKnight.getTarget() != null) { //Target attacking logic
-					
-					double distance = lothricKnight.getMain().getLocation().distance(lothricKnight.getTarget().getLocation());
-					
-					if (distance < 2 && !lothricKnight.getAction().contentEquals("idle")) forceChange = true;
-					if (distance > 3 && lothricKnight.getAction().contentEquals("idle")) forceChange = true;
-					
-					if ((changeTick > 100 && Math.random() < .02) || forceChange) {
-						forceChange = false;
-						List<String> actions = new ArrayList<>(); //Actions to choose from
-						if (!(distance < 2)) {
-							actions.add("running");
-							actions.add("walking");
-						}
-						else actions.add("idle");
-						Collections.shuffle(actions);
-						lothricKnight.setAction(actions.get(0));
-						lothricKnight.setShieldIsUp(false);
-						if (Math.random() < .4) lothricKnight.setShieldIsUp(true);
-						changeTick = 0;
-					}
-					
+					attackingLogic();
 				}
 				else { //Non-attacking logic
-					
-					if (changeTick > 200 && Math.random() < .01 || forceChange) { //Mininum 200 ticks before changing, random tick after that
-						forceChange = false;
-						List<String> actions = new ArrayList<>(); actions.add("idle"); actions.add("walking"); //Actions to choose from
-						Collections.shuffle(actions);
-						lothricKnight.setAction(actions.get(0));
-						changeTick = 0;
-					}
-					
+					nonAttackingLogic();
+				}
+				
+				//Check for attack action end
+				if (tick == -1) {
+					attacking = false;
+					tick = 0;
+					changeTick = 99;
+					lothricKnight.setAction(null);
+					return;
 				}
 				
 				//Execute action
@@ -91,8 +80,18 @@ public class Run {
 				case "walking":
 					tick = new Walking().run(lothricKnight, tick);
 					break;
+				case "walking_back":
+					tick = new WalkingBack().run(lothricKnight, tick);
+					break;
+				case "sidestepping":
+					tick = new Sidestepping().run(lothricKnight, tick);
+					break;
 				case "running":
 					tick = new Running().run(lothricKnight, tick);
+					break;
+				case "right_slash":
+					attacking = true;
+					tick = new RightSlash().run(lothricKnight, tick);
 					break;
 					
 				}
@@ -105,6 +104,87 @@ public class Run {
 			}
 		}.runTaskTimer(plugin, 0, 0);
 	}
+	
+	
+	private void attackingLogic() {
+		
+		Location loc = lothricKnight.getMain().getLocation();
+		
+		double distance = loc.distance(lothricKnight.getTarget().getLocation());
+		if (distance < 2 && !lothricKnight.getAction().contentEquals("idle")) forceChange = true;
+		if (distance > 3 && lothricKnight.getAction().contentEquals("idle")) forceChange = true;
+		
+		//Passive actions
+		if (((changeTick > 100 && Math.random() < .02) || forceChange) && !attacking) {
+			forceChange = false;
+			List<String> actions = new ArrayList<>(); //Actions to choose from
+			if (!(distance < 2)) {
+				
+				actions.add("walking");
+				
+				if (!isWallBetween(lothricKnight.getTarget())) {
+					actions.add("walking_back");
+					actions.add("sidestepping");
+					actions.add("running");
+				}
+			}
+			else actions.add("idle");
+			Collections.shuffle(actions);
+			lothricKnight.setAction(actions.get(0));
+			lothricKnight.setShieldIsUp(false);
+			if (Math.random() < .4) lothricKnight.setShieldIsUp(true);
+			changeTick = 0;
+			tick = 0;
+		}
+		
+		if (!attacking) {
+			//Attack actions
+			List<String> actions = new ArrayList<>(); //Actions to choose from
+			if (distance < 4) {
+				actions.add("right_slash");
+			}
+			
+			if (!actions.isEmpty()) {
+				Collections.shuffle(actions);
+				lothricKnight.setAction(actions.get(0));
+				changeTick = 0;
+				tick = 0;
+			}
+		}
+	}
+
+	
+	private void nonAttackingLogic() {
+		
+		attacking = false;
+		
+		//Pathfind selection
+		if (changeTick % 50 == 0) {
+			Location loc = lothricKnight.getMain().getLocation();
+			if (loc.distance(lothricKnight.getPost().toLocation(loc.getWorld())) < 5) {
+				lothricKnight.getAI().single(new LookAroundAction(lothricKnight.getTargeter()));
+				lothricKnight.getAI().process();
+				lothricKnight.setAction("idle");
+				lothricKnight.setShieldIsUp(false);
+			}
+			else {
+				lothricKnight.getAI().single(new GoToAction(lothricKnight.getTargeter(), lothricKnight.getPost().toLocation(loc.getWorld())));
+				lothricKnight.getAI().process();
+				lothricKnight.setAction("walking");
+			}
+		}
+		
+		//Action selection
+		if (changeTick > 200 && Math.random() < .01 || forceChange) { //Minimum 200 ticks before changing, random tick after that
+			
+			forceChange = false;
+			List<String> actions = new ArrayList<>(); actions.add("walking"); actions.add("walking"); //Actions to choose from
+			Collections.shuffle(actions);
+			lothricKnight.setAction(actions.get(0));
+			changeTick = 0;
+		}
+	}
+	
 	
 	private void targeting() {
 		if (lothricKnight.getTarget() != null) {
@@ -119,6 +199,7 @@ public class Run {
 		}
 	}
 	
+	
 	private void findNewTarget() {
 		
 		List<Entity> nearbyEntities = lothricKnight.getMain().getNearbyEntities(10, 10, 10);
@@ -131,15 +212,17 @@ public class Run {
 				Player player = (Player) entity;
 				if (nearestPlayer == null) nearestPlayer = player;
 				double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
-				if (playerDistance < nearestPlayerDistance && Math.random() > .3) {
+				if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !isWallBetween(player)) {
 					 nearestPlayer = player;
 					 nearestPlayerDistance = playerDistance;
 				}
 			}
 		}
-		if (nearestPlayer != null) lothricKnight.setTarget(nearestPlayer);
-		
+		if (nearestPlayer != null) {
+			lothricKnight.setTarget(nearestPlayer);
+		}
 	}
+	
 	
 	private void calculateStamina() {
 		
@@ -149,6 +232,7 @@ public class Run {
 		
 	}
 	
+	
 	private void calculatePoise() {
 		
 		lothricKnight.setPoise(lothricKnight.getPoise() + Math.sqrt(Math.sqrt(lothricKnight.getPoise()))/10); //Add exponentionally less poise for current amount
@@ -157,7 +241,33 @@ public class Run {
 			
 			lothricKnight.setPoise(lothricKnight.getMaxPoise());
 		}
+	}
+	
+	private boolean isWallBetween(Entity entity) {
+		boolean isBlock = false;
 		
+		Location loc = lothricKnight.getMain().getLocation();
+		double distance = Math.sqrt(Math.pow(loc.getX() - entity.getLocation().getX(), 2) + Math.pow(loc.getZ() - entity.getLocation().getZ(), 2));
+		double differenceX = loc.toVector().getX() - entity.getLocation().toVector().getX();
+		double differenceZ = loc.toVector().getZ() - entity.getLocation().toVector().getZ();
+		
+
+		loc.add(0,1,0);
+		for (int blockI = (int) distance; blockI > 0; blockI--) {
+			Location blockLoc = loc.clone().subtract(new Vector(differenceX*(blockI/distance),0,differenceZ*(blockI/distance)));
+			if (!blockLoc.getBlock().isPassable()) {
+				isBlock = true;
+			}
+		}
+		loc.add(0,1,0);
+		for (int blockI = (int) distance; blockI > 0; blockI--) {
+			Location blockLoc = loc.clone().subtract(new Vector(differenceX*(blockI/distance),0,differenceZ*(blockI/distance)));
+			if (!blockLoc.getBlock().isPassable()) {
+				isBlock = true;
+			}
+		}
+		
+		return isBlock;
 	}
 	
 	private void otherTasks() {
@@ -168,10 +278,6 @@ public class Run {
 		Location newLocation = lothricKnight.getMain().getLocation().toVector().toLocation(targeter.getWorld()); //Teleport without changing direction?
 		newLocation.setYaw((float) yaw);
 		targeter.setFireTicks(-1);
-		//lothricKnight.getTargeter().teleport(newLocation);
 		((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
-		
-		//Set targeter's target
-		targeter.setTarget(lothricKnight.getTarget());
 	}
 }

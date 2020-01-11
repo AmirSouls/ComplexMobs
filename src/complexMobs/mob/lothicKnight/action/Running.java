@@ -14,7 +14,7 @@ public class Running extends LothricKnightPassiveAction {
 	@Override
 	protected void playSound() {
 		ArmorStand main = getMob().getMain();
-		if (getTick() == 4) main.getWorld().playSound(main.getLocation(), "lothricknight.run", 1, 1);
+		if (getTick() == 3) main.getWorld().playSound(main.getLocation(), "lothricknight.run", 1, 1);
 		if (getTick() == 9) main.getWorld().playSound(main.getLocation(), "lothricknight.run", 1, 1);
 	}
 	

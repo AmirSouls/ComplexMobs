@@ -72,7 +72,6 @@ public abstract class LothricKnightPassiveAction extends Action {
 			mobYaw *= -1;
 			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), Math.min(Math.max(-70, mobYaw - targetYaw), 70), 0);
 			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), mobYaw - targetYaw, 0);
-			
 		}
 		else {
 			part.animation(0, 0, 0);

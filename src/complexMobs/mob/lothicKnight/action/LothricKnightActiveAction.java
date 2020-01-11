@@ -70,9 +70,8 @@ public abstract class LothricKnightActiveAction extends Action {
 			double mobYaw = getMob().getMain().getLocation().getYaw();
 			if (mobYaw > 180) mobYaw -= 360;
 			mobYaw *= -1;
-			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.max((part.getHeadPose().getX()*57.29) - 5, 20), 0, 0);
-			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), 0, 0);
-			
+			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), Math.min(Math.max(-70, mobYaw - targetYaw), 70), 0);
+			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), mobYaw - targetYaw, 0);
 		}
 		else {
 			part.animation(0, 0, 0);

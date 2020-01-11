@@ -2,6 +2,10 @@ package complexMobs.template;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
+import org.bukkit.util.Vector;
+
+import net.etheria.core.util.ai.AI;
+import net.etheria.core.util.ai.action.FollowEntityAction;
 
 public abstract class SoulsMob extends LivingComplexMob {
 
@@ -9,11 +13,15 @@ public abstract class SoulsMob extends LivingComplexMob {
 	
 	private Monster targeter;
 	
+	private AI ai;
+	
 	private double stamina = 100;
 	
 	private double poise;
 	
 	private double maxPoise;
+	
+	private Vector post;
 	
 	/**
 	* Creates a SoulsMob object, This extends the LivingComplexMob type with more values of and methods to fit the category
@@ -22,10 +30,27 @@ public abstract class SoulsMob extends LivingComplexMob {
 	* @param maxHealth The max health of this LivingComplexMob
 	* @param maxPoise The max poise of this SoulsMob
 	*/
-	protected SoulsMob(String ID, String name, double maxHealth, double maxPoise) {
+	protected SoulsMob(String ID, String name, double maxHealth, double maxPoise, Vector post) {
 		super(ID, name, maxHealth);
 		this.maxPoise = maxPoise;
 		this.poise = maxPoise;
+		this.post = post;
+	}
+	
+	/**
+	* Gets the Post of this SoulsMob
+	* @return The Post of this SoulsMob
+	*/
+	public Vector getPost() {
+		return this.post;
+	}
+	
+	/**
+	* Gets the AI of this SoulsMob
+	* @return The AI of this SoulsMob
+	*/
+	public AI getAI() {
+		return this.ai;
 	}
 	
 	/**
@@ -42,6 +67,7 @@ public abstract class SoulsMob extends LivingComplexMob {
 	*/
 	public void setTargeter(Monster targeter) {
 		this.targeter = targeter;
+		this.ai = new AI(targeter);
 	}
 	
 	/**
@@ -58,7 +84,11 @@ public abstract class SoulsMob extends LivingComplexMob {
 	*/
 	public void setTarget(LivingEntity target) {
 		this.target = target;
-		this.targeter.setTarget(target);
+		//if (target != null) this.targeter.setTarget(target);
+		if (target != null) {
+			this.getAI().single(new FollowEntityAction(this.targeter, target));
+			this.getAI().process();
+		}
 	}
 	
 	/**

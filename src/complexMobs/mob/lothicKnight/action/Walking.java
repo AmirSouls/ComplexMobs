@@ -15,8 +15,8 @@ public class Walking extends LothricKnightPassiveAction {
 	@Override
 	protected void playSound() {
 		ArmorStand main = getMob().getMain();
-		if (getTick() == 10) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
-		if (getTick() == 21) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
+		if (getTick() == 11) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
+		if (getTick() == 27) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
 	}
 	
 	@Override

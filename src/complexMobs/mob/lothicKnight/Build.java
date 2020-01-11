@@ -33,7 +33,6 @@ public class Build {
 		targeter.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000000, 0));
 		targeter.setCollidable(false);
 		targeter.setBaby(false);
-		main.addPassenger(targeter);
 		lothricKnight.setTargeter(targeter);
 		
 		lothricKnight.getParts().put(
