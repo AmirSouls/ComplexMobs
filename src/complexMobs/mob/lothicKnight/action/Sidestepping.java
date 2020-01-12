@@ -28,7 +28,7 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	protected void pelvis() {
 		Part part = getMob().getParts().get("pelvis");
 		part.animation(20, 0, 0);
-		part.setOffset(new Vector(0,.4,0));
+		part.setOffset(new Vector(0,.35,0));
 	}
 	
 	@Override

@@ -17,6 +17,10 @@ public abstract class SoulsMob extends LivingComplexMob {
 	
 	private double stamina = 100;
 	
+	private int staminaUseTick = 0;
+	
+	private int staminaUseTickMax;
+	
 	private double poise;
 	
 	private double maxPoise;
@@ -30,10 +34,11 @@ public abstract class SoulsMob extends LivingComplexMob {
 	* @param maxHealth The max health of this LivingComplexMob
 	* @param maxPoise The max poise of this SoulsMob
 	*/
-	protected SoulsMob(String ID, String name, double maxHealth, double maxPoise, Vector post) {
+	protected SoulsMob(String ID, String name, double maxHealth, double maxPoise, int staminaUseTickMax, Vector post) {
 		super(ID, name, maxHealth);
 		this.maxPoise = maxPoise;
 		this.poise = maxPoise;
+		this.staminaUseTickMax = staminaUseTickMax;
 		this.post = post;
 	}
 	
@@ -105,6 +110,30 @@ public abstract class SoulsMob extends LivingComplexMob {
 	*/
 	public void setStamina(double stamina) {
 		this.stamina = stamina;
+	}
+	
+	/**
+	* Gets the ticks before the SoulsMob's stamina regenerates
+	* @return The ticks before the SoulsMob's stamina regenerates
+	*/
+	public int getStaminaUseTick() {
+		return this.staminaUseTick;
+	}
+	
+	/**
+	* Gets the ticks before the SoulsMob's stamina regenerates
+	* @return The ticks before the SoulsMob's stamina regenerates
+	*/
+	public void setStaminaUseTick(int staminaUseTick) {
+		this.staminaUseTick = staminaUseTick;
+	}
+	
+	/**
+	* Gets the max ticks before the SoulsMob's stamina regenerates
+	* @return The max ticks before the SoulsMob's stamina regenerates
+	*/
+	public int getStaminaUseTickMax() {
+		return this.staminaUseTickMax;
 	}
 	
 	/**

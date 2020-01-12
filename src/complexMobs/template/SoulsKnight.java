@@ -21,8 +21,8 @@ public abstract class SoulsKnight extends SoulsMob {
 	* @param sword The sword object of this SoulsKnight
 	* @param shield The shield object of this SoulsKnight
 	*/
-	protected SoulsKnight(String ID, String name, double maxHealth, double maxPoise, Vector post, SoulsWeapon sword, SoulsWeapon shield) {
-		super(ID, name, maxHealth, maxPoise, post);
+	protected SoulsKnight(String ID, String name, double maxHealth, double maxPoise, int staminaUseTickMax, Vector post, SoulsWeapon sword, SoulsWeapon shield) {
+		super(ID, name, maxHealth, maxPoise, staminaUseTickMax, post);
 		this.sword = sword;
 		this.shield = shield;
 		this.shieldUp = false;

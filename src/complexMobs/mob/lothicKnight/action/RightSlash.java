@@ -3,6 +3,7 @@ package complexMobs.mob.lothicKnight.action;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
@@ -33,7 +34,18 @@ public class RightSlash extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
-		if (getTick() >= getReturnTick()) return -1;
+		if (getTick() >= getReturnTick() - 7) {
+			LothricKnight mob = (LothricKnight) getMob();
+			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 4 && mob.getStamina() > 25) {
+				mob.setStamina(mob.getStamina() - 25);
+				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
+				mob.setAction("left_slash");
+				return 0;
+			}
+		}
+		if (getTick() >= getReturnTick()) {
+			return -1;
+		}
 		return getTick()+1;
 	}
 	
@@ -41,10 +53,11 @@ public class RightSlash extends Action {
 		ArmorStand main = getMob().getMain();
 		if (getTick() == 13) main.getWorld().playSound(main.getLocation(), "lothricknight.slash", 1, 1);
 		if (getTick() == 10) main.getWorld().playSound(main.getLocation(), "lothricknight.grunt", 1, 1);
+		if (getTick() == 15) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
 	}
 	
 	protected void move() {
-		getMob().move(0, 20, 0);
+		if (13 > getTick()) getMob().move(.2, 20, 0);
 	}
 	
 	protected void pelvis() {

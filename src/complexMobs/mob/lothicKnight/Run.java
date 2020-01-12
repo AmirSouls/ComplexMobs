@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -14,7 +15,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
+import complexMobs.mob.lothicKnight.action.Backstep;
 import complexMobs.mob.lothicKnight.action.Idle;
+import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
 import complexMobs.mob.lothicKnight.action.Running;
 import complexMobs.mob.lothicKnight.action.Sidestepping;
@@ -93,7 +96,14 @@ public class Run {
 					attacking = true;
 					tick = new RightSlash().run(lothricKnight, tick);
 					break;
-					
+				case "left_slash":
+					attacking = true;
+					tick = new LeftSlash().run(lothricKnight, tick);
+					break;
+				case "backstep":
+					attacking = true;
+					tick = new Backstep().run(lothricKnight, tick);
+					break;
 				}
 				changeTick++;
 				
@@ -140,8 +150,17 @@ public class Run {
 		if (!attacking) {
 			//Attack actions
 			List<String> actions = new ArrayList<>(); //Actions to choose from
-			if (distance < 4) {
+			if (distance < 4 && lothricKnight.getStamina() > 50) {
 				actions.add("right_slash");
+				actions.add("left_slash");
+				if (Math.random() < .2) actions.add("backstep");
+				lothricKnight.setStamina(lothricKnight.getStamina() - 25);
+				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
+			}
+			else if (distance < 4 && Math.random() < .03) {
+				actions.add("backstep");
+				lothricKnight.setStamina(lothricKnight.getStamina() - 10);
+				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
 			
 			if (!actions.isEmpty()) {
@@ -226,10 +245,14 @@ public class Run {
 	
 	private void calculateStamina() {
 		
-		lothricKnight.setStamina(lothricKnight.getStamina() + 1); //Restore 1 stamina point per tick
+		if (lothricKnight.getStaminaUseTick() == 0) {
+			lothricKnight.setStamina(lothricKnight.getStamina() + 2); //Restore 1 stamina point per tick
+		}
+		
 		if (lothricKnight.getStamina() > 100) lothricKnight.setStamina(100); //Going over, keep it at 100
 		if (lothricKnight.getStamina() < 0) lothricKnight.setStamina(0); //Going under, keep it at 0
 		
+		if (lothricKnight.getStaminaUseTick() > 0) lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTick() - 1);
 	}
 	
 	
