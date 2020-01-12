@@ -4,6 +4,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
 import complexMobs.object.Action;
+import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 
 public class Backstep extends Action {
@@ -46,7 +47,7 @@ public class Backstep extends Action {
 	}
 	
 	protected void move() {
-		if (1 < getTick() && 15 > getTick()) getMob().move(-.5, 0, 0);
+		if (1 < getTick() && 15 > getTick()) getMob().move(-.8, 0, 0);
 	}
 	
 	protected void pelvis() {
@@ -81,6 +82,10 @@ public class Backstep extends Action {
 		Part part = getMob().getParts().get("head");
 		
 		part.animationFrame(0, getTick(), 10, 0, 0);
+		
+		part.animationFrame(4, getTick(), 30, 0, 0);
+		
+		part.animationFrame(8, getTick(), 0, 0, 0);
 
 	}
 
@@ -108,6 +113,9 @@ public class Backstep extends Action {
 
 	protected void shield() {
 		Part part = getMob().getParts().get("shield");
+		
+		((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
+		
 		part.animationFrame(0, getTick(), 5, 50, 0);
 
 	}

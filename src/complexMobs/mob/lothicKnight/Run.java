@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -21,6 +20,7 @@ import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
 import complexMobs.mob.lothicKnight.action.Running;
 import complexMobs.mob.lothicKnight.action.Sidestepping;
+import complexMobs.mob.lothicKnight.action.Stance;
 import complexMobs.mob.lothicKnight.action.Walking;
 import complexMobs.mob.lothicKnight.action.WalkingBack;
 import complexMobs.object.Part;
@@ -85,13 +85,20 @@ public class Run {
 					break;
 				case "walking_back":
 					tick = new WalkingBack().run(lothricKnight, tick);
+					if (!lothricKnight.getMain().getLocation().add(lothricKnight.getMain().getLocation().getDirection().multiply(-1)).getBlock().isPassable()) {
+						forceChange = true;
+					}
 					break;
 				case "sidestepping":
 					tick = new Sidestepping().run(lothricKnight, tick);
+					if (!lothricKnight.getMain().getLocation().add(lothricKnight.getMain().getLocation().getDirection().rotateAroundY(-80)).getBlock().isPassable()) {
+						forceChange = true;
+					}
 					break;
 				case "running":
 					tick = new Running().run(lothricKnight, tick);
 					break;
+				//Attacks and non-looping movements
 				case "right_slash":
 					attacking = true;
 					tick = new RightSlash().run(lothricKnight, tick);
@@ -103,6 +110,10 @@ public class Run {
 				case "backstep":
 					attacking = true;
 					tick = new Backstep().run(lothricKnight, tick);
+					break;
+				case "stance":
+					attacking = true;
+					tick = new Stance().run(lothricKnight, tick);
 					break;
 				}
 				changeTick++;
@@ -150,7 +161,7 @@ public class Run {
 		if (!attacking) {
 			//Attack actions
 			List<String> actions = new ArrayList<>(); //Actions to choose from
-			if (distance < 4 && lothricKnight.getStamina() > 50) {
+			if (distance < 4 && lothricKnight.getStamina() > 25) {
 				actions.add("right_slash");
 				actions.add("left_slash");
 				if (Math.random() < .2) actions.add("backstep");
@@ -161,6 +172,9 @@ public class Run {
 				actions.add("backstep");
 				lothricKnight.setStamina(lothricKnight.getStamina() - 10);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
+			}
+			else if (Math.random() < .02) {
+				actions.add("stance");
 			}
 			
 			if (!actions.isEmpty()) {

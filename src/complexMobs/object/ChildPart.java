@@ -13,6 +13,10 @@ public class ChildPart extends Part {
 		this.parent = parent;
 	}
 	
+	public void setParent(Part parent) {
+		this.parent = parent;
+	}
+	
 	@Override
 	public void position() {
 		Vector partOffset = getOffset().clone();
