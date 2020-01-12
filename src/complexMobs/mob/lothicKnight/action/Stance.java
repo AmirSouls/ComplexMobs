@@ -11,7 +11,7 @@ import complexMobs.object.Part;
 public class Stance extends Action {
 	
 	public Stance() {
-		setReturnTick(25);
+		setReturnTick(30);
 	}
 	
 	protected int actions() {
@@ -35,21 +35,27 @@ public class Stance extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
-		if (getTick() >= getReturnTick() - 7) {
+		if (getTick() >= getReturnTick() - 10) {
 			LothricKnight mob = (LothricKnight) getMob();
-			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 4 && mob.getStamina() > 25) {
+			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 5 && mob.getStamina() > 25) {
+				mob.setStamina(mob.getStamina() - 25);
+				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
+				mob.setAction("right_slash");
+				
+				((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
+				getMob().getParts().get("shield").setOffset(new Vector(0,-.5,0));
 				return 0;
 			}
 		}
 		if (getTick() >= getReturnTick()) {
-			return 0;
+			return -1;
 		}
 		return getTick()+1;
 	}
 	
 	protected void playSound() {
 		ArmorStand main = getMob().getMain();
-		if (getTick() == 15) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
+		if (getTick() == 5) main.getWorld().playSound(main.getLocation(), "lothricknight.walk", 1, 1);
 	}
 	
 	protected void move() {
@@ -107,11 +113,11 @@ public class Stance extends Action {
 		Part part = getMob().getParts().get("left_elbow");
 		
 		part.animationFrame(0, getTick(), 0, 0, 0);
-		part.animationFrame(1, getTick(), -10, 15, -10);
-		part.animationFrame(2, getTick(), -20, 30, -15);
-		part.animationFrame(3, getTick(), -25, 45, -20);
-		part.animationFrame(4, getTick(), -30, 60, -25);
-		part.animationFrame(5, getTick(), -35, 70, -30);
+		part.animationFrame(1, getTick(), -10, 15, 0);
+		part.animationFrame(2, getTick(), -30, 30, 0);
+		part.animationFrame(3, getTick(), -50, 45, 0);
+		part.animationFrame(4, getTick(), -70, 60, -0);
+		part.animationFrame(5, getTick(), -90, 70, 0);
 	}
 		
 	protected void leftArm() {
@@ -139,8 +145,6 @@ public class Stance extends Action {
 	protected void shield() {
 		Part part = getMob().getParts().get("shield");
 		
-		((ChildPart) part).setParent(getMob().getParts().get("chest"));
-		
 		part.animationFrame(0, getTick(), 0, 0, 0);
 		part.animationFrame(1, getTick(), 20, -10, -10);
 		part.animationFrame(2, getTick(), 60, -15, -15);
@@ -153,11 +157,11 @@ public class Stance extends Action {
 		Part part = getMob().getParts().get("right_elbow");
 		
 		part.animationFrame(0, getTick(), 0, 0, 0);
-		part.animationFrame(1, getTick(), 20, 40, 0);
-		part.animationFrame(2, getTick(), 60, 70, 0);
-		part.animationFrame(3, getTick(), 100, 100, 0);
-		part.animationFrame(4, getTick(), 140, 130, 0);
-		//part.animationFrame(5, getTick(), 145, 160, 0);
+		part.animationFrame(1, getTick(), -20, 40, 0);
+		part.animationFrame(2, getTick(), -60, 70, 0);
+		part.animationFrame(3, getTick(), -100, 100, 0);
+		part.animationFrame(4, getTick(), -140, 130, 0);
+		part.animationFrame(5, getTick(), -145, 160, 0);
 	}
 	
 	protected void rightArm() {

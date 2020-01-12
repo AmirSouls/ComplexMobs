@@ -23,6 +23,7 @@ import complexMobs.mob.lothicKnight.action.Sidestepping;
 import complexMobs.mob.lothicKnight.action.Stance;
 import complexMobs.mob.lothicKnight.action.Walking;
 import complexMobs.mob.lothicKnight.action.WalkingBack;
+import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 import net.etheria.core.util.ai.action.GoToAction;
 import net.etheria.core.util.ai.action.LookAroundAction;
@@ -112,6 +113,8 @@ public class Run {
 					tick = new Backstep().run(lothricKnight, tick);
 					break;
 				case "stance":
+					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
+					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
 					attacking = true;
 					tick = new Stance().run(lothricKnight, tick);
 					break;
@@ -150,12 +153,18 @@ public class Run {
 				}
 			}
 			else actions.add("idle");
+			
+			//Select action
 			Collections.shuffle(actions);
 			lothricKnight.setAction(actions.get(0));
-			lothricKnight.setShieldIsUp(false);
-			if (Math.random() < .4) lothricKnight.setShieldIsUp(true);
 			changeTick = 0;
 			tick = 0;
+			
+			//Shield
+			((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
+			lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
+			lothricKnight.setShieldIsUp(false);
+			if (Math.random() < .4) lothricKnight.setShieldIsUp(true);
 		}
 		
 		if (!attacking) {
