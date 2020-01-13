@@ -2,15 +2,15 @@ package complexMobs.template;
 
 import org.bukkit.util.Vector;
 
-import complexMobs.object.SoulsWeapon;
+import complexMobs.object.Weapon;
 
 public abstract class SoulsKnight extends SoulsMob {
 
 	private boolean shieldUp = false;
 	
-	private SoulsWeapon sword;
+	private Weapon sword;
 	
-	private SoulsWeapon shield;
+	private Weapon shield;
 	
 	/**
 	* Creates a SoulsKnight object, This extends the SoulsMob type with more values of and methods to fit the category
@@ -21,7 +21,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	* @param sword The sword object of this SoulsKnight
 	* @param shield The shield object of this SoulsKnight
 	*/
-	protected SoulsKnight(String ID, String name, double maxHealth, double maxPoise, int staminaUseTickMax, Vector post, SoulsWeapon sword, SoulsWeapon shield) {
+	protected SoulsKnight(String ID, String name, double maxHealth, double maxPoise, int staminaUseTickMax, Vector post, Weapon sword, Weapon shield) {
 		super(ID, name, maxHealth, maxPoise, staminaUseTickMax, post);
 		this.sword = sword;
 		this.shield = shield;
@@ -32,7 +32,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	* Gets the sword object of this SoulsKnight
 	* @return The sword object of this SoulsKnight
 	*/
-	public SoulsWeapon getSwordWeapon() {
+	public Weapon getSwordWeapon() {
 		return this.sword;
 	}
 	
@@ -40,7 +40,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	* Sets the sword object of this SoulsKnight
 	* @param sword The new sword object of this SoulsKnight
 	*/
-	public void setSwordWeapon(SoulsWeapon sword) {
+	public void setSwordWeapon(Weapon sword) {
 		this.sword = sword;
 	}
 	
@@ -48,7 +48,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	* Gets the shield object of this SoulsKnight
 	* @return The shield object of this SoulsKnight
 	*/
-	public SoulsWeapon getShield() {
+	public Weapon getShield() {
 		return this.shield;
 	}
 	
@@ -56,7 +56,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	* Sets the shield object of this SoulsKnight
 	* @param shield The new sword object of this SoulsKnight
 	*/
-	public void setShield(SoulsWeapon shield) {
+	public void setShield(Weapon shield) {
 		this.shield = shield;
 	}
 	
@@ -79,7 +79,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	/**
 	* Deals damage in the area of this SoulsKnight's sword
 	*/
-	public abstract void attackFrameSword();
+	public abstract void attackFrameSword(double damage, Vector knockBack);
 	
 	/**
 	* Deals damage in the area of this SoulsKnight's shield

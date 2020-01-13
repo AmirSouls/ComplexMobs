@@ -37,13 +37,19 @@ public class Stance extends Action {
 		rightFoot();
 		if (getTick() >= getReturnTick() - 10) {
 			LothricKnight mob = (LothricKnight) getMob();
-			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 5 && mob.getStamina() > 25) {
+			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 5) {
 				mob.setStamina(mob.getStamina() - 25);
 				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
 				mob.setAction("right_slash");
 				
 				((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
 				getMob().getParts().get("shield").setOffset(new Vector(0,-.5,0));
+				return 0;
+			}
+			else {
+				mob.setStamina(mob.getStamina() - 60);
+				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
+				mob.setAction("stance_thrust");
 				return 0;
 			}
 		}

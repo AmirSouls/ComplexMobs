@@ -21,6 +21,7 @@ import complexMobs.mob.lothicKnight.action.RightSlash;
 import complexMobs.mob.lothicKnight.action.Running;
 import complexMobs.mob.lothicKnight.action.Sidestepping;
 import complexMobs.mob.lothicKnight.action.Stance;
+import complexMobs.mob.lothicKnight.action.StanceThrust;
 import complexMobs.mob.lothicKnight.action.Walking;
 import complexMobs.mob.lothicKnight.action.WalkingBack;
 import complexMobs.object.ChildPart;
@@ -48,6 +49,8 @@ public class Run {
 		
 		new BukkitRunnable() {
 			public void run() {
+				
+				if (lothricKnight.isRemoved()) return;
 				
 				calculateStamina();
 				
@@ -117,6 +120,9 @@ public class Run {
 					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
 					attacking = true;
 					tick = new Stance().run(lothricKnight, tick);
+					break;
+				case "stance_thrust":
+					tick = new StanceThrust().run(lothricKnight, tick);
 					break;
 				}
 				changeTick++;
@@ -199,6 +205,10 @@ public class Run {
 	private void nonAttackingLogic() {
 		
 		attacking = false;
+		
+		//Shield
+		((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
+		lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
 		
 		//Pathfind selection
 		if (changeTick % 50 == 0) {

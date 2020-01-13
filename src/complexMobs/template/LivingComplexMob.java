@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.entity.ArmorStand;
 
 import complexMobs.complexMob.ComplexMob;
+import complexMobs.main.ComplexMobs;
 import complexMobs.object.Part;
 
 public abstract class LivingComplexMob implements ComplexMob {

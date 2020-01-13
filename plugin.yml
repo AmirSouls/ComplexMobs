@@ -8,3 +8,6 @@ commands:
     summoncomplexmob:
         description: Spawns complex mobs at the current position
         usage: /summoncomplexmob
+    removeallcomplexmobs:
+        description: Removes all complex mobs from the game
+        usage: /removeallcomplexmobs

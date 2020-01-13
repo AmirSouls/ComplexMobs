@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import complexMobs.main.ComplexMobs;
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
@@ -18,6 +19,9 @@ import complexMobs.object.Part;
 public class Build {
 
 	public void run(LothricKnight lothricKnight, Location spawnLocation) {
+		
+		ComplexMobs.getComplexMobs().add(lothricKnight);
+		
 		World world = spawnLocation.getWorld();
 		
 		ArmorStand main = (ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND);

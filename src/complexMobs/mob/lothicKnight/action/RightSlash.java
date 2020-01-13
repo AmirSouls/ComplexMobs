@@ -16,6 +16,8 @@ public class RightSlash extends Action {
 	protected int actions() {
 		playSound();
 		move();
+		attackFrame();
+		
 		pelvis();
 		chest();
 		cape();
@@ -58,6 +60,12 @@ public class RightSlash extends Action {
 	
 	protected void move() {
 		if (13 > getTick()) getMob().move(.2, 20, 0);
+	}
+	
+	protected void attackFrame() {
+		LothricKnight mob = (LothricKnight) getMob();
+		if (getTick() >= 10 && getTick() <= 15) mob.attackFrameSword(9, mob.getMain().getLocation().getDirection().multiply(.4).setY(.2));
+		if (getTick() > 15) mob.getSwordWeapon().setHitPoints(null);
 	}
 	
 	protected void pelvis() {
