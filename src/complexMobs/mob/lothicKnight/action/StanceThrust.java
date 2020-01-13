@@ -55,14 +55,14 @@ public class StanceThrust extends Action {
 		double moveAmount = Math.min(distance / 5 + .5, 5);
 		
 		if (getTick() <= 6) getMob().move(0, 20, 0);
-		else if (getTick() <= 10) getMob().move(moveAmount, 20, 0);
-		else if (getTick() <= 11) getMob().move(moveAmount, 20, 0);
+		else if (getTick() <= 10) getMob().move(moveAmount, 60, 0);
+		else if (getTick() <= 11) getMob().move(moveAmount, 0, 0);
 		else if (getTick() >= 30) getMob().move(0, 10, 0);
 	}
 	
 	protected void attackFrame() {
 		LothricKnight mob = (LothricKnight) getMob();
-		if (getTick() >= 6 && getTick() <= 13) mob.attackFrameSword(22, mob.getMain().getLocation().getDirection().multiply(2).setY(.3));
+		if (getTick() >= 6 && getTick() <= 13) mob.attackFrameSword(22, mob.getMain().getLocation().getDirection().multiply(2).setY(.3), true);
 		if (getTick() > 13) mob.getSwordWeapon().setHitPoints(null);
 	}
 	

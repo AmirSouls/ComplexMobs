@@ -159,4 +159,8 @@ public abstract class SoulsMob extends LivingComplexMob {
 	public double getMaxPoise() {
 		return this.maxPoise;
 	}
+	
+	public void remove() {
+		this.targeter.remove();
+	}
 }

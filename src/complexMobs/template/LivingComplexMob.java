@@ -6,7 +6,6 @@ import java.util.Map;
 import org.bukkit.entity.ArmorStand;
 
 import complexMobs.complexMob.ComplexMob;
-import complexMobs.main.ComplexMobs;
 import complexMobs.object.Part;
 
 public abstract class LivingComplexMob implements ComplexMob {
@@ -74,13 +73,11 @@ public abstract class LivingComplexMob implements ComplexMob {
 		return this.isRemoved;
 	}
 	
-	public void remove() {
-		for (Part part : this.parts.values()) {
-			part.getArmorStand().remove();
-		}
-		isRemoved = true;
-		isDead = true;
+	public void setRemoved(boolean isRemoved) {
+		this.isRemoved = isRemoved;
 	}
+	
+	public abstract void remove();
 	
 	/**
 	* Gets the current action of this LivingComplexMob
@@ -128,6 +125,14 @@ public abstract class LivingComplexMob implements ComplexMob {
 	*/
 	public boolean isDead() {
 		return this.isDead;
+	}
+	
+	/**
+	* Checks if this LivingComplexMob is dead
+	* @param Set if this LivingComplexMob is dead
+	*/
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 	
 	/**

@@ -188,7 +188,7 @@ public class Run {
 				lothricKnight.setStamina(lothricKnight.getStamina() - 10);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
-			else if (Math.random() < .02) {
+			else if (Math.random() < .004) {
 				actions.add("stance");
 			}
 			
@@ -279,7 +279,7 @@ public class Run {
 	private void calculateStamina() {
 		
 		if (lothricKnight.getStaminaUseTick() == 0) {
-			lothricKnight.setStamina(lothricKnight.getStamina() + 2); //Restore 1 stamina point per tick
+			lothricKnight.setStamina(lothricKnight.getStamina() + 3); //Restore 1 stamina point per tick
 		}
 		
 		if (lothricKnight.getStamina() > 100) lothricKnight.setStamina(100); //Going over, keep it at 100
@@ -335,5 +335,14 @@ public class Run {
 		newLocation.setYaw((float) yaw);
 		targeter.setFireTicks(-1);
 		((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
+		
+		for (Entity entity : lothricKnight.getMain().getNearbyEntities(.125, .3, .125)) {
+			double distance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
+			Location difference = entity.getLocation().subtract(lothricKnight.getMain().getLocation());
+			Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
+			vector.multiply(.05);
+			try { entity.setVelocity(entity.getVelocity().add(vector.setY(0))); } catch (Exception e) {}
+			
+		}
 	}
 }

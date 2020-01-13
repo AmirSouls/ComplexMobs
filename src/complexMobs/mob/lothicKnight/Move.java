@@ -12,7 +12,7 @@ import complexMobs.mob.LothricKnight;
 
 public class Move {
 
-	public Location run(LothricKnight lothricKnight, double vectorScalar, double angleTurn, double angleOffset) {
+	public void run(LothricKnight lothricKnight, double vectorScalar, double angleTurn, double angleOffset) {
 		Vector targetDirection = lothricKnight.getTargeter().getLocation().getDirection();
 		double targetYaw = Math.atan2(targetDirection.getX(), targetDirection.getZ()) * 57.29; //Yaw that the mob needs to turn to
 		
@@ -82,9 +82,7 @@ public class Move {
 		if (newYaw > 0) newYaw -= 360;
 		newYaw *= -1;
 		newLocation.setDirection(new Vector(0,0,1).rotateAroundY(newYaw / 57.29));
-		lothricKnight.getMain().teleport(newLocation.clone());
-		
-		return newLocation;
+		lothricKnight.getMain().teleport(newLocation.clone());;
 	}
 	
 	private boolean isPassableExtra(Block block) {

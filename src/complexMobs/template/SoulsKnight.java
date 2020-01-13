@@ -79,7 +79,7 @@ public abstract class SoulsKnight extends SoulsMob {
 	/**
 	* Deals damage in the area of this SoulsKnight's sword
 	*/
-	public abstract void attackFrameSword(double damage, Vector knockBack);
+	public abstract void attackFrameSword(double damage, Vector knockBack, boolean particles);
 	
 	/**
 	* Deals damage in the area of this SoulsKnight's shield

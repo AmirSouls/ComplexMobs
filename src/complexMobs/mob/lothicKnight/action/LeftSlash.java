@@ -60,13 +60,15 @@ public class LeftSlash extends Action {
 	}
 	
 	protected void move() {
-		if (8 > getTick()) getMob().move(.2, 20, 0);
+		double distance = getMob().getMain().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
+		double moveAmount = Math.min(distance / 30, .15);
+		if (8 > getTick()) getMob().move(moveAmount, 40, 0);
 	}
 	
 	protected void attackFrame() {
 		LothricKnight mob = (LothricKnight) getMob();
-		if (getTick() >= 8 && getTick() <= 12) mob.attackFrameSword(9, mob.getMain().getLocation().getDirection().multiply(.4).setY(.2));
-		if (getTick() > 12) mob.getSwordWeapon().setHitPoints(null);
+		if (getTick() >= 8 && getTick() <= 114) mob.attackFrameSword(9, mob.getMain().getLocation().getDirection().multiply(.4).setY(.2), false);
+		if (getTick() > 14) mob.getSwordWeapon().setHitPoints(null);
 		
 	}
 	

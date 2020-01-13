@@ -1,8 +1,10 @@
 package complexMobs.mob.lothicKnight.action;
 
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
@@ -81,11 +83,23 @@ public class Backstep extends Action {
 	protected void head() {
 		Part part = getMob().getParts().get("head");
 		
-		part.animationFrame(0, getTick(), 10, 0, 0);
-		
-		part.animationFrame(4, getTick(), 30, 0, 0);
-		
-		part.animationFrame(8, getTick(), 0, 0, 0);
+		if (((LothricKnight) getMob()).getTarget() != null) {
+			
+			Location targetEyes = ((LothricKnight) getMob()).getTarget().getEyeLocation();
+			Location headEyes = part.getArmorStand().getEyeLocation();
+			double distance = headEyes.distance(targetEyes);
+			Vector difference = targetEyes.toVector().subtract(headEyes.toVector());
+			Vector direction = difference.divide(new Vector(distance, distance, distance));
+			double targetYaw = Math.atan2(direction.getX(), direction.getZ()) * 57.29;
+			double mobYaw = getMob().getMain().getLocation().getYaw();
+			if (mobYaw > 180) mobYaw -= 360;
+			mobYaw *= -1;
+			if (Math.abs(mobYaw - targetYaw) > 70) part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), Math.min(Math.max(-70, mobYaw - targetYaw), 70), 0);
+			else part.animation(Math.min(-Math.asin(direction.getY())*57.29, 50), mobYaw - targetYaw, 0);
+		}
+		else {
+			part.animation(0, 0, 0);
+		}
 
 	}
 
