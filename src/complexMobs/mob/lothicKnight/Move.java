@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
@@ -76,6 +77,34 @@ public class Move {
 						!isPassableExtra(newLocation.clone().add(0,3,0).getBlock())) {
 					newLocation.subtract(moveVector.clone().setZ(0));
 				}
+			}
+			
+			if (vectorScalar >= 2) {
+				
+				boolean isBlocked = false;
+				
+				Location loc = lothricKnight.getMain().getLocation();
+				
+				Vector difference = loc.toVector().subtract(moveVector);
+				
+				loc.add(0,1,0);
+				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
+					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
+					blockLoc.getWorld().spawnParticle(Particle.END_ROD, blockLoc, 0);
+					if (!blockLoc.getBlock().isPassable()) {
+						isBlocked = true;
+					}
+				}
+				loc.add(0,1,0);
+				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
+					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
+					blockLoc.getWorld().spawnParticle(Particle.END_ROD, blockLoc, 0);
+					if (!blockLoc.getBlock().isPassable()) {
+						isBlocked = true;
+					}
+				}
+				
+				if (isBlocked) newLocation = loc.add(0,-2,0);
 			}
 		}
 		
