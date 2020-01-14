@@ -14,7 +14,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.template.LivingComplexMob;
 
 public class LivingComplexMobListener implements Listener {
-
+	
 	@EventHandler
 	public void armorStandInteract(PlayerArmorStandManipulateEvent e) {
 		if (e.getRightClicked().hasMetadata("complex_mob")) {
