@@ -21,23 +21,27 @@ public class CaptureListener implements Listener {
 	@EventHandler
 	public void onCaptureStart(CaptureStartEvent e) {
 	
-		int team = e.getNexus().getComponent().getNation().getId();
-		Location spawnLoc = e.getNexus().getLocation();
-		
-		ComplexMob complexMob = new LothricKnight(spawnLoc.toVector(), team);
-		
-		spawnLoc = LocationUtil.randomNearbyLocation(4, spawnLoc);
-		
-		complexMob.build(spawnLoc);
-		complexMob.run();
-		
-		nexusKnight.put(e.getNexus(), complexMob);
+		if (!e.isCancelled()) {
+			int team = e.getNexus().getComponent().getNation().getId();
+			Location spawnLoc = e.getNexus().getLocation();
+			
+			ComplexMob complexMob = new LothricKnight(spawnLoc.toVector(), team);
+			
+			spawnLoc = LocationUtil.randomNearbyLocation(4, spawnLoc);
+			
+			complexMob.build(spawnLoc);
+			complexMob.run();
+			
+			nexusKnight.put(e.getNexus(), complexMob);
+		}
 	}
 	
 	@EventHandler
 	public void onCaptureEnd(CaptureEndEvent e) {
 		
-		nexusKnight.get(e.getNexus()).remove();
-		nexusKnight.remove(e.getNexus());
+		if (!e.isCancelled()) {
+			nexusKnight.get(e.getNexus()).remove();
+			nexusKnight.remove(e.getNexus());
+		}
 	}
 }
