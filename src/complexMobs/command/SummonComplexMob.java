@@ -26,7 +26,8 @@ public class SummonComplexMob  implements CommandExecutor {
 					//Possible mobs
 					switch (args[0]) {
 					case "LothricKnight":
-						complexMob = new LothricKnight(senderLoc.toVector(), 0);
+						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) complexMob = new LothricKnight(senderLoc.toVector(), 0);
+						else sender.sendMessage(ChatColor.RED + "Missing nations and/or etheria for this complex mob");
 						break;
 					default:
 						sender.sendMessage(ChatColor.RED + "Invalid ComplexMobID");
@@ -54,7 +55,8 @@ public class SummonComplexMob  implements CommandExecutor {
 					
 					switch (args[0]) {
 					case "LothricKnight":
-						complexMob = new LothricKnight(post, 0);
+						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) complexMob = new LothricKnight(post, 0);
+						else sender.sendMessage(ChatColor.RED + "Missing nations and/or etheria for this complex mob");
 						break;
 					default:
 						sender.sendMessage(ChatColor.RED + "Invalid ComplexMobID");
@@ -69,19 +71,24 @@ public class SummonComplexMob  implements CommandExecutor {
 			}
 			else if (args.length == 6) {
 				try {
-					if (args[0].contentEquals("LothricKnight")) {
+					if (args[0].contentEquals("LothricKnight") ) {
 						
-						Vector post = new Vector();
-						post.setX(Integer.parseInt(args[1]));
-						post.setY(Integer.parseInt(args[2]));
-						post.setZ(Integer.parseInt(args[3]));
-						World world = Bukkit.getWorld(args[4]);
-						Location spawnLoc = post.toLocation(world);
-						
-						ComplexMob complexMob = new LothricKnight(post, Integer.parseInt(args[5]));
+						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) {
+							Vector post = new Vector();
+							post.setX(Integer.parseInt(args[1]));
+							post.setY(Integer.parseInt(args[2]));
+							post.setZ(Integer.parseInt(args[3]));
+							World world = Bukkit.getWorld(args[4]);
+							Location spawnLoc = post.toLocation(world);
+							
+							ComplexMob complexMob = new LothricKnight(post, Integer.parseInt(args[5]));
 
-						complexMob.build(spawnLoc);
-						complexMob.run();
+							complexMob.build(spawnLoc);
+							complexMob.run();
+						}
+						else {
+							sender.sendMessage(ChatColor.RED + "Missing nations and/or etheria for this complex mob");
+						}
 					}
 					else {
 						sender.sendMessage(ChatColor.RED + "Invalid Argument");

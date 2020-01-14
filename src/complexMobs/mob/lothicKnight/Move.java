@@ -82,27 +82,53 @@ public class Move {
 			
 			if (vectorScalar >= 2) {
 				
-				boolean isBlocked = false;
-				
-				Location loc = lothricKnight.getMain().getLocation();
-				
-				Vector difference = loc.toVector().subtract(moveVector.clone().setY(loc.getBlockY()));
-				
-				loc.add(0,1,0);
-				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
-					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
-					if (!blockLoc.getBlock().isPassable()) {
-						isBlocked = true;
+				for (int vectorScales = 0; vectorScales < vectorScales; vectorScales++) {
+					Vector moveVectorScaled = lothricKnight.getMain().getLocation().getDirection().rotateAroundY(angleOffset).multiply(vectorScales);
+					Location newLocationScaled = lothricKnight.getMain().getLocation();
+					
+					if (newLocationScaled.clone().add(0,-1,0).getBlock().isPassable()) {
+						newLocationScaled = newLocationScaled.clone().add(0,-1,0).getBlock().getLocation();
+					}
+					else {
+						
+						newLocationScaled.setY(newLocationScaled.clone().add(0,-1,0).getBlockY() + 1);
+						
+						newLocationScaled.add(moveVectorScaled);
+						if (
+								!isPassableExtra(newLocationScaled.clone().getBlock()) && 
+								isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) && 
+								isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock()) &&
+								isPassableExtra(newLocationScaled.clone().add(0,3,0).getBlock()) &&
+								isPassableExtra(newLocationScaled.clone().add(0,4,0).getBlock())) {
+							newLocationScaled = newLocationScaled.clone().add(0,1,0);
+						}
+						else if (
+								!isPassableExtra(newLocationScaled.clone().getBlock()) || 
+								!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
+								!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock()) ||
+								!isPassableExtra(newLocationScaled.clone().add(0,3,0).getBlock())) {
+							newLocationScaled.subtract(moveVectorScaled);
+							newLocationScaled.add(moveVectorScaled.clone().setX(0));
+							if (
+									!isPassableExtra(newLocationScaled.clone().getBlock()) || 
+									!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
+									!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock()) ||
+									!isPassableExtra(newLocationScaled.clone().add(0,3,0).getBlock())) {
+								newLocationScaled.subtract(moveVectorScaled.clone().setX(0));
+							}
+							newLocationScaled.add(moveVectorScaled.clone().setZ(0));
+							if (
+									!isPassableExtra(newLocationScaled.clone().getBlock()) || 
+									!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
+									!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock()) ||
+									!isPassableExtra(newLocationScaled.add(0,3,0).getBlock())) {
+								newLocationScaled.subtract(moveVectorScaled.clone().setZ(0));
+							}
+							if (moveVectorScaled.getX() == 0 && moveVectorScaled.getZ() == 0) break;
+							else moveVector = moveVectorScaled;
+						}
 					}
 				}
-				loc.add(0,1,0);
-				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
-					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
-					if (!blockLoc.getBlock().isPassable()) {
-						isBlocked = true;
-					}
-				}
-				if (isBlocked) newLocation = loc.add(0,-2,0);
 			}
 		}
 		
