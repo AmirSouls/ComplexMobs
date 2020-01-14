@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -276,11 +277,13 @@ public class Run {
 		for (Entity entity : nearbyEntities) {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
-				if (nearestPlayer == null) nearestPlayer = player;
-				double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
-				if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !isWallBetween(player)) {
-					 nearestPlayer = player;
-					 nearestPlayerDistance = playerDistance;
+				if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+					if (nearestPlayer == null) nearestPlayer = player;
+					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
+					if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !isWallBetween(player)) {
+						 nearestPlayer = player;
+						 nearestPlayerDistance = playerDistance;
+					}
 				}
 			}
 		}
