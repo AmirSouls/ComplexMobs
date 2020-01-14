@@ -36,7 +36,7 @@ public class Build {
 		lothricKnight.setMain(main);
 		
 		Zombie targeter = (Zombie) world.spawnEntity(spawnLocation, EntityType.ZOMBIE);
-		targeter.setCustomName("lothric knight");
+		targeter.setRemoveWhenFarAway(false);
 		targeter.setSilent(true);
 		targeter.setInvulnerable(true);
 		targeter.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000000, 0));
