@@ -3,12 +3,14 @@ package complexMobs.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import complexMobs.command.RemoveAllComplexMobs;
 import complexMobs.command.SummonComplexMob;
 import complexMobs.complexMob.ComplexMob;
+import complexMobs.event.CaptureListener;
 import complexMobs.event.LivingComplexMobListener;
 
 public class ComplexMobs extends JavaPlugin {
@@ -24,6 +26,7 @@ public class ComplexMobs extends JavaPlugin {
 		this.getCommand("summoncomplexmob").setExecutor(new SummonComplexMob());
 		this.getCommand("removeallcomplexmobs").setExecutor(new RemoveAllComplexMobs());
 		this.getServer().getPluginManager().registerEvents(new LivingComplexMobListener(), this);
+		if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) this.getServer().getPluginManager().registerEvents(new CaptureListener(), this);
 	}
 
 	public void onDisable() {
