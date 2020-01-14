@@ -69,6 +69,8 @@ public class LivingComplexMobListener implements Listener {
 		
 		if (lothricKnight.getInvulTick() > 0) return true;
 		
+		if (lothricKnight.getTarget() == null) return true;
+		
 		lothricKnight.setInvulTick(10);
 		
 		return false;

@@ -220,8 +220,6 @@ public class Run {
 		
 		attacking = false;
 		
-		lothricKnight.setHealth(lothricKnight.getHealth());
-		
 		//Shield
 		((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
 		lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
