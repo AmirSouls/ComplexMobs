@@ -378,9 +378,12 @@ public class Run {
 		}
 		
 		//Too far from home
-		if (lothricKnight.getMain().getLocation().distance(lothricKnight.getPost().toLocation(lothricKnight.getMain().getWorld())) > 25) {
+		if (lothricKnight.getMain().getLocation().distance(lothricKnight.getPost().toLocation(lothricKnight.getMain().getWorld())) > 100) {
 			lothricKnight.getMain().teleport(lothricKnight.getPost().toLocation(lothricKnight.getMain().getWorld()));
 			lothricKnight.setHealth(lothricKnight.getHealth() + 50);
 		}
+		
+		//Clear targeter's equipment if has any
+		lothricKnight.getTarget().getEquipment().clear();
 	}
 }
