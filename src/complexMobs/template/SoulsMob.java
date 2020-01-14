@@ -93,7 +93,7 @@ public abstract class SoulsMob extends LivingComplexMob {
 		this.target = target;
 		//if (target != null) this.targeter.setTarget(target);
 		if (target != null) {
-			this.getAI().single(new FollowEntityAction(this.targeter, target));
+			this.getAI().single(new FollowEntityAction(target));
 			this.getAI().process();
 		}
 	}

@@ -228,13 +228,13 @@ public class Run {
 		if (changeTick % 50 == 0) {
 			Location loc = lothricKnight.getMain().getLocation();
 			if (loc.distance(lothricKnight.getPost().toLocation(loc.getWorld())) < 5) {
-				lothricKnight.getAI().single(new LookAroundAction(lothricKnight.getTargeter()));
+				lothricKnight.getAI().single(new LookAroundAction());
 				lothricKnight.getAI().process();
 				lothricKnight.setAction("idle");
 				lothricKnight.setShieldIsUp(false);
 			}
 			else {
-				lothricKnight.getAI().single(new GoToAction(lothricKnight.getTargeter(), lothricKnight.getPost().toLocation(loc.getWorld())));
+				lothricKnight.getAI().single(new GoToAction(lothricKnight.getPost().toLocation(loc.getWorld())));
 				lothricKnight.getAI().process();
 				lothricKnight.setAction("walking");
 			}
