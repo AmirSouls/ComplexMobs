@@ -268,12 +268,12 @@ public class Run {
 	
 	private void findNewTarget() {
 		
-		List<Entity> nearbyEntities = lothricKnight.getMain().getNearbyEntities(10, 10, 10);
+		List<Entity> nearbyEntities = lothricKnight.getMain().getNearbyEntities(20, 20, 20);
 		if (nearbyEntities.isEmpty()) return;
 		Player nearestPlayer = null;
 		double nearestPlayerDistance = 1000;
 		
-		for (Entity entity : lothricKnight.getMain().getNearbyEntities(10, 10, 10)) {
+		for (Entity entity : nearbyEntities) {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
 				if (nearestPlayer == null) nearestPlayer = player;
@@ -375,6 +375,12 @@ public class Run {
 				vector.multiply(.05);
 				try { entity.setVelocity(entity.getVelocity().add(vector.setY(0))); } catch (Exception e) {}
 			}
+		}
+		
+		//Too far from home
+		if (lothricKnight.getMain().getLocation().distance(lothricKnight.getPost().toLocation(lothricKnight.getMain().getWorld())) > 25) {
+			lothricKnight.getMain().teleport(lothricKnight.getPost().toLocation(lothricKnight.getMain().getWorld()));
+			lothricKnight.setHealth(lothricKnight.getHealth() + 50);
 		}
 	}
 }

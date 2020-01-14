@@ -7,6 +7,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
@@ -14,6 +15,13 @@ import complexMobs.template.LivingComplexMob;
 
 public class LivingComplexMobListener implements Listener {
 
+	@EventHandler
+	public void armorStandInteract(PlayerArmorStandManipulateEvent e) {
+		if (e.getRightClicked().hasMetadata("complex_mob")) {
+			e.setCancelled(true);
+		}
+	}
+	
 	@EventHandler
 	public void targeterAttack(EntityDamageByEntityEvent e) {
 		
