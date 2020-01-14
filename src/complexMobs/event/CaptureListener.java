@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -31,6 +33,8 @@ public class CaptureListener implements Listener {
 			
 			complexMob.build(spawnLoc);
 			complexMob.run();
+			complexMob.getMain().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, spawnLoc.clone().add(0,2,0), 0, .3, 1, .3, 30, null, true);
+			complexMob.getMain().getWorld().playSound(spawnLoc, Sound.ENTITY_BLAZE_DEATH, 3, 0);
 			
 			nexusKnight.put(e.getNexus(), complexMob);
 		}
