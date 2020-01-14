@@ -69,10 +69,10 @@ public class AttackSword {
 	
 	private double damageCalculation(double damage, Player player) {
 		
-		double armorPts = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();
-		double toughnessPts = .3 * player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
+		//double armorPts = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();
+		//double toughnessPts = .3 * player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
 		
-		damage *= Math.min(1 - (armorPts - damage/(2 + toughnessPts / 4)) / 25, 1);
+		//damage *= Math.min(1 - (armorPts - damage/(2 + toughnessPts / 4)) / 25, 1);
 		
 		return damage;
 	}
