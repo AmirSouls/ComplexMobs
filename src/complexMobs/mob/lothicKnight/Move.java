@@ -3,6 +3,7 @@ package complexMobs.mob.lothicKnight;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -85,12 +86,11 @@ public class Move {
 				
 				Location loc = lothricKnight.getMain().getLocation();
 				
-				Vector difference = loc.toVector().subtract(moveVector);
+				Vector difference = loc.toVector().subtract(moveVector.clone().setY(loc.getBlockY()));
 				
 				loc.add(0,1,0);
 				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
 					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
-					blockLoc.getWorld().spawnParticle(Particle.END_ROD, blockLoc, 0);
 					if (!blockLoc.getBlock().isPassable()) {
 						isBlocked = true;
 					}
@@ -98,12 +98,10 @@ public class Move {
 				loc.add(0,1,0);
 				for (int blockI = (int) vectorScalar; blockI > 0; blockI--) {
 					Location blockLoc = loc.clone().subtract(difference.clone().multiply(blockI / vectorScalar));
-					blockLoc.getWorld().spawnParticle(Particle.END_ROD, blockLoc, 0);
 					if (!blockLoc.getBlock().isPassable()) {
 						isBlocked = true;
 					}
 				}
-				
 				if (isBlocked) newLocation = loc.add(0,-2,0);
 			}
 		}

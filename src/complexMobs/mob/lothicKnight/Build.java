@@ -7,6 +7,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -22,21 +24,23 @@ public class Build {
 		
 		ComplexMobs.getComplexMobs().add(lothricKnight);
 		
+		JavaPlugin plugin = ComplexMobs.getProvidingPlugin(ComplexMobs.class);
+		
 		World world = spawnLocation.getWorld();
 		
 		ArmorStand main = (ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND);
 		main.setSilent(true);
 		main.setVisible(false);
 		main.setGravity(false);
-		main.setCollidable(false);
+		main.setMetadata("complex_mob", new FixedMetadataValue(plugin, lothricKnight));
 		lothricKnight.setMain(main);
 		
 		Zombie targeter = (Zombie) world.spawnEntity(spawnLocation, EntityType.ZOMBIE);
 		targeter.setSilent(true);
 		targeter.setInvulnerable(true);
 		targeter.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000000, 0));
-		targeter.setCollidable(false);
 		targeter.setBaby(false);
+		targeter.setMetadata("complex_mob", new FixedMetadataValue(plugin, lothricKnight));
 		lothricKnight.setTargeter(targeter);
 		
 		lothricKnight.getParts().put(
@@ -170,7 +174,7 @@ public class Build {
 			armorStand.setSilent(true);
 			armorStand.setVisible(false);
 			armorStand.setGravity(false);
-			armorStand.setCollidable(false);
+			armorStand.setMetadata("complex_mob", new FixedMetadataValue(plugin, lothricKnight));
 		}
 		
 		for (String key : lothricKnight.getParts().keySet()) {

@@ -21,6 +21,8 @@ public abstract class SoulsMob extends LivingComplexMob {
 	
 	private int staminaUseTickMax;
 	
+	private int invulTick = 0;
+	
 	private double poise;
 	
 	private double maxPoise;
@@ -137,6 +139,22 @@ public abstract class SoulsMob extends LivingComplexMob {
 	}
 	
 	/**
+	* Gets the ticks before the SoulsMob can be hit again
+	* @return The ticks before the SoulsMob can be hit again
+	*/
+	public int getInvulTick() {
+		return this.invulTick;
+	}
+	
+	/**
+	* Gets the ticks before the SoulsMob can be hit again
+	* @return The ticks before the SoulsMob can be hit again
+	*/
+	public void setInvulTick(int invulTick) {
+		this.invulTick = invulTick;
+	}
+	
+	/**
 	* Gets the current poise of this SoulsMob 
 	@return The current poise of this SoulsMob
 	*/
@@ -158,9 +176,5 @@ public abstract class SoulsMob extends LivingComplexMob {
 	*/
 	public double getMaxPoise() {
 		return this.maxPoise;
-	}
-	
-	public void remove() {
-		this.targeter.remove();
 	}
 }

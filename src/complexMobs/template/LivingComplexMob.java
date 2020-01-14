@@ -3,7 +3,11 @@ package complexMobs.template;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.metadata.MetadataValue;
 
 import complexMobs.complexMob.ComplexMob;
 import complexMobs.object.Part;
@@ -77,7 +81,20 @@ public abstract class LivingComplexMob implements ComplexMob {
 		this.isRemoved = isRemoved;
 	}
 	
-	public abstract void remove();
+	public void remove() {
+		for (World world : Bukkit.getWorlds()) {
+			for (Entity entity : world.getEntities()) {
+				if (entity.hasMetadata("complex_mob")) {
+					for (MetadataValue metadata : entity.getMetadata("complex_mob")) {
+						if (metadata.value().equals(this)) entity.remove();
+					}
+				}
+			}
+		}
+		
+		this.isRemoved = true;
+		this.isDead = true;
+	}
 	
 	/**
 	* Gets the current action of this LivingComplexMob
@@ -157,7 +174,6 @@ public abstract class LivingComplexMob implements ComplexMob {
 	* @param angleOffset Angle offset in degrees to move, for example 90 moves right
 	*/
 	public abstract void move(double vectorScalar, double angleTurn, double angleOffset);
-	
 }
 
 

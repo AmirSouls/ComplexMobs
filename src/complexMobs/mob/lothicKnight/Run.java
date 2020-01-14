@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.mob.lothicKnight.action.Backstep;
+import complexMobs.mob.lothicKnight.action.Death;
 import complexMobs.mob.lothicKnight.action.Idle;
 import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
@@ -51,6 +53,8 @@ public class Run {
 			public void run() {
 				
 				if (lothricKnight.isRemoved()) return;
+				
+				calculateHealth();
 				
 				calculateStamina();
 				
@@ -122,7 +126,11 @@ public class Run {
 					tick = new Stance().run(lothricKnight, tick);
 					break;
 				case "stance_thrust":
+					attacking = true;
 					tick = new StanceThrust().run(lothricKnight, tick);
+					break;
+				case "death":
+					tick = new Death().run(lothricKnight, tick);
 					break;
 				}
 				changeTick++;
@@ -137,6 +145,8 @@ public class Run {
 	
 	
 	private void attackingLogic() {
+		
+		if (lothricKnight.isDead()) return;
 		
 		Location loc = lothricKnight.getMain().getLocation();
 		
@@ -156,6 +166,7 @@ public class Run {
 					actions.add("walking_back");
 					actions.add("sidestepping");
 					actions.add("running");
+					if (distance > 12) actions.add("running"); actions.add("running");
 				}
 			}
 			else actions.add("idle");
@@ -170,7 +181,7 @@ public class Run {
 			((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
 			lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
 			lothricKnight.setShieldIsUp(false);
-			if (Math.random() < .4) lothricKnight.setShieldIsUp(true);
+			if (Math.random() < .4 && !lothricKnight.getAction().contentEquals("running")) lothricKnight.setShieldIsUp(true);
 		}
 		
 		if (!attacking) {
@@ -195,6 +206,7 @@ public class Run {
 			if (!actions.isEmpty()) {
 				Collections.shuffle(actions);
 				lothricKnight.setAction(actions.get(0));
+				lothricKnight.setShieldIsUp(false);
 				changeTick = 0;
 				tick = 0;
 			}
@@ -204,7 +216,11 @@ public class Run {
 	
 	private void nonAttackingLogic() {
 		
+		if (lothricKnight.isDead()) return;
+		
 		attacking = false;
+		
+		lothricKnight.setHealth(lothricKnight.getHealth());
 		
 		//Shield
 		((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
@@ -275,6 +291,22 @@ public class Run {
 		}
 	}
 	
+	private void calculateHealth() {
+		
+		if (lothricKnight.getInvulTick() > 0) lothricKnight.setInvulTick(lothricKnight.getInvulTick() - 1);;
+		
+		if (lothricKnight.getHealth() <= 0) {
+			if (!lothricKnight.isDead()) tick = 0;
+			lothricKnight.setDead(true);
+ 			lothricKnight.setAction("death");
+		}
+		else if (lothricKnight.getHealth() > 100) {
+			lothricKnight.setHealth(100);
+		}
+		else {
+			lothricKnight.setHealth(lothricKnight.getHealth() + .05);
+		}
+	}
 	
 	private void calculateStamina() {
 		
@@ -336,13 +368,15 @@ public class Run {
 		targeter.setFireTicks(-1);
 		((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
 		
+		//Player collision
 		for (Entity entity : lothricKnight.getMain().getNearbyEntities(.125, .3, .125)) {
-			double distance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
-			Location difference = entity.getLocation().subtract(lothricKnight.getMain().getLocation());
-			Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
-			vector.multiply(.05);
-			try { entity.setVelocity(entity.getVelocity().add(vector.setY(0))); } catch (Exception e) {}
-			
+			if (entity.getType().equals(EntityType.PLAYER)) {
+				double distance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
+				Location difference = entity.getLocation().subtract(lothricKnight.getMain().getLocation());
+				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));
+				vector.multiply(.05);
+				try { entity.setVelocity(entity.getVelocity().add(vector.setY(0))); } catch (Exception e) {}
+			}
 		}
 	}
 }

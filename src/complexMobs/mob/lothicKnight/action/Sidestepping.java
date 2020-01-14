@@ -49,14 +49,14 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void leftElbow() {
 		Part part = getMob().getParts().get("left_elbow");
-		if (!((LothricKnight) getMob()).isShieldUp()) part.animation(15, 0, -20);
+		if (((LothricKnight) getMob()).isShieldUp()) part.animation(15, 0, -20);
 		else part.animation(-10, -10, 5);
 	}
 
 	@Override
 	protected void leftArm() {
 		Part part = getMob().getParts().get("left_arm");
-		if (!((LothricKnight) getMob()).isShieldUp()) part.animation(-70, 30, 0);
+		if (((LothricKnight) getMob()).isShieldUp()) part.animation(-70, 30, 0);
 		else part.animation(0, 10, 10);
 		
 	}
@@ -64,14 +64,14 @@ public class Sidestepping extends LothricKnightPassiveAction {
 	@Override
 	protected void leftHand() {
 		Part part = getMob().getParts().get("left_hand");
-		if (!((LothricKnight) getMob()).isShieldUp()) part.animation(-150, 30, 0);
+		if (((LothricKnight) getMob()).isShieldUp()) part.animation(-150, 30, 0);
 		else part.animation(10, 5, 5);
 	}
 
 	@Override
 	protected void shield() {
 		Part part = getMob().getParts().get("shield");
-		if (!((LothricKnight) getMob()).isShieldUp()) part.animation(180, 90, 0);
+		if (((LothricKnight) getMob()).isShieldUp()) part.animation(180, 90, 0);
 		else part.animation(10, 10, 10);
 	}
 	

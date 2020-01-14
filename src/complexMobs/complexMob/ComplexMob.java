@@ -69,6 +69,11 @@ public interface ComplexMob {
 	boolean isRemoved();
 	
 	/**
+	* Marks if this ComplexMob is removed
+	*/
+	void setRemoved(boolean removed);
+	
+	/**
 	* Removes this ComplexMob from the world
 	*/
 	void remove();

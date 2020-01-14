@@ -91,6 +91,41 @@ public class Part {
 		setHeadPose(newPose);
 	}
 	
+	public AnimationState animationLargeFrame(int frame, int frame2, int tick, double x, double y, double z, double x2, double y2, double z2) {
+		
+		if (tick >= frame && tick < frame2) {
+			double frameProgress = ((double) tick - frame) / ((double) frame2 - frame);
+			
+			double xD = x2 - x;
+			double yD = y2 - y;
+			double zD = z2 - z;
+			
+			animation(x + xD*frameProgress, y + yD*frameProgress, z + zD*frameProgress);
+			
+		}
+		return new AnimationState(new Vector(x2, y2, z2), frame2);
+	}
+	
+	public AnimationState animationLargeFrame(AnimationState animationState, int frame2, int tick, double x2, double y2, double z2) {
+		
+		int frame = animationState.getStart();
+		double x = animationState.getState().getX();
+		double y = animationState.getState().getY();
+		double z = animationState.getState().getZ();
+		
+		if (tick >= frame && tick < frame2) {
+			double frameProgress = ((double) tick - frame) / ((double) frame2 - frame);
+			
+			double xD = x2 - x;
+			double yD = y2 - y;
+			double zD = z2 - z;
+			
+			animation(x + xD*frameProgress, y + yD*frameProgress, z + zD*frameProgress);
+			
+		}
+		return new AnimationState(new Vector(x2, y2, z2), frame2);
+	}
+	
 	public void position() {
 		Vector partOffset = this.partOffset.clone();
 		Vector partPosition = new Vector();
