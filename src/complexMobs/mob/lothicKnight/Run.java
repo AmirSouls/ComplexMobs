@@ -387,6 +387,6 @@ public class Run {
 		}
 		
 		//Clear targeter's equipment if has any
-		lothricKnight.getTarget().getEquipment().clear();
+		lothricKnight.getTargeter().getEquipment().clear();
 	}
 }
