@@ -13,11 +13,18 @@ import complexMobs.template.SoulsKnight;
 
 public class LothricKnight extends SoulsKnight {
 
+	private int nation;
+	
 	/**
 	* Creates a LothricKnight object
 	*/
-	public LothricKnight(Vector post) {
+	public LothricKnight(Vector post, int nation) {
 		super("LothricKnight", "Lothric Knight", 300, 30, 30, post, new Weapon(), new Weapon());
+		this.nation = nation;
+	}
+	
+	public int getNation() {
+		return this.nation;
 	}
 	
 	public void attackFrameSword(double damage, Vector knockBack, boolean particles) {

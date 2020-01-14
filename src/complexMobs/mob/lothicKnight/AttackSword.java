@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Part;
+import net.etheria.nations.Nations;
 
 public class AttackSword {
 
@@ -53,9 +54,11 @@ public class AttackSword {
 						for (Entity entity : main.getNearbyEntities(10, 10, 10)) {
 							if (entity instanceof Player) {
 								Player player = (Player) entity;
-								if (player.getBoundingBox().contains(betweenPLoc.toVector())) {
-									player.damage(damageCalculation(damage, player));
-									entity.setVelocity(knockBack);
+								if (!(lothricKnight.getNation() == Nations.getNation(player).getId())) {
+									if (player.getBoundingBox().contains(betweenPLoc.toVector())) {
+										player.damage(damageCalculation(damage, player));
+										entity.setVelocity(knockBack);
+									}
 								}
 							}
 						}

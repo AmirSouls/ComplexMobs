@@ -31,6 +31,7 @@ import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 import net.etheria.core.util.ai.action.GoToAction;
 import net.etheria.core.util.ai.action.LookAroundAction;
+import net.etheria.nations.Nations;
 
 public class Run {
 
@@ -277,7 +278,7 @@ public class Run {
 		for (Entity entity : nearbyEntities) {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
-				if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) && !(lothricKnight.getNation() == Nations.getNation(player).getId())) {
 					if (nearestPlayer == null) nearestPlayer = player;
 					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
 					if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !isWallBetween(player)) {
@@ -305,7 +306,7 @@ public class Run {
 			lothricKnight.setHealth(100);
 		}
 		else {
-			lothricKnight.setHealth(lothricKnight.getHealth() + .05);
+			lothricKnight.setHealth(lothricKnight.getHealth() + .15);
 		}
 	}
 	

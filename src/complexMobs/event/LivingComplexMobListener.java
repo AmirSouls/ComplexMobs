@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.template.LivingComplexMob;
+import net.etheria.nations.Nations;
 
 public class LivingComplexMobListener implements Listener {
 	
@@ -40,10 +42,6 @@ public class LivingComplexMobListener implements Listener {
 
 		if (e.getEntity().hasMetadata("complex_mob")) {
 			LivingComplexMob mob = (LivingComplexMob) e.getEntity().getMetadata("complex_mob").get(0).value();
-			
-			if (e.getDamager() instanceof Arrow) {
-				e.setDamage(e.getDamage()*.4);
-			}
 			
 			if (mob instanceof LothricKnight) {
 				if (onLothricKnightHit(e, (LothricKnight) mob)) return;
@@ -85,6 +83,22 @@ public class LivingComplexMobListener implements Listener {
 		if (lothricKnight.getInvulTick() > 0) return true;
 		
 		if (lothricKnight.getTarget() == null) return true;
+		
+		if (e.getDamager() instanceof Player) {
+			if (lothricKnight.getNation() == Nations.getNation((Player) e.getDamager()).getId()) {
+				return true;
+			}
+		}
+		else if (e.getDamager() instanceof Arrow) {
+			e.setDamage(e.getDamage()*.4);
+			
+			Arrow arrow = (Arrow) e.getDamager();
+			if (arrow.getShooter() instanceof Player) {
+				if (lothricKnight.getNation() == Nations.getNation((Player) e.getDamager()).getId()) {
+					return true;
+				}
+			}
+		}
 		
 		lothricKnight.setInvulTick(10);
 		

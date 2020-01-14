@@ -26,7 +26,7 @@ public class SummonComplexMob  implements CommandExecutor {
 					//Possible mobs
 					switch (args[0]) {
 					case "LothricKnight":
-						complexMob = new LothricKnight(senderLoc.toVector());
+						complexMob = new LothricKnight(senderLoc.toVector(), 0);
 						break;
 					default:
 						sender.sendMessage(ChatColor.RED + "Invalid ComplexMobID");
@@ -54,7 +54,7 @@ public class SummonComplexMob  implements CommandExecutor {
 					
 					switch (args[0]) {
 					case "LothricKnight":
-						complexMob = new LothricKnight(post);
+						complexMob = new LothricKnight(post, 0);
 						break;
 					default:
 						sender.sendMessage(ChatColor.RED + "Invalid ComplexMobID");
@@ -64,6 +64,27 @@ public class SummonComplexMob  implements CommandExecutor {
 					if (complexMob != null) {
 						complexMob.build(spawnLoc);
 						complexMob.run();
+					}
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+			else if (args.length == 6) {
+				try {
+					if (args[0].contentEquals("LothricKnight")) {
+						
+						Vector post = new Vector();
+						post.setX(Integer.parseInt(args[1]));
+						post.setY(Integer.parseInt(args[2]));
+						post.setZ(Integer.parseInt(args[3]));
+						World world = Bukkit.getWorld(args[4]);
+						Location spawnLoc = post.toLocation(world);
+						
+						ComplexMob complexMob = new LothricKnight(post, Integer.parseInt(args[5]));
+
+						complexMob.build(spawnLoc);
+						complexMob.run();
+					}
+					else {
+						sender.sendMessage(ChatColor.RED + "Invalid Argument");
 					}
 				} catch (Exception e) { e.printStackTrace(); }
 			}
