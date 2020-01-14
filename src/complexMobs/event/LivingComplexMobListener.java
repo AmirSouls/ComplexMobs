@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -29,7 +30,13 @@ public class LivingComplexMobListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onHit(EntityDamageByEntityEvent e) {
+	public void targeterDamage(EntityDamageByEntityEvent e) {
+		
+		if (e.getEntity().hasMetadata("complex_mob") && e.getEntityType() != EntityType.ARMOR_STAND) e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onComplexMobHit(EntityDamageByEntityEvent e) {
 
 		if (e.getEntity().hasMetadata("complex_mob")) {
 			LivingComplexMob mob = (LivingComplexMob) e.getEntity().getMetadata("complex_mob").get(0).value();
