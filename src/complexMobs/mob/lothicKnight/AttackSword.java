@@ -75,7 +75,7 @@ public class AttackSword {
 		double armorPts = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();
 		double toughnessPts = .3 * player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
 		
-		damage += damage * Math.min(1 - (armorPts - damage/(2 + toughnessPts / 8)) / 25, 1);
+		if (armorPts > 12) damage += damage * Math.min(1 - (armorPts - damage/(2 + toughnessPts / 4)) / 25, 1);
 		
 		return damage;
 	}

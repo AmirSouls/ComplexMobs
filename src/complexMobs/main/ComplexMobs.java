@@ -26,7 +26,7 @@ public class ComplexMobs extends JavaPlugin {
 		this.getCommand("summoncomplexmob").setExecutor(new SummonComplexMob());
 		this.getCommand("removeallcomplexmobs").setExecutor(new RemoveAllComplexMobs());
 		this.getServer().getPluginManager().registerEvents(new LivingComplexMobListener(), this);
-		if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) this.getServer().getPluginManager().registerEvents(new CaptureListener(), this);
+		this.getServer().getPluginManager().registerEvents(new CaptureListener(), this);
 	}
 
 	public void onDisable() {

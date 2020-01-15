@@ -26,7 +26,7 @@ public class SummonComplexMob  implements CommandExecutor {
 					//Possible mobs
 					switch (args[0]) {
 					case "LothricKnight":
-						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) complexMob = new LothricKnight(senderLoc.toVector(), 0);
+						if (true) complexMob = new LothricKnight(senderLoc.toVector(), 1);
 						else sender.sendMessage(ChatColor.RED + "Missing nations and/or etheria for this complex mob");
 						break;
 					default:
@@ -55,7 +55,7 @@ public class SummonComplexMob  implements CommandExecutor {
 					
 					switch (args[0]) {
 					case "LothricKnight":
-						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) complexMob = new LothricKnight(post, 0);
+						if (true) complexMob = new LothricKnight(post, 1);
 						else sender.sendMessage(ChatColor.RED + "Missing nations and/or etheria for this complex mob");
 						break;
 					default:
@@ -73,7 +73,7 @@ public class SummonComplexMob  implements CommandExecutor {
 				try {
 					if (args[0].contentEquals("LothricKnight") ) {
 						
-						if (Bukkit.getPluginManager().isPluginEnabled("nations") && Bukkit.getPluginManager().isPluginEnabled("etheria")) {
+						if (true) {
 							Vector post = new Vector();
 							post.setX(Integer.parseInt(args[1]));
 							post.setY(Integer.parseInt(args[2]));

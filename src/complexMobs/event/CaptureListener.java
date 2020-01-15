@@ -33,8 +33,8 @@ public class CaptureListener implements Listener {
 			
 			complexMob.build(spawnLoc);
 			complexMob.run();
-			complexMob.getMain().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, spawnLoc.clone().add(0,2,0), 0, .3, 1, .3, 30, null, true);
-			complexMob.getMain().getWorld().playSound(spawnLoc, Sound.ENTITY_BLAZE_DEATH, 3, 0);
+			e.getAttacker().getBukkitPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, spawnLoc.clone().add(0,2,0), 0, .3, 1, .3, 30, null, true);
+			e.getAttacker().getBukkitPlayer().getWorld().playSound(spawnLoc, Sound.ENTITY_BLAZE_DEATH, 3, 0);
 			
 			nexusKnight.put(e.getNexus(), complexMob);
 		}
@@ -44,6 +44,10 @@ public class CaptureListener implements Listener {
 	public void onCaptureEnd(CaptureEndEvent e) {
 		
 		if (!e.isCancelled()) {
+			
+			e.getAttacker().getBukkitPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), 0, .3, 1, .3, 30, null, true);
+			e.getAttacker().getBukkitPlayer().getWorld().playSound(nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), Sound.ENTITY_PLAYER_LEVELUP, 3, .5f);
+			
 			nexusKnight.get(e.getNexus()).remove();
 			nexusKnight.remove(e.getNexus());
 		}

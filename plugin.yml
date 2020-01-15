@@ -11,3 +11,5 @@ commands:
     removeallcomplexmobs:
         description: Removes all complex mobs from the game
         usage: /removeallcomplexmobs
+depend:
+  - Nations
