@@ -1,5 +1,7 @@
 package complexMobs.mob.lothicKnight.action;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
@@ -65,6 +67,11 @@ public class Stance extends Action {
 	}
 	
 	protected void move() {
+		double distance = ((LothricKnight) getMob()).getTargeter().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
+		Location difference = ((LothricKnight) getMob()).getTargeter().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
+		Vector direction = difference.toVector().divide(new Vector(distance, distance, distance));
+		((CraftEntity) (((LothricKnight) getMob()).getTargeter())).getHandle().setHeadRotation((float) (Math.atan2(direction.getX(), direction.getZ())*57.29));;
+		
 		getMob().move(0, 20, 0);
 	}
 	
