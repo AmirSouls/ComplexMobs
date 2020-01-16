@@ -94,7 +94,7 @@ public class LivingComplexMobListener implements Listener {
 			
 			Arrow arrow = (Arrow) e.getDamager();
 			if (arrow.getShooter() instanceof Player) {
-				if (lothricKnight.getNation() == Nations.getNation((Player) e.getDamager()).getId()) {
+				if (lothricKnight.getNation() == Nations.getNation((Player) arrow.getShooter()).getId()) {
 					return true;
 				}
 			}
