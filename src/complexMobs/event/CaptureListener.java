@@ -14,6 +14,7 @@ import complexMobs.mob.LothricKnight;
 import net.etheria.nations.modules.capture.event.capture.CaptureEndEvent;
 import net.etheria.nations.modules.capture.event.capture.CaptureStartEvent;
 import net.etheria.nations.modules.capture.nexus.Nexus;
+import net.etheria.nations.modules.capture.nexus.NexusType;
 import net.etheria.nations.util.LocationUtil;
 
 public class CaptureListener implements Listener {
@@ -25,6 +26,8 @@ public class CaptureListener implements Listener {
 	
 		if (!e.isCancelled()) {
 			int team = e.getNexus().getComponent().getNation().getId();
+			if (team == -1) return;
+			if (e.getNexus().getType().equals(NexusType.OUTPOST)) return;
 			Location spawnLoc = e.getNexus().getLocation();
 			
 			ComplexMob complexMob = new LothricKnight(spawnLoc.toVector(), team);
