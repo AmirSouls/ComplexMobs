@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 
 import complexMobs.object.Part;
 
-public class Running extends LothricKnightPassiveAction {
+public class Running extends PassiveAction {
 	
 	public Running() {
 		setReturnTick(11);

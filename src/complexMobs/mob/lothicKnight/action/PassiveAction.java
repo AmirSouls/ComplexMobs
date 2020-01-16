@@ -7,7 +7,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public abstract class LothricKnightPassiveAction extends Action {
+public abstract class PassiveAction extends Action {
 	
 	protected int actions() {
 		playSound();

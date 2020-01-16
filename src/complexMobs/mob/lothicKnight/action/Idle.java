@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Part;
 
-public class Idle extends LothricKnightPassiveAction {
+public class Idle extends PassiveAction {
 	
 	public Idle() {
 		setReturnTick(32);

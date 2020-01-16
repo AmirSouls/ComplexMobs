@@ -6,7 +6,7 @@ import org.bukkit.util.Vector;
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Part;
 
-public class Sidestepping extends LothricKnightPassiveAction {
+public class Sidestepping extends PassiveAction {
 	
 	public Sidestepping() {
 		setReturnTick(37);
