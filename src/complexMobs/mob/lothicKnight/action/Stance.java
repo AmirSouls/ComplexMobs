@@ -70,7 +70,12 @@ public class Stance extends Action {
 		double distance = ((LothricKnight) getMob()).getTargeter().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
 		Location difference = ((LothricKnight) getMob()).getTargeter().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
 		Vector direction = difference.toVector().divide(new Vector(distance, distance, distance));
-		((CraftEntity) (((LothricKnight) getMob()).getTargeter())).getHandle().setHeadRotation((float) (Math.atan2(direction.getX(), direction.getZ())*57.29));;
+		
+		float yaw = (float) (Math.atan2(direction.getX(), direction.getZ())*57.29);
+		if (yaw > 0) yaw -= 360;
+		yaw *= -1;
+		yaw += 180;
+		((CraftEntity) (((LothricKnight) getMob()).getTargeter())).getHandle().setHeadRotation(yaw);
 		
 		getMob().move(0, 20, 0);
 	}

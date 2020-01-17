@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import complexMobs.mob.LothricKnight;
 import complexMobs.mob.lothicKnight.action.Backstep;
 import complexMobs.mob.lothicKnight.action.Death;
+import complexMobs.mob.lothicKnight.action.Grab;
 import complexMobs.mob.lothicKnight.action.Idle;
 import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
@@ -121,6 +122,12 @@ public class Run {
 					attacking = true;
 					tick = new Backstep().run(lothricKnight, tick);
 					break;
+				case "grab":
+					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
+					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
+					attacking = true;
+					tick = new Grab().run(lothricKnight, tick);
+					break;
 				case "stance":
 					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
 					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
@@ -193,6 +200,7 @@ public class Run {
 				actions.add("right_slash");
 				actions.add("left_slash");
 				if (Math.random() < .2) actions.add("backstep");
+				//actions.add("grab");
 				lothricKnight.setStamina(lothricKnight.getStamina() - 25);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
@@ -278,6 +286,7 @@ public class Run {
 		for (Entity entity : nearbyEntities) {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
+				// && !(lothricKnight.getNation() == Nations.getNation(player).getId())
 				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) && !(lothricKnight.getNation() == Nations.getNation(player).getId())) {
 					if (nearestPlayer == null) nearestPlayer = player;
 					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());

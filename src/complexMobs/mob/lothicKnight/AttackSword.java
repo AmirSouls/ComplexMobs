@@ -54,6 +54,7 @@ public class AttackSword {
 						for (Entity entity : main.getNearbyEntities(10, 10, 10)) {
 							if (entity instanceof Player) {
 								Player player = (Player) entity;
+								//!(lothricKnight.getNation() == Nations.getNation(player).getId())
 								if (!(lothricKnight.getNation() == Nations.getNation(player).getId())) {
 									if (player.getBoundingBox().contains(betweenPLoc.toVector())) {
 										player.damage(damageCalculation(damage, player));
