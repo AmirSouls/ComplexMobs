@@ -125,7 +125,7 @@ public class Build {
 				"sword", 
 				new ChildPart((ArmorStand) world.spawnEntity(spawnLocation, EntityType.ARMOR_STAND), 
 				main,
-				new Vector(), 
+				new Vector(0,-.25,0), 
 				lothricKnight.getParts().get("right_hand")));
 		
 		lothricKnight.getParts().put(

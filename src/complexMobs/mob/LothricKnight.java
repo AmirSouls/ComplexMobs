@@ -1,6 +1,7 @@
 package complexMobs.mob;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import complexMobs.main.ComplexMobs;
@@ -15,6 +16,8 @@ public class LothricKnight extends SoulsKnight {
 
 	private int nation;
 	
+	private Player victim;
+	
 	/**
 	* Creates a LothricKnight object
 	*/
@@ -23,8 +26,28 @@ public class LothricKnight extends SoulsKnight {
 		this.nation = nation;
 	}
 	
+	/**
+	* Gets the nation that this LothricKnight serves
+	* @return the nation id of the nation that this LothricKnight serves
+	*/
 	public int getNation() {
 		return this.nation;
+	}
+	
+	/**
+	* Gets the victim of a riposte being executed by this LothricKnight
+	* @return the victim of a riposte being executed by this LothricKnight
+	*/
+	public Player getVictim() {
+		return this.victim;
+	}
+	
+	/**
+	* Sets the victim of a riposte being executed by this LothricKnight
+	* @param the victim to be riposted by this LothricKnight
+	*/
+	public void setVictim(Player victim) {
+		this.victim = victim;
 	}
 	
 	public void attackFrameSword(double damage, Vector knockBack, boolean particles) {

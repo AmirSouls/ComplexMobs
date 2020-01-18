@@ -78,6 +78,8 @@ public class AttackSword {
 		
 		if (armorPts > 12) damage += damage * Math.min(1 - (armorPts - damage/(2 + toughnessPts / 4)) / 25, 1);
 		
+		if (player.isBlocking()) damage *= .2;
+		
 		return damage;
 	}
 }

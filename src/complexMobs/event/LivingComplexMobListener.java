@@ -82,6 +82,8 @@ public class LivingComplexMobListener implements Listener {
 		
 		if (lothricKnight.getInvulTick() > 0) return true;
 		
+		if (lothricKnight.getAction().contentEquals("Riposte")) return true;
+		
 		if (lothricKnight.getTarget() == null) return true;
 		
 		if (e.getDamager() instanceof Player) {

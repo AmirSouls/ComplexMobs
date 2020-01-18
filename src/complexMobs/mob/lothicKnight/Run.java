@@ -22,6 +22,7 @@ import complexMobs.mob.lothicKnight.action.Grab;
 import complexMobs.mob.lothicKnight.action.Idle;
 import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
+import complexMobs.mob.lothicKnight.action.Riposte;
 import complexMobs.mob.lothicKnight.action.Running;
 import complexMobs.mob.lothicKnight.action.Sidestepping;
 import complexMobs.mob.lothicKnight.action.Stance;
@@ -123,10 +124,12 @@ public class Run {
 					tick = new Backstep().run(lothricKnight, tick);
 					break;
 				case "grab":
-					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
-					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
 					attacking = true;
 					tick = new Grab().run(lothricKnight, tick);
+					break;
+				case "riposte":
+					attacking = true;
+					tick = new Riposte().run(lothricKnight, tick);
 					break;
 				case "stance":
 					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
@@ -200,7 +203,7 @@ public class Run {
 				actions.add("right_slash");
 				actions.add("left_slash");
 				if (Math.random() < .2) actions.add("backstep");
-				//actions.add("grab");
+				actions.add("grab");
 				lothricKnight.setStamina(lothricKnight.getStamina() - 25);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
