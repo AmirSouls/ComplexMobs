@@ -1,5 +1,7 @@
 package complexMobs.event;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -82,9 +84,11 @@ public class LivingComplexMobListener implements Listener {
 		
 		if (lothricKnight.getInvulTick() > 0) return true;
 		
-		if (lothricKnight.getAction().contentEquals("Riposte")) return true;
-		
 		if (lothricKnight.getTarget() == null) return true;
+		
+		if (lothricKnight.getAction() == null) return true;
+		
+		if (lothricKnight.getAction().contentEquals("riposte")) return true;
 		
 		if (e.getDamager() instanceof Player) {
 			if (lothricKnight.getNation() == Nations.getNation((Player) e.getDamager()).getId()) {

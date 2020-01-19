@@ -99,6 +99,12 @@ public class Riposte extends Action {
 		if (getTick() < 90) victim.setVelocity(new Vector(.15-Math.random()*.3, .15-Math.random()*.3, .15-Math.random()*.3));
 		else if (getTick() == 90) {
 			victim.setVelocity(mob.getMain().getLocation().getDirection().multiply(4).rotateAroundY(-80 / 57.29).setY(-1));
+		}
+		else if (getTick() < 110) {
+			victim.getWorld().spawnParticle(Particle.BLOCK_CRACK, ((LothricKnight) getMob()).getVictim().getLocation().add(0,1,0), 4, 0, 0, 0, .5, Material.REDSTONE_WIRE.createBlockData(), true);
+		}
+		
+		if (getTick() == 100) {
 			victim.damage(10);
 		}
 		

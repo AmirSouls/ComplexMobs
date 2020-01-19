@@ -314,8 +314,8 @@ public class Run {
 			lothricKnight.setDead(true);
  			lothricKnight.setAction("death");
 		}
-		else if (lothricKnight.getHealth() > 100) {
-			lothricKnight.setHealth(100);
+		else if (lothricKnight.getHealth() > lothricKnight.getMaxHealth()) {
+			lothricKnight.setHealth(lothricKnight.getMaxHealth());
 		}
 		else {
 			lothricKnight.setHealth(lothricKnight.getHealth() + .15);

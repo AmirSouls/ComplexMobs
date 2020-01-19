@@ -48,8 +48,10 @@ public class CaptureListener implements Listener {
 		
 		if (!e.isCancelled()) {
 			
-			e.getAttacker().getBukkitPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), 0, .3, 1, .3, 30, null, true);
-			e.getAttacker().getBukkitPlayer().getWorld().playSound(nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), Sound.ENTITY_PLAYER_LEVELUP, 3, .5f);
+			if (!nexusKnight.get(e.getNexus()).isRemoved() && !((LothricKnight) nexusKnight.get(e.getNexus())).isDead()) {
+				e.getAttacker().getBukkitPlayer().getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), 0, .3, 1, .3, 30, null, true);
+				e.getAttacker().getBukkitPlayer().getWorld().playSound(nexusKnight.get(e.getNexus()).getMain().getLocation().add(0,2,0), Sound.ENTITY_PLAYER_LEVELUP, 3, .5f);
+			}
 			
 			nexusKnight.get(e.getNexus()).remove();
 			nexusKnight.remove(e.getNexus());
