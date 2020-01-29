@@ -113,7 +113,8 @@ public class Move {
 								newLocationScaled.subtract(moveVectorScaled.clone().setZ(0));
 							}
 							if (moveVectorScaled.getX() == 0 && moveVectorScaled.getZ() == 0) break;
-							else moveVector = moveVectorScaled;
+							//else moveVector = moveVectorScaled;
+							else newLocation = newLocationScaled;
 						}
 					}
 				}
@@ -123,7 +124,7 @@ public class Move {
 		if (newYaw > 0) newYaw -= 360;
 		newYaw *= -1;
 		newLocation.setDirection(new Vector(0,0,1).rotateAroundY(newYaw / 57.29));
-		lothricKnight.getMain().teleport(newLocation.clone());;
+		lothricKnight.getMain().teleport(newLocation.clone());
 	}
 	
 	private boolean isPassableExtra(Block block) {
