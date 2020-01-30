@@ -17,7 +17,7 @@ public class SummonComplexMob  implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
 		if (command.getName().equalsIgnoreCase("summoncomplexmob")) {
-			if (args.length == 6) {
+			if (args.length == 5) {
 				try {
 					if (args[0].contentEquals("LothricKnight") ) {
 						
@@ -28,13 +28,13 @@ public class SummonComplexMob  implements CommandExecutor {
 						World world = Bukkit.getWorld(args[4]);
 						Location spawnLoc = post.toLocation(world);
 						
-						ComplexMob complexMob = new LothricKnight(post, Integer.parseInt(args[5]));
+						ComplexMob complexMob = new LothricKnight(post);
 
 						complexMob.build(spawnLoc);
 						complexMob.run();
 					}
 					else {
-						sender.sendMessage(ChatColor.RED + "Invalid Argument");
+						sender.sendMessage(ChatColor.RED + "Invalid Syntax");
 					}
 				} catch (Exception e) { e.printStackTrace(); }
 			}

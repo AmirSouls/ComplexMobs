@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Monster;
 
 import complexMobs.object.Part;
 
@@ -38,6 +39,18 @@ public interface ComplexMob {
 	* @param main The new main ArmorStand of this ComplexMob
 	*/
 	void setMain(ArmorStand main);
+	
+	/**
+	* Gets the brain of this ComplexMob
+	* @return brain The brain entity that guides this mob
+	*/
+	Monster getBrain();
+	
+	/**
+	* Sets the brain of this ComplexMob
+	* @param brain The brain entity to guide this mob
+	*/
+	void setBrain(Monster brain);
 	
 	/**
 	* Gets the part map of this ComplexMob

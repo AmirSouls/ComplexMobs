@@ -6,7 +6,6 @@ import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
-import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 
 public class Backstep extends Action {
@@ -128,7 +127,7 @@ public class Backstep extends Action {
 	protected void shield() {
 		Part part = getMob().getParts().get("shield");
 		
-		((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
+		getMob().getParts().get("shield").setParent(getMob().getParts().get("left_hand"));
 		
 		part.animationFrame(0, getTick(), 5, 50, 0);
 

@@ -4,32 +4,34 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Zombie;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import complexMobs.complexMob.ComplexMob;
+import complexMobs.main.ComplexMobs;
 import complexMobs.object.Part;
 
 public abstract class LivingComplexMob implements ComplexMob {
 	
 	private String action;
-	
 	private String ID;
-	
 	private String name;
-	
 	private ArmorStand main;
-	
+	private Monster brain;
 	private double health;
-	
 	private double maxHealth;
-	
 	private Map<String, Part> parts = new LinkedHashMap<>();
-	
 	private boolean isRemoved = false;
-	
 	private boolean isDead = false;
 	
 	/**
@@ -63,6 +65,14 @@ public abstract class LivingComplexMob implements ComplexMob {
 	
 	public void setMain(ArmorStand main) {
 		this.main = main;
+	}
+	
+	public Monster getBrain() {
+		return this.brain;
+	}
+	
+	public void setBrain(Monster brain) {
+		this.brain = brain;
 	}
 	
 	public Map<String, Part> getParts() {
@@ -165,6 +175,24 @@ public abstract class LivingComplexMob implements ComplexMob {
 	public void revive() {
 		this.setHealth(this.maxHealth);
 		this.isDead = false;
+	}
+	
+	public void build(Location spawnLoc) {
+		ComplexMobs.getComplexMobs().add(this);
+		ArmorStand main = (ArmorStand) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.ARMOR_STAND);
+		main.setSilent(true);
+		main.setVisible(false);
+		main.setGravity(false);
+		main.setMetadata("complex_mob", new FixedMetadataValue(JavaPlugin.getPlugin(ComplexMobs.class), this));
+		setMain(main);
+		Zombie targeter = (Zombie) spawnLoc.getWorld().spawnEntity(spawnLoc, EntityType.ZOMBIE);
+		targeter.setRemoveWhenFarAway(false);
+		targeter.setSilent(true);
+		targeter.setInvulnerable(true);
+		targeter.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000000, 0));
+		targeter.setBaby(false);
+		targeter.setMetadata("complex_mob", new FixedMetadataValue(JavaPlugin.getPlugin(ComplexMobs.class), this));
+		setBrain(targeter);
 	}
 	
 	/**

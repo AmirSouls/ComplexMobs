@@ -7,9 +7,7 @@ import complexMobs.object.Weapon;
 public abstract class SoulsKnight extends SoulsMob {
 
 	private boolean shieldUp = false;
-	
 	private Weapon sword;
-	
 	private Weapon shield;
 	
 	/**

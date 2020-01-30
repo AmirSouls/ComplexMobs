@@ -13,18 +13,14 @@ import complexMobs.mob.LothricKnight;
 public class Move {
 
 	public void run(LothricKnight lothricKnight, double vectorScalar, double angleTurn, double angleOffset) {
-		Vector targetDirection = lothricKnight.getTargeter().getLocation().getDirection();
+		Vector targetDirection = lothricKnight.getBrain().getLocation().getDirection();
 		double targetYaw = Math.atan2(targetDirection.getX(), targetDirection.getZ()) * 57.29; //Yaw that the mob needs to turn to
-		
 		double mobYaw = lothricKnight.getMain().getLocation().getYaw(); //Current yaw of the mob
-		
 		double targetCompareYaw = targetYaw;
 		if (targetCompareYaw > 0) targetCompareYaw -= 360;
 		targetCompareYaw *= -1;
-		
 		double deltaYaw = targetCompareYaw - mobYaw;
 		double newYaw = mobYaw;
-		
 		
 		if (deltaYaw > 0 && deltaYaw < 180 || deltaYaw < -180) {
 			newYaw += angleTurn;
@@ -42,33 +38,30 @@ public class Move {
 			newLocation = newLocation.clone().add(0,-1,0).getBlock().getLocation();
 		}
 		else {
-			
 			newLocation.setY(newLocation.clone().add(0,-1,0).getBlockY() + 1);
-			
 			newLocation.add(moveVector);
-			if (
-					!isPassableExtra(newLocation.clone().getBlock()) && 
+			
+			if (!isPassableExtra(newLocation.clone().getBlock()) && 
 					isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) && 
 					isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
 				newLocation = newLocation.clone().add(0,1,0);
 			}
-			else if (
-					!isPassableExtra(newLocation.clone().getBlock()) || 
-					!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
-					!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
+			else if (!isPassableExtra(newLocation.clone().getBlock())
+					||!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) 
+					||!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
 				newLocation.subtract(moveVector);
 				newLocation.add(moveVector.clone().setX(0));
-				if (
-						!isPassableExtra(newLocation.clone().getBlock()) || 
-						!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
-						!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
+				
+				if (!isPassableExtra(newLocation.clone().getBlock()) 
+						||!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) 
+						||!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
 					newLocation.subtract(moveVector.clone().setX(0));
 				}
 				newLocation.add(moveVector.clone().setZ(0));
-					if (
-						!isPassableExtra(newLocation.clone().getBlock()) || 
-						!isPassableExtra(newLocation.clone().add(0,1,0).getBlock()) || 
-						!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
+				
+					if (!isPassableExtra(newLocation.clone().getBlock()) 
+							||!isPassableExtra(newLocation.clone().add(0,1,0).getBlock())  
+						||!isPassableExtra(newLocation.clone().add(0,2,0).getBlock())) {
 					newLocation.subtract(moveVector.clone().setZ(0));
 				}
 			}
@@ -87,33 +80,29 @@ public class Move {
 						newLocationScaled.setY(newLocationScaled.clone().add(0,-1,0).getBlockY() + 1);
 						
 						newLocationScaled.add(moveVectorScaled);
-						if (
-								!isPassableExtra(newLocationScaled.clone().getBlock()) && 
-								isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) && 
-								isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
+						if (!isPassableExtra(newLocationScaled.clone().getBlock())
+								&&isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) 
+								&&isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
 							newLocationScaled = newLocationScaled.clone().add(0,1,0);
 						}
-						else if (
-								!isPassableExtra(newLocationScaled.clone().getBlock()) || 
-								!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
-								!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
+						else if (!isPassableExtra(newLocationScaled.clone().getBlock()) 
+								||!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) 
+								||!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
 							newLocationScaled.subtract(moveVectorScaled);
 							newLocationScaled.add(moveVectorScaled.clone().setX(0));
-							if (
-									!isPassableExtra(newLocationScaled.clone().getBlock()) || 
-									!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
-									!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
+							if (!isPassableExtra(newLocationScaled.clone().getBlock())
+									||!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) 
+									||!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
 								newLocationScaled.subtract(moveVectorScaled.clone().setX(0));
 							}
 							newLocationScaled.add(moveVectorScaled.clone().setZ(0));
 							if (
-									!isPassableExtra(newLocationScaled.clone().getBlock()) || 
-									!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock()) || 
-									!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
+									!isPassableExtra(newLocationScaled.clone().getBlock())
+									||!isPassableExtra(newLocationScaled.clone().add(0,1,0).getBlock())
+									||!isPassableExtra(newLocationScaled.clone().add(0,2,0).getBlock())) {
 								newLocationScaled.subtract(moveVectorScaled.clone().setZ(0));
 							}
 							if (moveVectorScaled.getX() == 0 && moveVectorScaled.getZ() == 0) break;
-							//else moveVector = moveVectorScaled;
 							else newLocation = newLocationScaled;
 						}
 					}

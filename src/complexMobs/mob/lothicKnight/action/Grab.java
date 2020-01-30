@@ -13,7 +13,6 @@ import org.bukkit.util.Vector;
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.AnimationState;
-import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 
 public class Grab extends Action {
@@ -26,7 +25,6 @@ public class Grab extends Action {
 		playSound();
 		move();
 		attackFrame();
-		
 		pelvis();
 		chest();
 		cape();
@@ -61,15 +59,15 @@ public class Grab extends Action {
 	
 	protected void move() {
 		
-		double distance = ((LothricKnight) getMob()).getTargeter().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
-		Location difference = ((LothricKnight) getMob()).getTargeter().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
+		double distance = ((LothricKnight) getMob()).getBrain().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
+		Location difference = ((LothricKnight) getMob()).getBrain().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
 		Vector direction = difference.toVector().divide(new Vector(distance, distance, distance));
 		
 		float yaw = (float) (Math.atan2(direction.getX(), direction.getZ())*57.29);
 		if (yaw > 0) yaw -= 360;
 		yaw *= -1;
 		yaw += 180;
-		((CraftEntity) (((LothricKnight) getMob()).getTargeter())).getHandle().setHeadRotation(yaw);
+		((CraftEntity) (((LothricKnight) getMob()).getBrain())).getHandle().setHeadRotation(yaw);
 		
 		if (getTick() <= 17) getMob().move(.25, 20, 0);
 	}
@@ -174,7 +172,7 @@ public class Grab extends Action {
 		state = part.animationLargeFrame(state, 13, getTick(), 75, -145, 95);
 		
 		if (getTick() == 0)  {
-			((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("chest"));
+			getMob().getParts().get("shield").setParent(getMob().getParts().get("chest"));
 			getMob().getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
 		}
 	}

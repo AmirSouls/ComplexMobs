@@ -7,7 +7,6 @@ import org.bukkit.util.Vector;
 
 import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
-import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 
 public class Stance extends Action {
@@ -43,8 +42,7 @@ public class Stance extends Action {
 				mob.setStamina(mob.getStamina() - 25);
 				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
 				mob.setAction("right_slash");
-				
-				((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
+				getMob().getParts().get("shield").setParent(getMob().getParts().get("left_hand"));
 				getMob().getParts().get("shield").setOffset(new Vector(0,-.5,0));
 				return 0;
 			}
@@ -67,15 +65,15 @@ public class Stance extends Action {
 	}
 	
 	protected void move() {
-		double distance = ((LothricKnight) getMob()).getTargeter().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
-		Location difference = ((LothricKnight) getMob()).getTargeter().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
+		double distance = ((LothricKnight) getMob()).getBrain().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
+		Location difference = ((LothricKnight) getMob()).getBrain().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
 		Vector direction = difference.toVector().divide(new Vector(distance, distance, distance));
 		
 		float yaw = (float) (Math.atan2(direction.getX(), direction.getZ())*57.29);
 		if (yaw > 0) yaw -= 360;
 		yaw *= -1;
 		yaw += 180;
-		((CraftEntity) (((LothricKnight) getMob()).getTargeter())).getHandle().setHeadRotation(yaw);
+		((CraftEntity) (((LothricKnight) getMob()).getBrain())).getHandle().setHeadRotation(yaw);
 		
 		getMob().move(0, 20, 0);
 	}

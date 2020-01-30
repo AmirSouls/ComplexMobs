@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftMonster;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
@@ -29,43 +30,32 @@ import complexMobs.mob.lothicKnight.action.Stance;
 import complexMobs.mob.lothicKnight.action.StanceThrust;
 import complexMobs.mob.lothicKnight.action.Walking;
 import complexMobs.mob.lothicKnight.action.WalkingBack;
-import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
-import net.etheria.core.util.ai.action.GoToAction;
-import net.etheria.core.util.ai.action.LookAroundAction;
-import net.etheria.nations.Nations;
+import complexMobs.util.IsWallBetween;
 
 public class Run {
 
 	private int changeTick = 0;
-	
 	private int tick = 0;
-	
 	private boolean forceChange = false;
-	
 	private boolean attacking = false;
-	
 	private LothricKnight lothricKnight;
-	
-	private JavaPlugin plugin;
 	
 	public void run(LothricKnight lothricKnight, JavaPlugin plugin) {
 		this.lothricKnight = lothricKnight;
-		this.plugin = plugin;
 		
 		new BukkitRunnable() {
 			public void run() {
 				
-				if (lothricKnight.isRemoved()) return;
+				if (lothricKnight.isRemoved()) {
+					this.cancel();
+					return;
+				}
 				
 				calculateHealth();
-				
 				calculateStamina();
-				
 				calculatePoise();
-				
 				otherTasks();
-				
 				targeting();
 				
 				if (lothricKnight.getAction() == null) lothricKnight.setAction("idle"); //Default animation
@@ -132,7 +122,7 @@ public class Run {
 					tick = new Riposte().run(lothricKnight, tick);
 					break;
 				case "stance":
-					((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("chest"));
+					lothricKnight.getParts().get("shield").setParent(lothricKnight.getParts().get("chest"));
 					lothricKnight.getParts().get("shield").setOffset(new Vector(-.4,.9,-.1));
 					attacking = true;
 					tick = new Stance().run(lothricKnight, tick);
@@ -152,7 +142,7 @@ public class Run {
 				for (Part part : lothricKnight.getParts().values()) { part.resetPosition(); }
 				
 			}
-		}.runTaskTimer(plugin, 0, 0);
+		}.runTaskTimerAsynchronously(plugin, 0, 0);
 	}
 	
 	
@@ -174,7 +164,7 @@ public class Run {
 				
 				actions.add("walking");
 				
-				if (!isWallBetween(lothricKnight.getTarget())) {
+				if (!IsWallBetween.check(lothricKnight.getTarget(), lothricKnight.getMain())) {
 					actions.add("walking_back");
 					actions.add("sidestepping");
 					actions.add("running");
@@ -190,7 +180,7 @@ public class Run {
 			tick = 0;
 			
 			//Shield
-			((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
+			lothricKnight.getParts().get("shield").setParent(lothricKnight.getParts().get("left_hand"));
 			lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
 			lothricKnight.setShieldIsUp(false);
 			if (Math.random() < .4 && !lothricKnight.getAction().contentEquals("running")) lothricKnight.setShieldIsUp(true);
@@ -234,21 +224,19 @@ public class Run {
 		attacking = false;
 		
 		//Shield
-		((ChildPart) lothricKnight.getParts().get("shield")).setParent(lothricKnight.getParts().get("left_hand"));
+		lothricKnight.getParts().get("shield").setParent(lothricKnight.getParts().get("left_hand"));
 		lothricKnight.getParts().get("shield").setOffset(new Vector(0,-.5,0));
 		
 		//Pathfind selection
 		if (changeTick % 50 == 0) {
 			Location loc = lothricKnight.getMain().getLocation();
 			if (loc.distance(lothricKnight.getPost().toLocation(loc.getWorld())) < 5) {
-				lothricKnight.getAI().single(new LookAroundAction());
-				lothricKnight.getAI().process();
+				((CraftMonster) lothricKnight.getBrain()).getHandle().setGoalTarget(null);
 				lothricKnight.setAction("idle");
 				lothricKnight.setShieldIsUp(false);
 			}
 			else {
-				lothricKnight.getAI().single(new GoToAction(lothricKnight.getPost().toLocation(loc.getWorld())));
-				lothricKnight.getAI().process();
+				((CraftMonster) lothricKnight.getBrain()).getHandle().getNavigation().a(lothricKnight.getPost().getX(), lothricKnight.getPost().getY(), lothricKnight.getPost().getZ());
 				lothricKnight.setAction("walking");
 			}
 		}
@@ -290,10 +278,10 @@ public class Run {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
 				// && !(lothricKnight.getNation() == Nations.getNation(player).getId())
-				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) && !(lothricKnight.getNation() == Nations.getNation(player).getId())) {
+				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
 					if (nearestPlayer == null) nearestPlayer = player;
 					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
-					if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !isWallBetween(player)) {
+					if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !IsWallBetween.check(player, entity)) {
 						 nearestPlayer = player;
 						 nearestPlayerDistance = playerDistance;
 					}
@@ -345,37 +333,10 @@ public class Run {
 		}
 	}
 	
-	private boolean isWallBetween(Entity entity) {
-		boolean isBlock = false;
-		
-		Location loc = lothricKnight.getMain().getLocation();
-		double distance = Math.sqrt(Math.pow(loc.getX() - entity.getLocation().getX(), 2) + Math.pow(loc.getZ() - entity.getLocation().getZ(), 2));
-		double differenceX = loc.toVector().getX() - entity.getLocation().toVector().getX();
-		double differenceZ = loc.toVector().getZ() - entity.getLocation().toVector().getZ();
-		
-
-		loc.add(0,1,0);
-		for (int blockI = (int) distance; blockI > 0; blockI--) {
-			Location blockLoc = loc.clone().subtract(new Vector(differenceX*(blockI/distance),0,differenceZ*(blockI/distance)));
-			if (!blockLoc.getBlock().isPassable()) {
-				isBlock = true;
-			}
-		}
-		loc.add(0,1,0);
-		for (int blockI = (int) distance; blockI > 0; blockI--) {
-			Location blockLoc = loc.clone().subtract(new Vector(differenceX*(blockI/distance),0,differenceZ*(blockI/distance)));
-			if (!blockLoc.getBlock().isPassable()) {
-				isBlock = true;
-			}
-		}
-		
-		return isBlock;
-	}
-	
 	private void otherTasks() {
 		
 		//Targeter teleport
-		Monster targeter = lothricKnight.getTargeter();
+		Monster targeter = lothricKnight.getBrain();
 		double yaw = targeter.getLocation().getYaw();
 		Location newLocation = lothricKnight.getMain().getLocation().toVector().toLocation(targeter.getWorld()); //Teleport without changing direction?
 		newLocation.setYaw((float) yaw);
@@ -400,6 +361,6 @@ public class Run {
 		}
 		
 		//Clear targeter's equipment if has any
-		lothricKnight.getTargeter().getEquipment().clear();
+		lothricKnight.getBrain().getEquipment().clear();
 	}
 }

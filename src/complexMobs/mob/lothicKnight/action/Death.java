@@ -6,7 +6,6 @@ import org.bukkit.util.Vector;
 
 import complexMobs.object.Action;
 import complexMobs.object.AnimationState;
-import complexMobs.object.ChildPart;
 import complexMobs.object.Part;
 
 public class Death extends Action {
@@ -172,7 +171,7 @@ public class Death extends Action {
 	protected void shield() {
 		Part part = getMob().getParts().get("shield");
 		
-		((ChildPart) getMob().getParts().get("shield")).setParent(getMob().getParts().get("left_hand"));
+		getMob().getParts().get("shield").setParent(getMob().getParts().get("left_hand"));
 		
 		AnimationState state = part.animationLargeFrame(0, 3, getTick(), 0, 20, -30, 0, 20, -30);
 		state = part.animationLargeFrame(state, 7, getTick(), 0, 20, -30);
