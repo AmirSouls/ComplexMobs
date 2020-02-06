@@ -7,7 +7,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public class LeftSlash extends Action {
+public class LeftSlash extends Action<LothricKnight> {
 	
 	public LeftSlash() {
 		setReturnTick(25);

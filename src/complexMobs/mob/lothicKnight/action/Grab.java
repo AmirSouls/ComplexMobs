@@ -15,7 +15,7 @@ import complexMobs.object.Action;
 import complexMobs.object.AnimationState;
 import complexMobs.object.Part;
 
-public class Grab extends Action {
+public class Grab extends Action<LothricKnight> {
 	
 	public Grab() {
 		setReturnTick(50);

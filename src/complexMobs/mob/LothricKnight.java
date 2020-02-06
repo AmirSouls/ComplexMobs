@@ -20,7 +20,7 @@ public class LothricKnight extends SoulsKnight {
 	* Creates a LothricKnight object
 	*/
 	public LothricKnight(Vector post) {
-		super("LothricKnight", "Lothric Knight", 500, 30, 30, post, new Weapon(), new Weapon());
+		super("LothricKnight", "Lothric Knight", 75, 30, 30, post, new Weapon(), new Weapon());
 	}
 	
 	/**

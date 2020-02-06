@@ -8,7 +8,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public class Backstep extends Action {
+public class Backstep extends Action<LothricKnight> {
 	
 	public Backstep() {
 		setReturnTick(30);

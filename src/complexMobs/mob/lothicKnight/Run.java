@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftMonster;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wither;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -39,6 +41,7 @@ public class Run {
 	private int tick = 0;
 	private boolean forceChange = false;
 	private boolean attacking = false;
+	private Wither bossBar;
 	private LothricKnight lothricKnight;
 	
 	public void run(LothricKnight lothricKnight, JavaPlugin plugin) {
@@ -48,6 +51,7 @@ public class Run {
 			public void run() {
 				
 				if (lothricKnight.isRemoved()) {
+					bossBar.remove();
 					this.cancel();
 					return;
 				}
@@ -142,7 +146,7 @@ public class Run {
 				for (Part part : lothricKnight.getParts().values()) { part.resetPosition(); }
 				
 			}
-		}.runTaskTimerAsynchronously(plugin, 0, 0);
+		}.runTaskTimer(plugin, 0, 0);
 	}
 	
 	
@@ -277,7 +281,6 @@ public class Run {
 		for (Entity entity : nearbyEntities) {
 			if (entity instanceof Player) {
 				Player player = (Player) entity;
-				// && !(lothricKnight.getNation() == Nations.getNation(player).getId())
 				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
 					if (nearestPlayer == null) nearestPlayer = player;
 					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
@@ -307,6 +310,10 @@ public class Run {
 		}
 		else {
 			lothricKnight.setHealth(lothricKnight.getHealth() + .15);
+		}
+		
+		if (bossBar != null) {
+			bossBar.setHealth(Math.max(0, Math.min(lothricKnight.getHealth(), lothricKnight.getMaxHealth())));
 		}
 	}
 	
@@ -362,5 +369,20 @@ public class Run {
 		
 		//Clear targeter's equipment if has any
 		lothricKnight.getBrain().getEquipment().clear();
+		
+		if (bossBar == null) {
+			bossBar = (Wither) lothricKnight.getMain().getWorld().spawnEntity(lothricKnight.getMain().getLocation(), EntityType.WITHER);
+			bossBar.setSilent(true);
+			bossBar.setInvulnerable(true);
+			bossBar.setGravity(false);
+			bossBar.setCustomName("Knight");
+			bossBar.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(lothricKnight.getMaxHealth());
+			bossBar.setHealth(bossBar.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+		}
+		else {
+			Location loc = lothricKnight.getMain().getLocation().clone();
+			loc.setY(-5);
+			bossBar.teleport(loc);
+		}
 	}
 }

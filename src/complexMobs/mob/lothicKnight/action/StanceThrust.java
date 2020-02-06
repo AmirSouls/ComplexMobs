@@ -9,7 +9,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public class StanceThrust extends Action {
+public class StanceThrust extends Action<LothricKnight> {
 	
 	public StanceThrust() {
 		setReturnTick(50);
@@ -19,7 +19,6 @@ public class StanceThrust extends Action {
 		playSound();
 		move();
 		attackFrame();
-		
 		pelvis();
 		chest();
 		cape();
@@ -38,9 +37,11 @@ public class StanceThrust extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
+		
 		if (getTick() >= getReturnTick()) {
 			return -1;
 		}
+		
 		return getTick()+1;
 	}
 	
@@ -51,19 +52,15 @@ public class StanceThrust extends Action {
 	}
 	
 	protected void move() {
-		
-		double distance = ((LothricKnight) getMob()).getBrain().getLocation().distance(((LothricKnight) getMob()).getTarget().getLocation());
-		Location difference = ((LothricKnight) getMob()).getBrain().getLocation().subtract(((LothricKnight) getMob()).getTarget().getLocation());
+		double distance = getMob().getBrain().getLocation().distance(getMob().getTarget().getLocation());
+		Location difference = getMob().getBrain().getLocation().subtract(getMob().getTarget().getLocation());
 		Vector direction = difference.toVector().divide(new Vector(distance, distance, distance));
-		
 		float yaw = (float) (Math.atan2(direction.getX(), direction.getZ())*57.29);
 		if (yaw > 0) yaw -= 360;
 		yaw *= -1;
 		yaw += 180;
-		((CraftEntity) (((LothricKnight) getMob()).getBrain())).getHandle().setHeadRotation(yaw);
-		
+		((CraftEntity) (getMob()).getBrain()).getHandle().setHeadRotation(yaw);
 		double moveAmount = Math.min(distance / 5 + .5, 5);
-		
 		if (getTick() <= 6) getMob().move(0, 20, 0);
 		else if (getTick() <= 9) getMob().move(moveAmount, 60, 0);
 		else if (getTick() <= 11) getMob().move(moveAmount, 0, 0);
@@ -71,7 +68,7 @@ public class StanceThrust extends Action {
 	}
 	
 	protected void attackFrame() {
-		LothricKnight mob = (LothricKnight) getMob();
+		LothricKnight mob = getMob();
 		if (getTick() >= 6 && getTick() <= 13) mob.attackFrameSword(22, mob.getMain().getLocation().getDirection().multiply(2).setY(.3), true);
 		if (getTick() > 13) mob.getSwordWeapon().setHitPoints(null);
 	}

@@ -13,11 +13,9 @@ import complexMobs.object.Action;
 import complexMobs.object.AnimationState;
 import complexMobs.object.Part;
 
-public class Riposte extends Action {
+public class Riposte extends Action<LothricKnight> {
 	
-	public Riposte() {
-		setReturnTick(140);
-	}
+	public Riposte() { setReturnTick(140); };
 	
 	protected int actions() {
 		playSound();
@@ -45,6 +43,7 @@ public class Riposte extends Action {
 		if (getTick() >= getReturnTick()) {
 			return -1;
 		}
+		
 		return getTick()+1;
 	}
 	
@@ -52,7 +51,7 @@ public class Riposte extends Action {
 		ArmorStand main = getMob().getMain();
 		if (getTick() == 60) main.getWorld().playSound(main.getLocation(), "lothricknight.grunt", 1, 1);
 		if (getTick() == 65) main.getWorld().playSound(main.getLocation(), "lothricknight.playerhurt", 1, 1);
-		if (getTick() == 65) main.getWorld().spawnParticle(Particle.BLOCK_CRACK, ((LothricKnight) getMob()).getVictim().getLocation().add(0,1,0), 400, .1, .2, .1, .5, Material.REDSTONE_WIRE.createBlockData(), true);
+		if (getTick() == 65) main.getWorld().spawnParticle(Particle.BLOCK_CRACK, getMob().getVictim().getLocation().add(0,1,0), 400, .1, .2, .1, .5, Material.REDSTONE_WIRE.createBlockData(), true);
 		if (getTick() == 85) main.getWorld().playSound(main.getLocation(), "lothricknight.grunt", 1, 1);
 	}
 	
@@ -63,6 +62,7 @@ public class Riposte extends Action {
 	protected void attackFrame() {
 		LothricKnight mob = (LothricKnight) getMob();
 		Player victim = mob.getVictim();
+		
 		if (victim == null && getTick() < 90) {
 			mob.setAction("idle");
 			return;
@@ -71,6 +71,7 @@ public class Riposte extends Action {
 			mob.setAction("idle");
 			return;
 		}
+		
 		Part part;
 		Vector weaponMid = new Vector(0,0,0);
 		if (getTick() < 64) part = mob.getParts().get("left_hand");
@@ -78,6 +79,7 @@ public class Riposte extends Action {
 			part = mob.getParts().get("sword");
 			weaponMid = new Vector(0,0,.9);
 		}
+		
 		EulerAngle weaponAngle = part.getHeadPose();
 		weaponMid.rotateAroundX(weaponAngle.getX());
 		weaponMid.rotateAroundY(-weaponAngle.getY());
@@ -94,11 +96,11 @@ public class Riposte extends Action {
 			victim.setVelocity(mob.getMain().getLocation().getDirection().multiply(4).rotateAroundY(-80 / 57.29).setY(-1));
 		}
 		else if (getTick() < 110) {
-			victim.getWorld().spawnParticle(Particle.BLOCK_CRACK, ((LothricKnight) getMob()).getVictim().getLocation().add(0,1,0), 4, 0, 0, 0, .5, Material.REDSTONE_WIRE.createBlockData(), true);
+			victim.getWorld().spawnParticle(Particle.BLOCK_CRACK, getMob().getVictim().getLocation().add(0,1,0), 4, 0, 0, 0, .5, Material.REDSTONE_WIRE.createBlockData(), true);
 		}
 		
 		if (getTick() == 100) {
-			victim.damage(10);
+			victim.damage(20);
 		}
 		
 		if (getTick() == 64) {

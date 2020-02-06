@@ -4,11 +4,12 @@ import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.AnimationState;
 import complexMobs.object.Part;
 
-public class Death extends Action {
+public class Death extends Action<LothricKnight> {
 	
 	public Death() {
 		setReturnTick(140);

@@ -7,7 +7,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public abstract class PassiveAction extends Action {
+public abstract class PassiveAction extends Action<LothricKnight> {
 	
 	protected int actions() {
 		playSound();
@@ -59,7 +59,7 @@ public abstract class PassiveAction extends Action {
 	protected void head() {
 		Part part = getMob().getParts().get("head");
 		
-		if (((LothricKnight) getMob()).getTarget() != null) {
+		if (getMob().getTarget() != null) {
 			
 			Location targetEyes = ((LothricKnight) getMob()).getTarget().getEyeLocation();
 			Location headEyes = part.getArmorStand().getEyeLocation();

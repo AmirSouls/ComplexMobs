@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import complexMobs.command.RemoveAllComplexMobs;
 import complexMobs.command.SummonComplexMob;
 import complexMobs.complexMob.ComplexMob;
-import complexMobs.event.LivingComplexMobListener;
+import complexMobs.listener.LivingComplexMobListener;
 
 public class ComplexMobs extends JavaPlugin {
 

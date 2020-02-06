@@ -7,7 +7,7 @@ import complexMobs.mob.LothricKnight;
 import complexMobs.object.Action;
 import complexMobs.object.Part;
 
-public class RightSlash extends Action {
+public class RightSlash extends Action<LothricKnight> {
 	
 	public RightSlash() {
 		setReturnTick(25);
@@ -17,7 +17,6 @@ public class RightSlash extends Action {
 		playSound();
 		move();
 		attackFrame();
-		
 		pelvis();
 		chest();
 		cape();
@@ -36,8 +35,10 @@ public class RightSlash extends Action {
 		rightThigh();
 		rightCalf();
 		rightFoot();
+		
 		if (getTick() >= getReturnTick() - 7) {
 			LothricKnight mob = (LothricKnight) getMob();
+			
 			if (mob.getTarget().getLocation().distance(mob.getMain().getLocation()) < 4 && mob.getStamina() > 25) {
 				mob.setStamina(mob.getStamina() - 25);
 				mob.setStaminaUseTick(mob.getStaminaUseTickMax());
@@ -45,9 +46,11 @@ public class RightSlash extends Action {
 				return 0;
 			}
 		}
+		
 		if (getTick() >= getReturnTick()) {
 			return -1;
 		}
+		
 		return getTick()+1;
 	}
 	

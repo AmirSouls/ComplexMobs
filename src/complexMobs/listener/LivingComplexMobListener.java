@@ -1,4 +1,4 @@
-package complexMobs.event;
+package complexMobs.listener;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

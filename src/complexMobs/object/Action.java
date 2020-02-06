@@ -2,13 +2,13 @@ package complexMobs.object;
 
 import complexMobs.template.LivingComplexMob;
 
-public abstract class Action {
+public abstract class Action<T extends LivingComplexMob> {
 	
 	private int tick;
 	
 	private int returnTick = 10;
 	
-	private LivingComplexMob livingComplexMob;
+	private T livingComplexMob;
 	
 	/**
 	* Gets the tick of this Action
@@ -38,7 +38,7 @@ public abstract class Action {
 	* Gets LivingComplexMob of this Action
 	* @return The LivingComplexMob of this Action
 	*/
-	public LivingComplexMob getMob() {
+	public T getMob() {
 		return this.livingComplexMob;
 	}
 	
@@ -46,7 +46,7 @@ public abstract class Action {
 	* Executes the action and increments or resets the tick
 	* @return The new tick of the action
 	*/
-	public int run(LivingComplexMob livingComplexMob, int tick) {
+	public int run(T livingComplexMob, int tick) {
 		this.tick = tick;
 		this.livingComplexMob = livingComplexMob;
 		return actions();
