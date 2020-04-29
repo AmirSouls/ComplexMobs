@@ -21,12 +21,14 @@ import org.bukkit.util.Vector;
 import complexMobs.mob.LothricKnight;
 import complexMobs.mob.lothicKnight.action.Backstep;
 import complexMobs.mob.lothicKnight.action.Death;
+import complexMobs.mob.lothicKnight.action.Force;
 import complexMobs.mob.lothicKnight.action.Grab;
 import complexMobs.mob.lothicKnight.action.Idle;
 import complexMobs.mob.lothicKnight.action.LeftSlash;
 import complexMobs.mob.lothicKnight.action.RightSlash;
 import complexMobs.mob.lothicKnight.action.Riposte;
 import complexMobs.mob.lothicKnight.action.Running;
+import complexMobs.mob.lothicKnight.action.ShieldBash;
 import complexMobs.mob.lothicKnight.action.Sidestepping;
 import complexMobs.mob.lothicKnight.action.Stance;
 import complexMobs.mob.lothicKnight.action.StanceThrust;
@@ -113,6 +115,14 @@ public class Run {
 					attacking = true;
 					tick = new LeftSlash().run(lothricKnight, tick);
 					break;
+				case "shield_bash":
+					attacking = true;
+					tick = new ShieldBash().run(lothricKnight, tick);
+					break;
+				case "force":
+					attacking = true;
+					tick = new Force().run(lothricKnight, tick);
+					break;
 				case "backstep":
 					attacking = true;
 					tick = new Backstep().run(lothricKnight, tick);
@@ -194,10 +204,12 @@ public class Run {
 			//Attack actions
 			List<String> actions = new ArrayList<>(); //Actions to choose from
 			if (distance < 4 && lothricKnight.getStamina() > 25) {
-				actions.add("right_slash");
-				actions.add("left_slash");
-				if (Math.random() < .2) actions.add("backstep");
-				actions.add("grab");
+				//actions.add("right_slash");
+				//actions.add("left_slash");
+				//if (Math.random() < .5) actions.add("backstep");
+				//if (Math.random() < .4) actions.add("grab");
+				//if (Math.random() < .7) actions.add("shield_bash");
+				actions.add("force");
 				lothricKnight.setStamina(lothricKnight.getStamina() - 25);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
@@ -240,7 +252,7 @@ public class Run {
 				lothricKnight.setShieldIsUp(false);
 			}
 			else {
-				((CraftMonster) lothricKnight.getBrain()).getHandle().getNavigation().a(lothricKnight.getPost().getX(), lothricKnight.getPost().getY(), lothricKnight.getPost().getZ());
+				((CraftMonster) lothricKnight.getBrain()).getHandle().getNavigation().a(lothricKnight.getPost().getX(), lothricKnight.getPost().getY(), lothricKnight.getPost().getZ(), 0);
 				lothricKnight.setAction("walking");
 			}
 		}
@@ -309,7 +321,7 @@ public class Run {
 			lothricKnight.setHealth(lothricKnight.getMaxHealth());
 		}
 		else {
-			lothricKnight.setHealth(lothricKnight.getHealth() + .15);
+			lothricKnight.setHealth(lothricKnight.getHealth() + .03);
 		}
 		
 		if (bossBar != null) {
@@ -351,7 +363,7 @@ public class Run {
 		((CraftEntity) targeter).getHandle().setPosition(newLocation.getX(), newLocation.getY(), newLocation.getZ());
 		
 		//Player collision
-		for (Entity entity : lothricKnight.getMain().getNearbyEntities(.125, .3, .125)) {
+		for (Entity entity : lothricKnight.getMain().getNearbyEntities(.45, .4, .45)) {
 			if (entity.getType().equals(EntityType.PLAYER)) {
 				double distance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
 				Location difference = entity.getLocation().subtract(lothricKnight.getMain().getLocation());

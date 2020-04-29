@@ -108,6 +108,18 @@ public class Move {
 					}
 				}
 			}
+			
+			//Deep drop protection
+			boolean isDeepDrop = true;
+			
+			for (int dropDepth = 1; dropDepth < 5; dropDepth++) {
+				if (!newLocation.clone().subtract(0,dropDepth,0).getBlock().isPassable()) {
+					isDeepDrop = false;
+					break;
+				}
+			}
+			
+			if (isDeepDrop) newLocation = lothricKnight.getMain().getLocation();
 		}
 		
 		if (newYaw > 0) newYaw -= 360;

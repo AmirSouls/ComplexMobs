@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import complexMobs.main.ComplexMobs;
+import complexMobs.mob.lothicKnight.AttackShield;
 import complexMobs.mob.lothicKnight.AttackSword;
 import complexMobs.mob.lothicKnight.Move;
 import complexMobs.mob.lothicKnight.Run;
@@ -63,8 +64,8 @@ public class LothricKnight extends SoulsKnight {
 	* @param the velocity vector to apply to damaged players
 	* @param particles show particle effects in the weapon's arc
 	*/
-	public void attackFrameShield() {
-		
+	public void attackFrameShield(double damage, Vector knockBack, boolean particles) {
+		new AttackShield().run(this, damage, knockBack, particles);
 	}
 
 	public void run() {
