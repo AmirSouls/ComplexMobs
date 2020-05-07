@@ -54,30 +54,6 @@ public class Force extends Action<LothricKnight> {
 		if (getTick() == 8) main.getWorld().playSound(main.getLocation(), "lothricknight.forcecharge", 1, 1);
 		else if (getTick() == 22) {
 			main.getWorld().playSound(main.getLocation(), "lothricknight.forceboom", 1, 1);
-			main.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, main.getLocation().add(0,2,0), 700, .4, .4, .4, 1);
-			double particleCount = 40;
-			
-			for (int i = 0; i < particleCount; i++) {
-				
-				for (int j = 0; j < particleCount; j++) {
-					main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(
-								Math.sin(i / particleCount * Math.PI * 2) * Math.sin(j / particleCount * Math.PI) * 4,
-								(Math.cos(j / particleCount * Math.PI + Math.PI) / 2 + .5) * 7 - 1.5,
-								Math.cos(i / particleCount * Math.PI * 2) * Math.sin(j / particleCount * Math.PI) * 4), 1, 0, 0, 0, .05);
-				}
-			}
-			
-			for (Entity entity : main.getNearbyEntities(4, 4, 4)) {
-				if (!entity.getType().equals(EntityType.PLAYER)) continue;
-				Player player = (Player) entity;
-				Location entityLoc = entity.getLocation();
-				Location loc = main.getLocation();
-				double xVec = (entityLoc.getX() - loc.getX()) / entityLoc.distance(loc);
-				double yVec = (entityLoc.getY() - loc.getY()) / entityLoc.distance(loc);
-				double zVec = (entityLoc.getZ() - loc.getZ()) / entityLoc.distance(loc);
-				entity.setVelocity(new Vector(xVec, yVec, zVec));
-				player.damage(7);
-			}
 		}
 	}
 	
@@ -86,8 +62,33 @@ public class Force extends Action<LothricKnight> {
 	}
 	
 	protected void attackFrame() {
-		LothricKnight mob = (LothricKnight) getMob();
-		if (getTick() >= 15 && getTick() <= 25);
+		ArmorStand main = getMob().getMain();
+		if (getTick() != 22) return;
+		double particleCount = 40;
+		main.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, main.getLocation().add(0,2,0), 700, .4, .4, .4, 1);
+		
+		//TODO Make this look cleaner
+		for (int i = 0; i < particleCount; i++) { //Particle sphere loop
+			
+			for (int j = 0; j < particleCount; j++) {
+				main.getWorld().spawnParticle(Particle.END_ROD, main.getLocation().add(
+						Math.sin(i / particleCount * Math.PI * 2) * Math.sin(j / particleCount * Math.PI) * 4,
+						(Math.cos(j / particleCount * Math.PI + Math.PI) / 2 + .5) * 7 - 1.5,
+						Math.cos(i / particleCount * Math.PI * 2) * Math.sin(j / particleCount * Math.PI) * 4), 1, 0, 0, 0, .05);
+			}
+		}
+		
+		for (Entity entity : main.getNearbyEntities(4, 4, 4)) { //Damage nearby players loop
+			if (!entity.getType().equals(EntityType.PLAYER)) continue;
+			Location entityLoc = entity.getLocation();
+			Location loc = main.getLocation();
+			double xVec = (entityLoc.getX() - loc.getX()) / entityLoc.distance(loc);
+			double yVec = (entityLoc.getY() - loc.getY()) / entityLoc.distance(loc);
+			double zVec = (entityLoc.getZ() - loc.getZ()) / entityLoc.distance(loc);
+			entity.setVelocity(new Vector(xVec, yVec, zVec));
+			Player player = (Player) entity;
+			player.damage(7);
+		}
 	}
 	
 	protected void pelvis() {
