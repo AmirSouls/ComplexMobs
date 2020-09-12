@@ -100,12 +100,12 @@ public class Riposte extends Action<LothricKnight> {
 		}
 		
 		if (getTick() == 100) {
-			victim.damage(20);
+			victim.damage(20, getMob().getMain());
 		}
 		
 		if (getTick() == 64) {
 			victim.setHealth(victim.getHealth() * .25);
-			victim.damage(.00001);
+			victim.damage(1);
 		}
 	}
 	

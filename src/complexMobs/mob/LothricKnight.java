@@ -75,7 +75,7 @@ public class LothricKnight extends SoulsKnight {
 
 	public void build(Location spawnLocation) {
 		super.build(spawnLocation);
-		
+		getMain().setCustomName("Lothric Knight");
 		getParts().put("pelvis", new Part(1, this, new Vector(0,.5,0)));
         getParts().put("chest", new Part(2, this, new Vector(0,-.16,.01), getParts().get("pelvis")));
         getParts().put("head", new Part(3, this, new Vector(0,.8,0), getParts().get("chest")));

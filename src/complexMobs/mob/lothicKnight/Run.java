@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftMonster;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
@@ -51,6 +52,14 @@ public class Run {
 		
 		new BukkitRunnable() {
 			public void run() {
+				
+				//Make other mobs target self
+				for (Entity entity : lothricKnight.getBrain().getNearbyEntities(30, 30, 30)) {
+					if (entity == lothricKnight.getBrain()) continue;
+					if (!(entity instanceof Monster)) continue;
+					Monster monster = (Monster)entity;
+					monster.setTarget(lothricKnight.getMain());
+				}
 				
 				if (lothricKnight.isRemoved()) {
 					bossBar.remove();
@@ -204,12 +213,12 @@ public class Run {
 			//Attack actions
 			List<String> actions = new ArrayList<>(); //Actions to choose from
 			if (distance < 4 && lothricKnight.getStamina() > 25) {
-				//actions.add("right_slash");
-				//actions.add("left_slash");
-				//if (Math.random() < .5) actions.add("backstep");
-				//if (Math.random() < .4) actions.add("grab");
-				//if (Math.random() < .7) actions.add("shield_bash");
-				actions.add("force");
+				actions.add("right_slash");
+				actions.add("left_slash");
+				if (Math.random() < .5) actions.add("backstep");
+				if (Math.random() < .4) actions.add("grab");
+				if (Math.random() < .7) actions.add("shield_bash");
+				if (Math.random() < .35) actions.add("force");
 				lothricKnight.setStamina(lothricKnight.getStamina() - 25);
 				lothricKnight.setStaminaUseTick(lothricKnight.getStaminaUseTickMax());
 			}
@@ -287,24 +296,35 @@ public class Run {
 		
 		List<Entity> nearbyEntities = lothricKnight.getMain().getNearbyEntities(20, 20, 20);
 		if (nearbyEntities.isEmpty()) return;
-		Player nearestPlayer = null;
-		double nearestPlayerDistance = 1000;
+		LivingEntity nearestEntity = null;
+		double nearestEntityDistance = 1000;
 		
 		for (Entity entity : nearbyEntities) {
-			if (entity instanceof Player) {
-				Player player = (Player) entity;
-				if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-					if (nearestPlayer == null) nearestPlayer = player;
-					double playerDistance = player.getLocation().distance(lothricKnight.getMain().getLocation());
-					if (playerDistance < nearestPlayerDistance && Math.random() > .3 && !IsWallBetween.check(player, entity)) {
-						 nearestPlayer = player;
-						 nearestPlayerDistance = playerDistance;
-					}
+			if (entity instanceof LivingEntity) {
+				LivingEntity livingEntity = (LivingEntity) entity;
+				
+				if (entity instanceof Player) {
+					Player player = (Player)entity;
+					if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE) continue;
+				}
+				else if (entity instanceof Monster) { //Target monsters toggle
+					if (lothricKnight.getBrain() == entity) continue;
+				}
+				else {
+					continue;
+				}
+				
+				if (nearestEntity == null) nearestEntity = livingEntity;
+				double entityDistance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
+				if (entityDistance < nearestEntityDistance && Math.random() > .3 && !IsWallBetween.check(entity, entity)) {
+					nearestEntity = livingEntity;
+					nearestEntityDistance = entityDistance;
 				}
 			}
 		}
-		if (nearestPlayer != null) {
-			lothricKnight.setTarget(nearestPlayer);
+		
+		if (nearestEntity != null) {
+			lothricKnight.setTarget(nearestEntity);
 		}
 	}
 	
@@ -364,7 +384,8 @@ public class Run {
 		
 		//Player collision
 		for (Entity entity : lothricKnight.getMain().getNearbyEntities(.45, .4, .45)) {
-			if (entity.getType().equals(EntityType.PLAYER)) {
+			if (entity instanceof LivingEntity) {
+				if (entity == lothricKnight.getBrain()) continue;
 				double distance = entity.getLocation().distance(lothricKnight.getMain().getLocation());
 				Location difference = entity.getLocation().subtract(lothricKnight.getMain().getLocation());
 				Vector vector = difference.toVector().divide(new Vector(distance,distance,distance));

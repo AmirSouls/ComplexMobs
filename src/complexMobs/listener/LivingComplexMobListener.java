@@ -26,7 +26,7 @@ public class LivingComplexMobListener implements Listener {
 	
 	@EventHandler
 	public void targeterAttack(EntityDamageByEntityEvent e) {
-		if (e.getDamager().hasMetadata("complex_mob")) e.setCancelled(true);
+		if (e.getDamager().hasMetadata("complex_mob") && e.getDamager().getType() != EntityType.ARMOR_STAND) e.setCancelled(true);
 	}
 	
 	@EventHandler
@@ -36,12 +36,11 @@ public class LivingComplexMobListener implements Listener {
 	
 	@EventHandler
 	public void onComplexMobHit(EntityDamageByEntityEvent e) {
-
 		if (e.getEntity().hasMetadata("complex_mob")) {
 			LivingComplexMob mob = (LivingComplexMob) e.getEntity().getMetadata("complex_mob").get(0).value();
 			
 			if (mob instanceof LothricKnight) {
-				if (onLothricKnightHit(e, (LothricKnight) mob)) return;
+				if (onLothricKnightHit(e, (LothricKnight)mob)) return;
 			}
 			
 			mob.setHealth(mob.getHealth() - e.getDamage());
@@ -51,7 +50,6 @@ public class LivingComplexMobListener implements Listener {
 	}
 	
 	private boolean onLothricKnightHit(EntityDamageByEntityEvent e, LothricKnight lothricKnight) {
-		
 		if (lothricKnight.isShieldUp()) {
 			Location dmgLoc = e.getDamager().getLocation();
 			Location mobLoc = lothricKnight.getMain().getLocation();
@@ -78,16 +76,11 @@ public class LivingComplexMobListener implements Listener {
 		if (lothricKnight.getAction().contentEquals("riposte")) return true;
 		
 		if (e.getDamager() instanceof Arrow) {
-			e.setDamage(e.getDamage()*.4);
-			
+			e.setDamage(e.getDamage() * .8);
 			Arrow arrow = (Arrow) e.getDamager();
-			if (arrow.getShooter() instanceof Player) {
-				return true;
-			}
 		}
 		
-		lothricKnight.setInvulTick(10);
-		
+		lothricKnight.setInvulTick(5);
 		return false;
 	}
 }

@@ -5,6 +5,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -79,15 +80,16 @@ public class Force extends Action<LothricKnight> {
 		}
 		
 		for (Entity entity : main.getNearbyEntities(4, 4, 4)) { //Damage nearby players loop
-			if (!entity.getType().equals(EntityType.PLAYER)) continue;
+			if (!(entity instanceof LivingEntity)) continue;
+			if (getMob().getBrain() == entity) continue;
 			Location entityLoc = entity.getLocation();
 			Location loc = main.getLocation();
 			double xVec = (entityLoc.getX() - loc.getX()) / entityLoc.distance(loc);
 			double yVec = (entityLoc.getY() - loc.getY()) / entityLoc.distance(loc);
 			double zVec = (entityLoc.getZ() - loc.getZ()) / entityLoc.distance(loc);
 			entity.setVelocity(new Vector(xVec, yVec, zVec));
-			Player player = (Player) entity;
-			player.damage(7);
+			LivingEntity livingEntity = (LivingEntity)entity;
+			livingEntity.damage(7);
 		}
 	}
 	

@@ -8,6 +8,8 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -48,10 +50,13 @@ public class AttackShield {
 						if (particles) main.getWorld().spawnParticle(Particle.END_ROD, betweenPLoc, 0);
 						
 						for (Entity entity : main.getNearbyEntities(10, 10, 10)) {
-							if (entity instanceof Player) {
-								Player player = (Player) entity;
-								if (player.getBoundingBox().contains(betweenPLoc.toVector())) {
-									player.damage(damageCalculation(damage, player));
+							if (entity == lothricKnight.getBrain() || entity.getType().equals(EntityType.ARMOR_STAND)) continue;
+							
+							if (entity instanceof LivingEntity) {
+								LivingEntity livingEntity = (LivingEntity)entity;
+								
+								if (livingEntity.getBoundingBox().contains(betweenPLoc.toVector())) {
+									livingEntity.damage(damage, lothricKnight.getMain());
 									entity.setVelocity(knockBack);
 								}
 							}
