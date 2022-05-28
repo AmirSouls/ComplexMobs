@@ -1,5 +1,5 @@
 name: ComplexMobs
-author: Amir Bohdjelian
+author: Amir
 version: 0.8
 main: complexMobs.main.ComplexMobs
 description: Plugin that allows for the creation and use of complex mobs.
